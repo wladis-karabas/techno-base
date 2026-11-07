@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101b2d"><title>ТПА БАЗА</title>
+<style>
+:root{--bg:#0b1220;--p:#141f32;--p2:#1b2940;--b:#293950;--t:#edf3fc;--m:#91a2bb;--a:#4c9aff;--g:#24bd88;--r:#f16b72;--o:#f0ad4e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px system-ui,Arial;padding-bottom:80px}.head{position:sticky;top:0;background:#101b2df5;padding:14px 16px;border-bottom:1px solid var(--b);z-index:5;display:flex;justify-content:space-between}.logo{font-weight:900;font-size:19px}.logo i{color:var(--a);font-style:normal}main{max-width:760px;margin:auto;padding:14px}h2{font-size:21px;margin:8px 0}.muted,.note{color:var(--m);font-size:12px}.panel,.card{background:var(--p);border:1px solid var(--b);border-radius:14px;padding:14px;margin:12px 0}.pt{font-weight:800;margin-bottom:12px}label{display:block;color:var(--m);font-size:12px;margin:0 0 5px}input,select,textarea{width:100%;background:var(--p2);border:1px solid var(--b);border-radius:9px;color:var(--t);padding:11px;min-height:43px;font:inherit}textarea{min-height:75px}.field{margin:0 0 11px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.btn{border:0;border-radius:10px;padding:12px;background:var(--a);color:white;font-weight:800;min-height:43px}.green{background:var(--g);color:#06251c}.red{background:#71313c}.gray{background:var(--p2);border:1px solid var(--b)}.row{display:flex;gap:8px;margin-top:12px}.row>*{flex:1}.machinegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.machine{background:var(--p);border:1px solid var(--b);color:var(--t);padding:11px;border-radius:11px;text-align:left}.machine small{display:block;color:var(--m)}.tabs{display:flex;gap:6px;overflow:auto;padding:5px 0 12px}.tab{white-space:nowrap;background:var(--p);border:1px solid var(--b);color:var(--m);padding:9px 11px;border-radius:9px}.tab.active{background:#244a78;color:white}.screen{display:none}.screen.active{display:block}.dir{display:flex;align-items:center;gap:13px;padding:13px;border-radius:11px;font-weight:900;margin:10px 0}.dir b{font-size:30px}.dir small{display:block;font-size:11px;font-weight:500}.close{background:#173d34;border:1px solid #26765f}.open{background:#382b1b;border:1px solid #8b632b}.badge{font-size:11px;border-radius:7px;padding:5px 8px;background:#55401f;color:#ffd58b}.approved{background:#174c3c;color:#8ef0c8}.checked{background:#3b3c65;color:#c4c5ff}.archived{background:#343b46;color:#b9c1cc}.info{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--b);font-size:13px}.info b{text-align:right;overflow-wrap:anywhere}.history{border-left:3px solid var(--a);background:var(--p2);padding:9px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#111d30;border-top:1px solid var(--b);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:6}.bottom button{background:none;border:0;color:var(--m);font-size:11px}.bottom span{display:block;font-size:20px}.bottom .active{color:#77b5ff}.hidden{display:none!important}.empty{text-align:center;padding:20px;color:var(--m);font-size:13px}
+
+.matrix{width:100%;border-collapse:collapse;margin-bottom:15px}
+.matrix th{font-size:11px;color:var(--m);font-weight:normal;padding:5px;text-align:center;border-bottom:1px solid var(--b)}
+.matrix td{padding:3px;border-bottom:1px solid var(--b);text-align:center}
+.matrix td.label-cell{text-align:left;font-weight:bold;font-size:12px;color:var(--t);width:90px;white-space:nowrap}
+.matrix input{padding:5px;min-height:30px;font-size:13px;text-align:center;margin:0}
+.matrix input:disabled{color:#8e9fbf;background:transparent;border-color:transparent;}
+.param-icon{display:inline-block;width:16px;text-align:center;color:var(--a);margin-right:5px}
+
+.header-action{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+.btn-back-view{background:var(--p2); border:1px solid var(--b); color:var(--t); padding:6px 12px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer;}
+.btn-top-edit{background:var(--p2); border:1px solid var(--a); color:var(--a); padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; margin-left:auto;}
+
+.blow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.blow-box { background: var(--p2); border: 1px solid var(--b); border-radius: 8px; padding: 8px; }
+.blow-box .pt { margin-bottom: 8px; font-size: 12px; color: var(--a); text-align: center; }
+.blow-box .field { margin-bottom: 5px; }
+.blow-box label { font-size: 10px; margin-bottom: 2px; }
+.blow-box input { min-height: 30px; font-size: 12px; padding: 4px; }
+
+.screw-container, .ctrl-container { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin: 20px 0; position: relative; }
+.nozzle { width: 20px; height: 40px; background: var(--a); clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 80%); margin-right: -5px; z-index: 3; flex-shrink: 0; }
+.zone { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; min-width: 0; }
+.zone::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 24px; background: var(--p2); border-top: 2px solid var(--b); border-bottom: 2px solid var(--b); z-index: -1; }
+.zone label { font-size: 10px; margin-bottom: 2px; background: var(--p); padding: 0 4px; border-radius: 4px; z-index: 3; white-space: nowrap; }
+.zone input { padding: 4px; min-height: 35px; font-size: 14px; z-index: 3; border-color: var(--a); text-align: center; font-weight: bold; color: #d84315; }
+.zone input:disabled { color: #8e9fbf; background: transparent; border-color: transparent; height: 35px;}
+.zone-name { font-size: 10px; color: var(--m); margin-top: 5px; text-align: center; z-index: 3; background: var(--p); padding: 2px; white-space: nowrap; }
+
+.hyd-block { background: var(--p2); border: 1px solid var(--b); border-radius: 8px; padding: 12px; margin-bottom: 15px; }
+.hyd-title-row { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--b); padding-bottom: 8px; margin-bottom: 12px; }
+.hyd-title-row .pt { color: var(--a); font-size: 15px; margin: 0; border: none; padding: 0; }
+.hyd-title-row select { width: 140px; font-weight: bold; }
+.hyd-header { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.hyd-table { width: 100%; border-collapse: collapse; }
+.hyd-table th { font-size: 11px; color: var(--m); font-weight: normal; text-align: center; padding-bottom: 5px; }
+.hyd-table td { padding: 3px 2px; }
+.hyd-table .label-cell { font-size: 12px; font-weight: bold; color: var(--t); text-align: left; width: 40%; }
+.hyd-table input, .hyd-table select { text-align: center; }
+
+@media(max-width:380px){
+    .grid{grid-template-columns:1fr}.matrix td.label-cell{font-size:10px;width:70px}.blow-grid{grid-template-columns:1fr}.screw-container, .ctrl-container { gap: 2px; } .zone input { font-size: 12px; padding: 2px; } .zone label { font-size: 8px; } .zone-name { font-size: 8px; }
+    .hyd-title-row { flex-direction: column; align-items: flex-start; gap: 5px; } .hyd-title-row select { width: 100%; } .hyd-header { grid-template-columns: 1fr; } .hyd-table .label-cell { font-size: 10px; } .hyd-table input, .hyd-table select { font-size: 12px; padding: 4px; min-height: 30px;}
+}
+</style></head><body>
+<header class="head"><div><div class="logo">TECHNO <i>BASE</i></div><small class="muted">ТЕХНОЛОГИЧЕСКИЕ КАРТЫ ТПА</small></div><small id="saveStatus">● Облако</small></header>
+<main>
+<section id="home">
+<h2>Рабочая панель</h2><p class="muted">Поиск и управление технологическими картами</p>
+<div class="grid"><div class="panel"><b>16</b><div class="muted">Станков</div></div><div class="panel"><b id="count">0</b><div class="muted">Техкарт</div></div></div>
+<div class="panel"><div class="pt">🔎 Поиск карты</div><div class="field"><label>Станок</label><select id="filterMachine" onchange="render()"><option value="">Все станки</option></select></div><div class="field"><label>Форма, изделие, материал или цвет</label><input id="query" oninput="render()" placeholder="Начните вводить"></div><div class="field"><label>Статус</label><select id="filterStatus" onchange="render()"><option value="">Все статусы</option><option>Черновик</option><option>Проверена</option><option>Утверждена</option><option>Архивная</option></select></div></div>
+<div class="panel"><div class="pt">🏭 Станки</div><div class="machinegrid" id="machines"></div></div>
+<div class="panel"><div class="pt">📋 Технологические карты</div><div id="cards"></div></div><button class="btn green" style="width:100%" onclick="newCard()">＋ Создать карту</button>
+</section>
+
+<section id="editor" class="hidden"><h2 id="editTitle">Новая карта</h2><p class="muted">Отдельная карта для комбинации станок + форма + материал + цвет</p>
+<div class="tabs"><button class="tab active" onclick="tab('general',this)">Паспорт</button><button class="tab" onclick="tab('clamp',this)">Смыкание</button><button class="tab" onclick="tab('inject',this)">Впрыск</button><button class="tab" onclick="tab('plastic',this)">Загрузка</button><button class="tab" onclick="tab('eject',this)">Толкатели</button><button class="tab" onclick="tab('hydraulic',this)">Гидравлика</button><button class="tab" onclick="tab('temp',this)">Температура</button><button class="tab" onclick="tab('other',this)">Прочее</button></div>
+<div id="s-general" class="screen active"><div class="panel"><div class="pt">Паспорт карты</div><div class="field"><label>Станок</label><select id="f_machine"></select></div><div class="field"><label>Пресс-форма</label><input id="f_mold" placeholder="Название или номер"></div><div class="grid"><div class="field"><label>Изделие</label><input id="f_product"></div><div class="field"><label>Материал / марка</label><input id="f_material"></div><div class="field"><label>Цвет</label><input id="f_color"></div><div class="field"><label>Марка красителя</label><input id="f_dye"></div><div class="field"><label>Вес, г</label><input id="f_weight" type="number" step="any"></div><div class="field"><label>Цикл, с</label><input id="f_cycle" type="number" step="any"></div><div class="field"><label>Дозатор (%)</label><input id="f_doser_pct" type="number" step="any"></div><div class="field"><label>Номер дозатора</label><input id="f_doser_num" type="text"></div></div><div class="field"><label>Статус карты</label><select id="f_status"><option>Черновик</option><option>Проверена</option><option>Утверждена</option><option>Архивная</option></select></div><div class="field"><label>Комментарий / условия</label><textarea id="f_note" placeholder="Партия сырья, особенности формы, периферия..."></textarea></div></div></div>
+
+<div id="s-clamp" class="screen">
+    <div class="panel">
+        <div class="dir close"><b>⇢</b><span>ЗАКРЫТИЕ ФОРМЫ<small>Подвижная плита движется к неподвижной</small></span></div>
+        <div class="field"><label>Ход раскрытия, мм</label><input id="openStroke" type="number" step="any"></div>
+        <table class="matrix" id="matrix_clamp"></table>
+    </div>
+    <div class="panel">
+        <div class="dir open"><b>⇠</b><span>РАСКРЫТИЕ ФОРМЫ<small>Подвижная плита отходит от неподвижной</small></span></div>
+        <table class="matrix" id="matrix_open"></table>
+    </div>
+    <p class="note">Стрелки условно показывают направления движения. Сверяй их с фактической кинематикой и обозначениями конкретного станка.</p>
+</div>
+
+<div id="s-inject" class="screen">
+    <div class="panel">
+        <div class="pt">💉 Впрыск по ступеням</div>
+        <table class="matrix" id="matrix_inject"></table>
+        <div class="grid" style="margin-top:10px;">
+            <div class="field"><label><span class="param-icon">⌖</span>Позиция впрыска 1 (мм)</label><input id="inj_pos1" type="number" step="any"></div>
+            <div class="field"><label><span class="param-icon">⌖</span>Позиция впрыска 2 (мм)</label><input id="inj_pos2" type="number" step="any"></div>
+        </div>
+        <div class="field"><label><span class="param-icon">⏱</span>Время впрыска (с)</label><input id="inj_time" type="number" step="any"></div>
+    </div>
+    <div class="panel">
+        <div class="pt">⏳ Выдержка под давлением</div>
+        <table class="matrix" id="matrix_hold"></table>
+        <div class="grid" style="margin-top:10px;">
+            <div class="field"><label><span class="param-icon">⏱</span>Время выдержки 1 (с)</label><input id="hold_time1" type="number" step="any"></div>
+            <div class="field"><label><span class="param-icon">⏱</span>Время выдержки 2 (с)</label><input id="hold_time2" type="number" step="any"></div>
+        </div>
+    </div>
+</div>
+
+<div id="s-plastic" class="screen">
+    <div class="panel">
+        <div class="pt">⚙️ Набор дозы (Пластикация)</div>
+        <table class="matrix" id="matrix_plastic"></table>
+    </div>
+    
+    <div class="panel">
+        <div class="pt">💨 Декомпрессия</div>
+        <div class="field"><label>Режим декомпрессии</label>
+            <select id="decomp_mode">
+                <option value="После загрузки">После загрузки</option>
+                <option value="До загрузки">До загрузки</option>
+            </select>
+        </div>
+        
+        <div class="field"><label><span class="param-icon">◉</span>Давление (Бар)</label><input id="decomp_press" type="number" step="any"></div>
+        <div class="field"><label><span class="param-icon">↗</span>Скорость (%)</label><input id="decomp_speed" type="number" step="any"></div>
+        <div class="field" style="margin-bottom:0;"><label><span class="param-icon">⌖</span>Позиция (мм)</label><input id="decomp_dist" type="number" step="any"></div>
+    </div>
+
+    <div class="panel">
+        <div class="pt">Вторая загрузка</div>
+        <div class="grid">
+            <div class="field"><label><span class="param-icon">⌖</span>Позиция (мм)</label><input id="load2_pos" type="number" step="any"></div>
+            <div class="field"><label><span class="param-icon">⏱</span>Время (с)</label><input id="load2_time" type="number" step="any"></div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="pt">❄️ Охлаждение</div>
+        <div class="grid">
+            <div class="field"><label><span class="param-icon">⏱</span>Задержка (с)</label><input id="cool_delay" type="number" step="any"></div>
+            <div class="field"><label><span class="param-icon">⏱</span>Время (с)</label><input id="coolTime" type="number" step="any"></div>
+        </div>
+    </div>
+</div>
+
+<div id="s-eject" class="screen">
+    <div class="panel">
+        <div class="dir open"><b>⇢</b><span>ВЫТАЛКИВАНИЕ ВПЕРЕД<small>Движение плиты вперед</small></span></div>
+        <table class="matrix" id="matrix_eject_fwd"></table>
+        <div class="field"><label><span class="param-icon">⏱</span>Время задержки (с)</label><input id="ej_fwd_delay" type="number" step="any"></div>
+    </div>
+
+    <div class="panel">
+        <div class="dir close"><b>⇠</b><span>ВЫТАЛКИВАНИЕ НАЗАД<small>Возврат плиты</small></span></div>
+        <table class="matrix" id="matrix_eject_back"></table>
+        <div class="field"><label><span class="param-icon">⏱</span>Время задержки (с)</label><input id="ej_back_delay" type="number" step="any"></div>
+    </div>
+
+    <div class="panel">
+        <div class="pt">💨 Сдув (Пневматика)</div>
+        <div class="blow-grid">
+            <div class="blow-box">
+                <div class="pt">СДУВ А</div>
+                <div class="field"><label>Время действия (с)</label><input id="blow_a_time" type="number" step="any"></div>
+                <div class="field"><label>Позиция старта (мм)</label><input id="blow_a_pos" type="number" step="any"></div>
+                <div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_a_delay" type="number" step="any"></div>
+            </div>
+            <div class="blow-box">
+                <div class="pt">СДУВ В</div>
+                <div class="field"><label>Время действия (с)</label><input id="blow_b_time" type="number" step="any"></div>
+                <div class="field"><label>Позиция старта (мм)</label><input id="blow_b_pos" type="number" step="any"></div>
+                <div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_b_delay" type="number" step="any"></div>
+            </div>
+            <div class="blow-box">
+                <div class="pt">СДУВ С</div>
+                <div class="field"><label>Время действия (с)</label><input id="blow_c_time" type="number" step="any"></div>
+                <div class="field"><label>Позиция старта (мм)</label><input id="blow_c_pos" type="number" step="any"></div>
+                <div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_c_delay" type="number" step="any"></div>
+            </div>
+            <div class="blow-box">
+                <div class="pt">СДУВ D</div>
+                <div class="field"><label>Время действия (с)</label><input id="blow_d_time" type="number" step="any"></div>
+                <div class="field"><label>Позиция старта (мм)</label><input id="blow_d_pos" type="number" step="any"></div>
+                <div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_d_delay" type="number" step="any"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="s-hydraulic" class="screen">
+    <div class="panel">
+        <div class="pt">💧 Гидравлический съём (Гидросъем)</div>
+        
+        <div class="hyd-block">
+            <div class="hyd-title-row">
+                <div class="pt">Знак А</div>
+                <select id="hyd_a_mark">
+                    <option>Не использовать</option><option>Знак</option><option>Винт</option>
+                </select>
+            </div>
+            <div class="hyd-header">
+                <div><label>Режим 1</label><select id="hyd_a_mode1"><option>Ход</option><option>Время</option></select></div>
+                <div><label>Режим 2</label><select id="hyd_a_mode2"><option>Ход</option><option>Время</option></select></div>
+            </div>
+            <table class="hyd-table">
+                <thead><tr><th></th><th>Знак Ввод</th><th>Знак Вывод</th></tr></thead>
+                <tbody>
+                    <tr><td class="label-cell">Давление (Бар)</td><td><input id="hyd_a_press_in" type="number"></td><td><input id="hyd_a_press_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Скорость (%)</td><td><input id="hyd_a_speed_in" type="number"></td><td><input id="hyd_a_speed_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Время действ. (с)</td><td><input id="hyd_a_time_in" type="number"></td><td><input id="hyd_a_time_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Кол-во оборотов</td><td><input id="hyd_a_rev1_in" type="number"></td><td><input id="hyd_a_rev1_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Кол-во оборотов 2</td><td></td><td><input id="hyd_a_rev2_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Активация</td>
+                        <td><select id="hyd_a_act_in"><option>НЗак</option><option>Сред</option><option>КЗак</option></select></td>
+                        <td><select id="hyd_a_act_out"><option>НОткр</option><option>Сред</option><option>КОтк</option></select></td>
+                    </tr>
+                    <tr><td class="label-cell">Позиция актив.</td><td><input id="hyd_a_pos_in" type="number"></td><td><input id="hyd_a_pos_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Удержание</td><td></td><td><select id="hyd_a_hold"><option>Удер.</option><option>Отмена</option></select></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="hyd-block">
+            <div class="hyd-title-row">
+                <div class="pt">Знак В</div>
+                <select id="hyd_b_mark">
+                    <option>Не использовать</option><option>Знак</option><option>Винт</option>
+                </select>
+            </div>
+            <div class="hyd-header">
+                <div><label>Режим 1</label><select id="hyd_b_mode1"><option>Ход</option><option>Время</option></select></div>
+                <div><label>Режим 2</label><select id="hyd_b_mode2"><option>Ход</option><option>Время</option></select></div>
+            </div>
+            <table class="hyd-table">
+                <thead><tr><th></th><th>Знак Ввод</th><th>Знак Вывод</th></tr></thead>
+                <tbody>
+                    <tr><td class="label-cell">Давление (Бар)</td><td><input id="hyd_b_press_in" type="number"></td><td><input id="hyd_b_press_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Скорость (%)</td><td><input id="hyd_b_speed_in" type="number"></td><td><input id="hyd_b_speed_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Время действ. (с)</td><td><input id="hyd_b_time_in" type="number"></td><td><input id="hyd_b_time_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Кол-во оборотов</td><td><input id="hyd_b_rev1_in" type="number"></td><td><input id="hyd_b_rev1_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Кол-во оборотов 2</td><td></td><td><input id="hyd_b_rev2_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Активация</td>
+                        <td><select id="hyd_b_act_in"><option>НЗак</option><option>Сред</option><option>КЗак</option></select></td>
+                        <td><select id="hyd_b_act_out"><option>НОткр</option><option>Сред</option><option>КОтк</option></select></td>
+                    </tr>
+                    <tr><td class="label-cell">Позиция актив.</td><td><input id="hyd_b_pos_in" type="number"></td><td><input id="hyd_b_pos_out" type="number"></td></tr>
+                    <tr><td class="label-cell">Удержание</td><td></td><td><select id="hyd_b_hold"><option>Удер.</option><option>Отмена</option></select></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="s-temp" class="screen">
+    <div class="panel">
+        <div class="pt">🌡️ Температуры по зонам (°C)</div>
+        <div class="screw-container">
+            <div class="nozzle"></div>
+            <div class="zone"><label>Зона 1</label><input id="t_z1" type="number" step="any"><div class="zone-name">Сопло</div></div>
+            <div class="zone"><label>Зона 2</label><input id="t_z2" type="number" step="any"><div class="zone-name">2</div></div>
+            <div class="zone"><label>Зона 3</label><input id="t_z3" type="number" step="any"><div class="zone-name">3</div></div>
+            <div class="zone"><label>Зона 4</label><input id="t_z4" type="number" step="any"><div class="zone-name">4</div></div>
+            <div class="zone"><label>Зона 5</label><input id="t_z5" type="number" step="any"><div class="zone-name">5</div></div>
+            <div class="zone"><label>Зона 6</label><input id="t_z6" type="number" step="any"><div class="zone-name">Загрузка</div></div>
+        </div>
+        <p class="note">Цилиндр нагрева. Слева — сопло, справа — зона загрузки.</p>
+    </div>
+
+    <div class="panel">
+        <div class
