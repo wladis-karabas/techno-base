@@ -1,81 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ТПА БАЗА</title>
-    <style>
-        body { font-family: system-ui, sans-serif; padding: 20px; background: #0b1220; color: white; }
-        .panel { background: #141f32; padding: 20px; border-radius: 10px; border: 1px solid #293950; margin-bottom: 15px;}
-        input, button { width: 100%; padding: 12px; margin-top: 10px; box-sizing: border-box; font-size: 16px; border-radius: 8px; border: none;}
-        input { background: #1b2940; color: white; border: 1px solid #293950;}
-        button { background: #4c9aff; color: white; font-weight: bold; cursor: pointer; }
-        #log { margin-top: 20px; color: #24bd88; font-weight: bold; }
-        #list { margin-top: 20px; }
-        .item { background: #1b2940; padding: 10px; margin-bottom: 5px; border-radius: 5px; border-left: 3px solid #24bd88; }
-    </style>
+    <meta http-equiv="refresh" content="0; url=app.html">
+    <title>Перенаправление...</title>
 </head>
-<body>
-    <h2>ТПА БАЗА (Тест)</h2>
-    <div class="panel">
-        <p>Введите название формы:</p>
-        <input type="text" id="moldName" placeholder="Например: Крышка 100">
-        <button onclick="saveCard()">СОХРАНИТЬ В ОБЛАКО</button>
-        <div id="log">Статус: Ожидание...</div>
-    </div>
-    
-    <div id="list">
-        <h3>Сохраненные карты:</h3>
-        <div id="cardsList">Загрузка...</div>
-    </div>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <script>
-        const firebaseConfig = {
-          apiKey: "AIzaSyCJm6jPRCfLp7npy5uCRZo3Cq0v_X-M1e4",
-          authDomain: "technobase-a6671.firebaseapp.com",
-          projectId: "technobase-a6671",
-          storageBucket: "technobase-a6671.firebasestorage.app",
-          messagingSenderId: "817410176779",
-          appId: "1:817410176779:web:1c300a053c94301937140e"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        // Слушаем облако в реальном времени
-        db.collection("cards").onSnapshot((snapshot) => {
-            let html = "";
-            snapshot.forEach((doc) => {
-                let data = doc.data();
-                html += `<div class="item"><b>${data.mold || 'Без названия'}</b> (ID: ${doc.id})</div>`;
-            });
-            document.getElementById("cardsList").innerHTML = html || "Пока пусто";
-        });
-
-        function saveCard() {
-            let name = document.getElementById("moldName").value;
-            if(!name) { alert("Введите название!"); return; }
-            
-            document.getElementById("log").innerText = "Статус: Отправка...";
-
-            db.collection("cards").add({
-                mold: name,
-                date: new Date().toISOString()
-            })
-            .then(() => {
-                document.getElementById("log").innerText = "Статус: УСПЕШНО!";
-                document.getElementById("log").style.color = "#24bd88";
-                document.getElementById("moldName").value = "";
-            })
-            .catch((error) => {
-                document.getElementById("log").innerText = "Статус: ОШИБКА! " + error.message;
-                document.getElementById("log").style.color = "red";
-            });
-        }
-    </script>
+<body style="background: #0b1220; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+    <h2>Загрузка ТПА БАЗА...</h2>
 </body>
 </html>
