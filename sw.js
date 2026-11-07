@@ -7,7 +7,7 @@
 </head>
 <body>
 <script>
-const CACHE_NAME = 'techno-base-v6';
+const CACHE_NAME = 'techno-base-v8';
 const ASSETS = ['./index.html', './manifest.json'];
 
 self.addEventListener('install', e => {
