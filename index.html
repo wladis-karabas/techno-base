@@ -1,495 +1,58 @@
-<!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101b2d"><title>TECHNO BASE</title>
-<style>
-:root{--bg:#0b1220;--p:#141f32;--p2:#1b2940;--b:#293950;--t:#edf3fc;--m:#91a2bb;--a:#4c9aff;--g:#24bd88;--r:#f16b72;--o:#f0ad4e}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px system-ui,Arial;padding-bottom:80px}.head{position:sticky;top:0;background:#101b2df5;padding:14px 16px;border-bottom:1px solid var(--b);z-index:5;display:flex;justify-content:space-between}.logo{font-weight:900;font-size:19px}.logo i{color:var(--a);font-style:normal}main{max-width:760px;margin:auto;padding:14px}h2{font-size:21px;margin:8px 0}.muted,.note{color:var(--m);font-size:12px}.panel,.card{background:var(--p);border:1px solid var(--b);border-radius:14px;padding:14px;margin:12px 0}.pt{font-weight:800;margin-bottom:12px}label{display:block;color:var(--m);font-size:12px;margin:0 0 5px}input,select,textarea{width:100%;background:var(--p2);border:1px solid var(--b);border-radius:9px;color:var(--t);padding:11px;min-height:43px;font:inherit}textarea{min-height:75px}.field{margin:0 0 11px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.btn{border:0;border-radius:10px;padding:12px;background:var(--a);color:white;font-weight:800;min-height:43px}.green{background:var(--g);color:#06251c}.red{background:#71313c}.gray{background:var(--p2);border:1px solid var(--b)}.row{display:flex;gap:8px;margin-top:12px}.row>*{flex:1}.machinegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.machine{background:var(--p);border:1px solid var(--b);color:var(--t);padding:11px;border-radius:11px;text-align:left}.machine small{display:block;color:var(--m)}.tabs{display:flex;gap:6px;overflow:auto;padding:5px 0 12px}.tab{white-space:nowrap;background:var(--p);border:1px solid var(--b);color:var(--m);padding:9px 11px;border-radius:9px}.tab.active{background:#244a78;color:white}.screen{display:none}.screen.active{display:block}.dir{display:flex;align-items:center;gap:13px;padding:13px;border-radius:11px;font-weight:900;margin:10px 0}.dir b{font-size:30px}.dir small{display:block;font-size:11px;font-weight:500}.close{background:#173d34;border:1px solid #26765f}.open{background:#382b1b;border:1px solid #8b632b}.badge{font-size:11px;border-radius:7px;padding:5px 8px;background:#55401f;color:#ffd58b}.approved{background:#174c3c;color:#8ef0c8}.checked{background:#3b3c65;color:#c4c5ff}.archived{background:#343b46;color:#b9c1cc}.info{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--b);font-size:13px}.info b{text-align:right;overflow-wrap:anywhere}.history{border-left:3px solid var(--a);background:var(--p2);padding:9px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#111d30;border-top:1px solid var(--b);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:6}.bottom button{background:none;border:0;color:var(--m);font-size:11px}.bottom span{display:block;font-size:20px}.bottom .active{color:#77b5ff}.hidden{display:none!important}.empty{text-align:center;padding:20px;color:var(--m);font-size:13px}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Тест Firebase</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #0b1220; color: white; }
+        button { padding: 15px; font-size: 18px; margin-top: 20px; width: 100%; background: #4c9aff; color: white; border: none; border-radius: 8px; }
+        input { padding: 10px; width: 100%; margin-top: 10px; box-sizing: border-box; }
+        #log { margin-top: 20px; color: #24bd88; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Тест связи с облаком</h2>
+    <p>Введите любое слово и нажмите кнопку:</p>
+    <input type="text" id="testInput" placeholder="Например: Привет">
+    <button onclick="testSave()">СОХРАНИТЬ В ОБЛАКО</button>
+    <div id="log">Статус: Ожидание...</div>
 
-.matrix{width:100%;border-collapse:collapse;margin-bottom:15px}
-.matrix th{font-size:11px;color:var(--m);font-weight:normal;padding:5px;text-align:center;border-bottom:1px solid var(--b)}
-.matrix td{padding:3px;border-bottom:1px solid var(--b);text-align:center}
-.matrix td.label-cell{text-align:left;font-weight:bold;font-size:12px;color:var(--t);width:90px;white-space:nowrap}
-.matrix input{padding:5px;min-height:30px;font-size:13px;text-align:center;margin:0}
-.matrix input:disabled{color:#8e9fbf;background:transparent;border-color:transparent;}
-.param-icon{display:inline-block;width:16px;text-align:center;color:var(--a);margin-right:5px}
+    <!-- Подключение Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyCJm6jPRCfLp7npy5uCRZo3Cq0v_X-M1e4",
+          authDomain: "technobase-a6671.firebaseapp.com",
+          projectId: "technobase-a6671",
+          storageBucket: "technobase-a6671.firebasestorage.app",
+          messagingSenderId: "817410176779",
+          appId: "1:817410176779:web:1c300a053c94301937140e"
+        };
 
-.header-action{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
-.btn-back-view{background:var(--p2); border:1px solid var(--b); color:var(--t); padding:6px 12px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer;}
-.btn-top-edit{background:var(--p2); border:1px solid var(--a); color:var(--a); padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; margin-left:auto;}
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-/* Сетка сдува */
-.blow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.blow-box { background: var(--p2); border: 1px solid var(--b); border-radius: 8px; padding: 8px; }
-.blow-box .pt { margin-bottom: 8px; font-size: 12px; color: var(--a); text-align: center; }
-.blow-box .field { margin-bottom: 5px; }
-.blow-box label { font-size: 10px; margin-bottom: 2px; }
-.blow-box input { min-height: 30px; font-size: 12px; padding: 4px; }
+        function testSave() {
+            let val = document.getElementById("testInput").value;
+            if(!val) { alert("Введите текст!"); return; }
+            
+            document.getElementById("log").innerText = "Статус: Отправка...";
 
-/* СТИЛИ ДЛЯ ВИЗУАЛИЗАЦИИ ШНЕКА И КОНТРОЛЛЕРА */
-.screw-container, .ctrl-container { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin: 20px 0; position: relative; }
-.nozzle { width: 20px; height: 40px; background: var(--a); clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 80%); margin-right: -5px; z-index: 3; flex-shrink: 0; }
-.zone { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; min-width: 0; }
-.zone::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 24px; background: var(--p2); border-top: 2px solid var(--b); border-bottom: 2px solid var(--b); z-index: -1; }
-.zone label { font-size: 10px; margin-bottom: 2px; background: var(--p); padding: 0 4px; border-radius: 4px; z-index: 3; white-space: nowrap; }
-.zone input { padding: 4px; min-height: 35px; font-size: 14px; z-index: 3; border-color: var(--a); text-align: center; font-weight: bold; color: #d84315; }
-.zone input:disabled { color: #8e9fbf; background: transparent; border-color: transparent; height: 35px;}
-.zone-name { font-size: 10px; color: var(--m); margin-top: 5px; text-align: center; z-index: 3; background: var(--p); padding: 2px; white-space: nowrap; }
-
-/* СТИЛИ ДЛЯ ГИДРАВЛИКИ */
-.hyd-block { background: var(--p2); border: 1px solid var(--b); border-radius: 8px; padding: 12px; margin-bottom: 15px; }
-.hyd-title-row { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--b); padding-bottom: 8px; margin-bottom: 12px; }
-.hyd-title-row .pt { color: var(--a); font-size: 15px; margin: 0; border: none; padding: 0; }
-.hyd-title-row select { width: 140px; font-weight: bold; }
-.hyd-header { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-.hyd-table { width: 100%; border-collapse: collapse; }
-.hyd-table th { font-size: 11px; color: var(--m); font-weight: normal; text-align: center; padding-bottom: 5px; }
-.hyd-table td { padding: 3px 2px; }
-.hyd-table .label-cell { font-size: 12px; font-weight: bold; color: var(--t); text-align: left; width: 40%; }
-.hyd-table input, .hyd-table select { text-align: center; }
-
-@media(max-width:380px){
-    .grid{grid-template-columns:1fr}.matrix td.label-cell{font-size:10px;width:70px}.blow-grid{grid-template-columns:1fr}.screw-container, .ctrl-container { gap: 2px; } .zone input { font-size: 12px; padding: 2px; } .zone label { font-size: 8px; } .zone-name { font-size: 8px; }
-    .hyd-title-row { flex-direction: column; align-items: flex-start; gap: 5px; } .hyd-title-row select { width: 100%; } .hyd-header { grid-template-columns: 1fr; } .hyd-table .label-cell { font-size: 10px; } .hyd-table input, .hyd-table select { font-size: 12px; padding: 4px; min-height: 30px;}
-}
-</style></head><body>
-<header class="head"><div><div class="logo">TECHNO <i>BASE</i></div><small class="muted">ТЕХНОЛОГИЧЕСКИЕ КАРТЫ ТПА</small></div><small id="saveStatus">● Локально</small></header>
-<main>
-<section id="home">
-<h2>Рабочая панель</h2><p class="muted">Поиск и управление технологическими картами</p>
-<div class="grid"><div class="panel"><b>16</b><div class="muted">Станков</div></div><div class="panel"><b id="count">0</b><div class="muted">Техкарт</div></div></div>
-<div class="panel"><div class="pt">🔎 Поиск карты</div><div class="field"><label>Станок</label><select id="filterMachine" onchange="render()"><option value="">Все станки</option></select></div><div class="field"><label>Форма, изделие, материал или цвет</label><input id="query" oninput="render()" placeholder="Начните вводить"></div><div class="field"><label>Статус</label><select id="filterStatus" onchange="render()"><option value="">Все статусы</option><option>Черновик</option><option>Проверена</option><option>Утверждена</option><option>Архивная</option></select></div></div>
-<div class="panel"><div class="pt">🏭 Станки</div><div class="machinegrid" id="machines"></div></div>
-<div class="panel"><div class="pt">📋 Технологические карты</div><div id="cards"></div></div><button class="btn green" style="width:100%" onclick="newCard()">＋ Создать карту</button>
-</section>
-
-<section id="editor" class="hidden"><h2 id="editTitle">Новая карта</h2><p class="muted">Отдельная карта для комбинации станок + форма + материал + цвет</p>
-<div class="tabs"><button class="tab active" onclick="tab('general',this)">Паспорт</button><button class="tab" onclick="tab('clamp',this)">Смыкание</button><button class="tab" onclick="tab('inject',this)">Впрыск</button><button class="tab" onclick="tab('plastic',this)">Загрузка</button><button class="tab" onclick="tab('eject',this)">Толкатели</button><button class="tab" onclick="tab('hydraulic',this)">Гидравлика</button><button class="tab" onclick="tab('temp',this)">Температура</button><button class="tab" onclick="tab('other',this)">Прочее</button></div>
-<div id="s-general" class="screen active"><div class="panel"><div class="pt">Паспорт карты</div><div class="field"><label>Станок</label><select id="f_machine"></select></div><div class="field"><label>Пресс-форма</label><input id="f_mold" placeholder="Название или номер"></div><div class="grid"><div class="field"><label>Изделие</label><input id="f_product"></div><div class="field"><label>Материал / марка</label><input id="f_material"></div><div class="field"><label>Цвет</label><input id="f_color"></div><div class="field"><label>Марка красителя</label><input id="f_dye"></div><div class="field"><label>Вес, г</label><input id="f_weight" type="number" step="any"></div><div class="field"><label>Цикл, с</label><input id="f_cycle" type="number" step="any"></div><div class="field"><label>Дозатор (%)</label><input id="f_doser_pct" type="number" step="any"></div><div class="field"><label>Номер дозатора</label><input id="f_doser_num" type="text"></div></div><div class="field"><label>Статус карты</label><select id="f_status"><option>Черновик</option><option>Проверена</option><option>Утверждена</option><option>Архивная</option></select></div><div class="field"><label>Комментарий / условия</label><textarea id="f_note" placeholder="Партия сырья, особенности формы, периферия..."></textarea></div></div></div>
-
-<div id="s-clamp" class="screen">
-    <div class="panel">
-        <div class="dir close"><b>⇢</b><span>ЗАКРЫТИЕ ФОРМЫ<small>Подвижная плита движется к неподвижной</small></span></div>
-        <div class="field"><label>Ход раскрытия, мм</label><input id="openStroke" type="number" step="any"></div>
-        <table class="matrix" id="matrix_clamp"></table>
-    </div>
-    <div class="panel">
-        <div class="dir open"><b>⇠</b><span>РАСКРЫТИЕ ФОРМЫ<small>Подвижная плита отходит от неподвижной</small></span></div>
-        <table class="matrix" id="matrix_open"></table>
-    </div>
-    <p class="note">Стрелки условно показывают направления движения. Сверяй их с фактической кинематикой и обозначениями конкретного станка.</p>
-</div>
-
-<div id="s-inject" class="screen">
-    <div class="panel">
-        <div class="pt">💉 Впрыск по ступеням</div>
-        <table class="matrix" id="matrix_inject"></table>
-        <div class="grid" style="margin-top:10px;">
-            <div class="field"><label><span class="param-icon">⌖</span>Позиция впрыска 1 (мм)</label><input id="inj_pos1" type="number" step="any"></div>
-            <div class="field"><label><span class="param-icon">⌖</span>Позиция впрыска 2 (мм)</label><input id="inj_pos2" type="number" step="any"></div>
-        </div>
-        <div class="field"><label><span class="param-icon">⏱</span>Время впрыска (с)</label><input id="inj_time" type="number" step="any"></div>
-    </div>
-    <div class="panel">
-        <div class="pt">⏳ Выдержка под давлением</div>
-        <table class="matrix" id="matrix_hold"></table>
-        <div class="grid" style="margin-top:10px;">
-            <div class="field"><label><span class="param-icon">⏱</span>Время выдержки 1 (с)</label><input id="hold_time1" type="number" step="any"></div>
-            <div class="field"><label><span class="param-icon">⏱</span>Время выдержки 2 (с)</label><input id="hold_time2" type="number" step="any"></div>
-        </div>
-    </div>
-</div>
-
-<div id="s-plastic" class="screen">
-    <div class="panel">
-        <div class="pt">⚙️ Набор дозы (Пластикация)</div>
-        <table class="matrix" id="matrix_plastic"></table>
-    </div>
-    
-    <div class="panel">
-        <div class="pt">💨 Декомпрессия</div>
-        <div class="field"><label>Режим декомпрессии</label>
-            <select id="decomp_mode">
-                <option value="После загрузки">После загрузки</option>
-                <option value="До загрузки">До загрузки</option>
-            </select>
-        </div>
-        
-        <div class="field"><label><span class="param-icon">◉</span>Давление (Бар)</label><input id="decomp_press" type="number" step="any"></div>
-        <div class="field"><label><span class="param-icon">↗</span>Скорость (%)</label><input id="decomp_speed" type="number" step="any"></div>
-        <div class="field" style="margin-bottom:0;"><label><span class="param-icon">⌖</span>Позиция (мм)</label><input id="decomp_dist" type="number" step="any"></div>
-    </div>
-
-    <div class="panel">
-        <div class="pt">Вторая загрузка</div>
-        <div class="grid">
-            <div class="field"><label><span class="param-icon">⌖</span>Позиция (мм)</label><input id="load2_pos" type="number" step="any"></div>
-            <div class="field"><label><span class="param-icon">⏱</span>Время (с)</label><input id="load2_time" type="number" step="any"></div>
-        </div>
-    </div>
-
-    <div class="panel">
-        <div class="pt">❄️ Охлаждение</div>
-        <div class="grid">
-            <div class="field"><label><span class="param-icon">⏱</span>Задержка (с)</label><input id="cool_delay" type="number" step="any"></div>
-            <div class="field"><label><span class="param-icon">⏱</span>Время (с)</label><input id="coolTime" type="number" step="any"></div>
-        </div>
-    </div>
-</div>
-
-<div id="s-eject" class="screen">
-    <div class="panel">
-        <div class="dir open"><b>⇢</b><span>ВЫТАЛКИВАНИЕ ВПЕРЕД<small>Движение плиты вперед</small></span></div>
-        <table class="matrix" id="matrix_eject_fwd"></table>
-        <div class="field"><label><span class="param-icon">⏱</span>Время задержки (с)</label><input id="ej_fwd_delay" type="number" step="any"></div>
-    </div>
-
-    <div class="panel">
-        <div class="dir close"><b>⇠</b><span>ВЫТАЛКИВАНИЕ НАЗАД<small>Возврат плиты</small></span></div>
-        <table class="matrix" id="matrix_eject_back"></table>
-        <div class="field"><label><span class="param-icon">⏱</span>Время задержки (с)</label><input id="ej_back_delay" type="number" step="any"></div>
-    </div>
-
-    <div class="panel">
-        <div class="pt">💨 Сдув (Пневматика)</div>
-        <div class="blow-grid">
-            <div class="blow-box">
-                <div class="pt">СДУВ А</div>
-                <div class="field"><label>Время действия (с)</label><input id="blow_a_time" type="number" step="any"></div>
-                <div class="field"><label>Позиция старта (мм)</label><input id="blow_a_pos" type="number" step="any"></div>
-                <div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_a_delay" type="number" step="any"></div>
-            </div>
-            <div class="blow-box">
-                <div class="pt">СДУВ В</div>
-                <div class="field"><label>Время действия (с)</label><input id="blow_b_time" type="number" step="any"></div>
-                <div class="field"><label>Позиция старта (мм)</label><input id="blow_b_pos" type="number" step="any"></div>
-                <div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_b_delay" type="number" step="any"></div>
-            </div>
-            <div class="blow-box">
-                <div class="pt">СДУВ С</div>
-                <div class="field"><label>Время действия (с)</label><input id="blow_c_time" type="number" step="any"></div>
-                <div class="field"><label>Позиция старта (мм)</label><input id="blow_c_pos" type="number" step="any"></div>
-                <div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_c_delay" type="number" step="any"></div>
-            </div>
-            <div class="blow-box">
-                <div class="pt">СДУВ D</div>
-                <div class="field"><label>Время действия (с)</label><input id="blow_d_time" type="number" step="any"></div>
-                <div class="field"><label>Позиция старта (мм)</label><input id="blow_d_pos" type="number" step="any"></div>
-                <div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_d_delay" type="number" step="any"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ВКЛАДКА ГИДРАВЛИКА -->
-<div id="s-hydraulic" class="screen">
-    <div class="panel">
-        <div class="pt">💧 Гидравлический съём (Гидросъем)</div>
-        
-        <!-- Знак А -->
-        <div class="hyd-block">
-            <div class="hyd-title-row">
-                <div class="pt">Знак А</div>
-                <select id="hyd_a_mark">
-                    <option>Не использовать</option><option>Знак</option><option>Винт</option>
-                </select>
-            </div>
-            <div class="hyd-header">
-                <div><label>Режим 1</label><select id="hyd_a_mode1"><option>Ход</option><option>Время</option></select></div>
-                <div><label>Режим 2</label><select id="hyd_a_mode2"><option>Ход</option><option>Время</option></select></div>
-            </div>
-            <table class="hyd-table">
-                <thead><tr><th></th><th>Знак Ввод</th><th>Знак Вывод</th></tr></thead>
-                <tbody>
-                    <tr><td class="label-cell">Давление (Бар)</td><td><input id="hyd_a_press_in" type="number"></td><td><input id="hyd_a_press_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Скорость (%)</td><td><input id="hyd_a_speed_in" type="number"></td><td><input id="hyd_a_speed_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Время действ. (с)</td><td><input id="hyd_a_time_in" type="number"></td><td><input id="hyd_a_time_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Кол-во оборотов</td><td><input id="hyd_a_rev1_in" type="number"></td><td><input id="hyd_a_rev1_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Кол-во оборотов 2</td><td></td><td><input id="hyd_a_rev2_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Активация</td>
-                        <td><select id="hyd_a_act_in"><option>НЗак</option><option>Сред</option><option>КЗак</option></select></td>
-                        <td><select id="hyd_a_act_out"><option>НОткр</option><option>Сред</option><option>КОтк</option></select></td>
-                    </tr>
-                    <tr><td class="label-cell">Позиция актив.</td><td><input id="hyd_a_pos_in" type="number"></td><td><input id="hyd_a_pos_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Удержание</td><td></td><td><select id="hyd_a_hold"><option>Удер.</option><option>Отмена</option></select></td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Знак В -->
-        <div class="hyd-block">
-            <div class="hyd-title-row">
-                <div class="pt">Знак В</div>
-                <select id="hyd_b_mark">
-                    <option>Не использовать</option><option>Знак</option><option>Винт</option>
-                </select>
-            </div>
-            <div class="hyd-header">
-                <div><label>Режим 1</label><select id="hyd_b_mode1"><option>Ход</option><option>Время</option></select></div>
-                <div><label>Режим 2</label><select id="hyd_b_mode2"><option>Ход</option><option>Время</option></select></div>
-            </div>
-            <table class="hyd-table">
-                <thead><tr><th></th><th>Знак Ввод</th><th>Знак Вывод</th></tr></thead>
-                <tbody>
-                    <tr><td class="label-cell">Давление (Бар)</td><td><input id="hyd_b_press_in" type="number"></td><td><input id="hyd_b_press_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Скорость (%)</td><td><input id="hyd_b_speed_in" type="number"></td><td><input id="hyd_b_speed_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Время действ. (с)</td><td><input id="hyd_b_time_in" type="number"></td><td><input id="hyd_b_time_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Кол-во оборотов</td><td><input id="hyd_b_rev1_in" type="number"></td><td><input id="hyd_b_rev1_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Кол-во оборотов 2</td><td></td><td><input id="hyd_b_rev2_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Активация</td>
-                        <td><select id="hyd_b_act_in"><option>НЗак</option><option>Сред</option><option>КЗак</option></select></td>
-                        <td><select id="hyd_b_act_out"><option>НОткр</option><option>Сред</option><option>КОтк</option></select></td>
-                    </tr>
-                    <tr><td class="label-cell">Позиция актив.</td><td><input id="hyd_b_pos_in" type="number"></td><td><input id="hyd_b_pos_out" type="number"></td></tr>
-                    <tr><td class="label-cell">Удержание</td><td></td><td><select id="hyd_b_hold"><option>Удер.</option><option>Отмена</option></select></td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- ВКЛАДКА ТЕМПЕРАТУРА (ШНЕК + КОНТРОЛЛЕР) -->
-<div id="s-temp" class="screen">
-    <div class="panel">
-        <div class="pt">🌡️ Температуры по зонам (°C)</div>
-        <div class="screw-container">
-            <div class="nozzle"></div>
-            <div class="zone"><label>Зона 1</label><input id="t_z1" type="number" step="any"><div class="zone-name">Сопло</div></div>
-            <div class="zone"><label>Зона 2</label><input id="t_z2" type="number" step="any"><div class="zone-name">2</div></div>
-            <div class="zone"><label>Зона 3</label><input id="t_z3" type="number" step="any"><div class="zone-name">3</div></div>
-            <div class="zone"><label>Зона 4</label><input id="t_z4" type="number" step="any"><div class="zone-name">4</div></div>
-            <div class="zone"><label>Зона 5</label><input id="t_z5" type="number" step="any"><div class="zone-name">5</div></div>
-            <div class="zone"><label>Зона 6</label><input id="t_z6" type="number" step="any"><div class="zone-name">Загрузка</div></div>
-        </div>
-        <p class="note">Цилиндр нагрева. Слева — сопло, справа — зона загрузки.</p>
-    </div>
-
-    <div class="panel">
-        <div class="pt">🔥 Контроллер (Температуры формы)</div>
-        <div class="ctrl-container">
-            <div class="zone"><label>1</label><input id="ctrl_z1" type="number"></div>
-            <div class="zone"><label>2</label><input id="ctrl_z2" type="number"></div>
-            <div class="zone"><label>3</label><input id="ctrl_z3" type="number"></div>
-            <div class="zone"><label>4</label><input id="ctrl_z4" type="number"></div>
-            <div class="zone"><label>5</label><input id="ctrl_z5" type="number"></div>
-            <div class="zone"><label>6</label><input id="ctrl_z6" type="number"></div>
-        </div>
-    </div>
-</div>
-
-<div id="s-other" class="screen"><div class="panel"><div class="pt">Дополнительные параметры</div><div class="grid"><div class="field"><label>Системное давление</label><input id="systemPressure" type="number"></div></div><div class="field"><label>Другие параметры</label><textarea id="extraNote"></textarea></div></div></div>
-<div class="row"><button class="btn gray" onclick="goHome()">Отмена</button><button class="btn green" onclick="save()">Сохранить</button></div></section>
-
-<section id="view" class="hidden">
-    <div class="header-action">
-        <button class="btn-back-view" onclick="goHome()">←</button>
-        <h2 id="vTitle" style="margin:0; font-size:18px;">...</h2>
-        <button class="btn-top-edit" onclick="edit()">✎ РЕД.</button>
-    </div>
-    <p class="muted" id="vSub"></p>
-    <div id="vBody"></div>
-    <div class="row" style="margin-top:20px;">
-        <button class="btn gray" onclick="goHome()">Назад</button>
-        <button class="btn" onclick="edit()">РЕДАКТИРОВАТЬ</button>
-        <button class="btn red" onclick="del()">Удалить</button>
-    </div>
-</section>
-
-<section id="data" class="hidden"><h2>Резервная копия</h2><div class="panel"><p class="note">Экспортируй JSON и сохрани его в Google Диск и Mail Облако. Автоматическая синхронизация пока не подключена.</p><button class="btn green" style="width:100%" onclick="backup()">Скачать резервную копию</button><br><br><label>Восстановить из JSON</label><input type="file" id="file" accept=".json"><br><br><button class="btn" style="width:100%" onclick="restore()">Восстановить</button></div><div class="panel"><p class="note">Данные хранятся в браузере этого устройства. Очистка данных браузера может удалить базу — делай резервные копии. Карты являются справочником исходных режимов, не автоматическим разрешением на запуск станка.</p></div></section>
-</main><nav class="bottom"><button class="active" onclick="nav('home',this)"><span>⌂</span>Главная</button><button onclick="newCard()"><span>＋</span>Новая карта</button><button onclick="nav('data',this)"><span>▤</span>Данные</button></nav>
-
-<!-- ПОДКЛЮЧАЕМ FIREBASE ЧЕРЕЗ ТЕГИ SCRIPT (БЕЗ БЛОКИРОВОК) -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyCJm6jPRCfLp7npy5uCRZo3Cq0v_X-M1e4",
-  authDomain: "technobase-a6671.firebaseapp.com",
-  projectId: "technobase-a6671",
-  storageBucket: "technobase-a6671.firebasestorage.app",
-  messagingSenderId: "817410176779",
-  appId: "1:817410176779:web:1c300a053c94301937140e"
-};
-
-firebase.initializeApp(firebaseConfig);
-const dbFire = firebase.firestore();
-
-const ms=[[1,"SOUD","SE500"],[2,"SOUD","380"],[3,"SOUD","400"],[4,"SOUD","400"],[5,"SOUD","400"],[6,"HAITIAN","3900"],[7,"HAITIAN","3900"],[8,"SOUD","280"],[9,"HAITIAN","3300"],[10,"HAITIAN","3300"],[11,"HAITIAN","3300"],[12,"HAIXING","128"],[13,"SOUD","330"],[14,"SOUD","160"],[15,"HAITIAN","3900"],[16,"HAITIAN","3900"]];
-let db=[], idNow=null;
-const $=id=>document.getElementById(id),safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),mn=id=>{let m=ms.find(x=>x[0]==id);return m?`ТПА №${id} · ${m[1]} ${m[2]}`:"—"};
-
-// Слушаем облако в реальном времени
-dbFire.collection("cards").onSnapshot((snapshot) => {
-    db = [];
-    snapshot.forEach((doc) => {
-        db.push({ id: doc.id, ...doc.data() });
-    });
-    $("saveStatus").textContent="● Облако";
-    render();
-});
-
-function options(){let o=ms.map(m=>`<option value="${m[0]}">${mn(m[0])}</option>`).join("");$("f_machine").innerHTML=o;$("filterMachine").innerHTML='<option value="">Все станки</option>'+o;$("machines").innerHTML=ms.map(m=>`<button class="machine" onclick="filter(${m[0]})"><b>ТПА №${m[0]}</b><small>${m[1]} · ${m[2]}</small></button>`).join("")}
-function render(){let q=$("query").value.toLowerCase(),m=$("filterMachine").value,s=$("filterStatus").value;$("count").textContent=db.length;let a=db.filter(c=>(!m||c.machine==m)&&(!s||c.status==s)&&(!q||[c.mold,c.product,c.material,c.color,c.dye].join(" ").toLowerCase().includes(q)));$("cards").innerHTML=a.length?a.map(c=>`<div class="card" onclick="openCard('${c.id}')"><div style="display:flex;justify-content:space-between;gap:8px"><b>${safe(c.mold)}</b><span class="badge ${c.status==='Утверждена'?'approved':c.status==='Проверена'?'checked':c.status==='Архивная'?'archived':''}">${safe(c.status)}</span></div><p class="muted">${mn(c.machine)} · ${safe(c.product)} · ${safe(c.material)} · ${safe(c.color)}</p></div>`).join(""):'<div class="empty">Карты не найдены</div>'}
-function filter(n){$("filterMachine").value=n;render();$("cards").scrollIntoView({behavior:"smooth"})}
-function nav(n,b){["home","editor","view","data"].forEach(x=>$(x).classList.add("hidden"));$(n).classList.remove("hidden");document.querySelectorAll(".bottom button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");if(n==="home")render(); window.scrollTo(0,0);}
-function goHome(){nav("home",document.querySelector(".bottom button"))}
-function tab(n,b){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));$("s-"+n).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active"); window.scrollTo(0,0);}
-
-function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null) {
-    let table = document.getElementById(containerId);
-    if(!table) return;
-    let html = '<thead><tr><th></th>';
-    if (isReverse) { for(let i=cols; i>=1; i--) { let colName = `Ст${i}`; html += `<th>${colName}</th>`; } } 
-    else { for(let i=1; i<=cols; i++) { let colName = `Ст${i}`; html += `<th>${colName}</th>`; } }
-    html += '</tr></thead><tbody>';
-    params.forEach(p => {
-        html += `<tr><td class="label-cell"><span class="param-icon">${p.icon}</span>${p.name}</td>`;
-        if (isReverse) { for(let i=cols; i>=1; i--) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } } 
-        else { for(let i=1; i<=cols; i++) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
-        html += '</tr>';
-    });
-    html += '</tbody>';
-    table.innerHTML = html;
-}
-
-function build(){
-    buildMatrix('matrix_clamp', 'cl', 5, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], false); 
-    buildMatrix('matrix_open', 'op', 5, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], true);
-    buildMatrix('matrix_inject', 'inj', 3, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'}], true);
-    buildMatrix('matrix_hold', 'hold', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'}], true);
-    buildMatrix('matrix_plastic', 'pl', 5, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], false); 
-    buildMatrix('matrix_eject_fwd', 'ejf', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], false);
-    buildMatrix('matrix_eject_back', 'ejb', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], true); 
-}
-
-function inputs(){return [...document.querySelectorAll("#editor input,#editor select,#editor textarea")]}
-function clearForm(){inputs().forEach(x=>x.value="");$("f_machine").value="1";$("f_status").value="Черновик";$("decomp_mode").value="После загрузки";document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.querySelector(".tab").classList.add("active");$("s-general").classList.add("active"); window.scrollTo(0,0);}
-function newCard(){idNow=null;clearForm();$("editTitle").textContent="Новая карта";nav("editor")}
-
-async function save(){
-    if(!$("f_mold").value.trim()){alert("Укажи пресс-форму");return}
-    let old=db.find(x=>x.id===idNow),params={};
-    inputs().forEach(x=>{if(!x.id.startsWith("f_"))params[x.id]=x.value});
-    
-    let c={machine:$("f_machine").value,mold:$("f_mold").value.trim(),product:$("f_product").value,material:$("f_material").value,color:$("f_color").value,dye:$("f_dye").value,weight:$("f_weight").value,cycle:$("f_cycle").value,doser_pct:$("f_doser_pct").value,doser_num:$("f_doser_num").value,status:$("f_status").value,note:$("f_note").value,params,updated:new Date().toISOString(),history:old?[...(old.history||[]),{date:old.updated,status:old.status,snapshot:{...old,history:[]}}]:[]};
-    
-    let cardId = idNow || String(Date.now());
-    
-    try {
-        await dbFire.collection("cards").doc(cardId).set(c);
-        idNow = cardId;
-        alert('Карта сохранена в облако!');
-        openCard(cardId);
-    } catch(e) {
-        console.error(e);
-        alert("Ошибка сохранения! Проверьте правила Firebase.");
-    }
-}
-
-function openCard(id){
-    let c=db.find(x=>x.id===id);
-    if(!c)return;
-    idNow=id;
-    $("saveStatus").textContent="● Облако";
-    $("vTitle").textContent=c.mold;
-    $("vSub").textContent=mn(c.machine)+" · "+(c.product||"Изделие не указано");
-    
-    let h='<div class="panel"><div class="pt">Паспорт · '+safe(c.status)+'</div>';
-    for(let [k,v] of Object.entries({Изделие:c.product,Материал:c.material,Цвет:c.color,"Марка красителя":c.dye,"Вес, г":c.weight,"Цикл, с":c.cycle,"Дозатор, %":c.doser_pct,"Номер дозатора":c.doser_num,Комментарий:c.note})) h+=`<div class="info"><span>${k}</span><b>${safe(v||"—")}</b></div>`;
-    h+='</div><div class="panel"><div class="pt">Параметры</div>';
-    
-    // Температуры
-    h+='<div class="pt">🌡️ Температуры (шнек)</div><div class="screw-container" style="margin-bottom:5px;"><div class="nozzle"></div>';
-    for(let i=1; i<=6; i++) {
-        let name = (i===1) ? "Сопло" : (i===6) ? "Загрузка" : i;
-        h+=`<div class="zone"><label>Зона ${i}</label><input type="number" disabled value="${safe(c.params['t_z'+i]||'')}"><div class="zone-name">${name}</div></div>`;
-    }
-    h+='</div>';
-
-    // Контроллер
-    h+='<div class="pt" style="margin-top:20px">🔥 Контроллер (Температуры формы)</div><div class="ctrl-container" style="margin-bottom:5px;">';
-    for(let i=1; i<=6; i++) {
-        h+=`<div class="zone"><label>${i}</label><input type="number" disabled value="${safe(c.params['ctrl_z'+i]||'')}"></div>`;
-    }
-    h+='</div>';
-
-    // Смыкание
-    h+='<div class="dir close"><b>⇢</b><span>ЗАКРЫТИЕ<small>Ход: '+(c.params.openStroke||'—')+' мм</small></span></div><table class="matrix" id="v_matrix_clamp"></table>';
-    h+='<div class="dir open"><b>⇠</b><span>РАСКРЫТИЕ</span></div><table class="matrix" id="v_matrix_open"></table>';
-    
-    // Впрыск
-    h+='<div class="pt" style="margin-top:20px">💉 Впрыск</div><table class="matrix" id="v_matrix_inject"></table>';
-    h+='<div class="grid" style="margin-top:5px;"><div class="info"><span>Позиция 1</span><b>${safe(c.params.inj_pos1||'—')} мм</b></div><div class="info"><span>Позиция 2</span><b>${safe(c.params.inj_pos2||'—')} мм</b></div></div>';
-    h+=`<div class="info"><span>Время впрыска</span><b>${safe(c.params.inj_time||'—')} с</b></div>`;
-    
-    // Выдержка
-    h+='<div class="pt" style="margin-top:20px">⏳ Выдержка</div><table class="matrix" id="v_matrix_hold"></table>';
-    h+='<div class="grid" style="margin-top:5px;"><div class="info"><span>Время выд. 1</span><b>${safe(c.params.hold_time1||'—')} с</b></div><div class="info"><span>Время выд. 2</span><b>${safe(c.params.hold_time2||'—')} с</b></div></div>';
-
-    // Загрузка
-    h+='<div class="pt" style="margin-top:20px">⚙️ Набор дозы</div><table class="matrix" id="v_matrix_plastic"></table>';
-    h+='<div class="pt" style="margin-top:20px">💨 Декомпрессия</div>';
-    h+=`<div class="info"><span>Режим</span><b>${safe(c.params.decomp_mode||'—')}</b></div><div class="info"><span>Давление</span><b>${safe(c.params.decomp_press||'—')} Бар</b></div><div class="info"><span>Скорость</span><b>${safe(c.params.decomp_speed||'—')} %</b></div><div class="info"><span>Позиция</span><b>${safe(c.params.decomp_dist||'—')} мм</b></div>`;
-    h+='<div class="pt" style="margin-top:20px">Вторая загрузка</div><div class="grid" style="margin-top:5px;"><div class="info"><span>Позиция</span><b>${safe(c.params.load2_pos||'—')} мм</b></div><div class="info"><span>Время</span><b>${safe(c.params.load2_time||'—')} с</b></div></div>';
-    h+='<div class="pt" style="margin-top:20px">❄️ Охлаждение</div><div class="grid" style="margin-top:5px;"><div class="info"><span>Задержка</span><b>${safe(c.params.cool_delay||'—')} с</b></div><div class="info"><span>Время</span><b>${safe(c.params.coolTime||'—')} с</b></div></div>';
-
-    // Толкатели
-    h+='<div class="pt" style="margin-top:20px">⇢ Выталкивание Вперед</div><table class="matrix" id="v_matrix_eject_fwd"></table>';
-    h+=`<div class="info"><span>Время задержки</span><b>${safe(c.params.ej_fwd_delay||'—')} с</b></div>`;
-    h+='<div class="pt" style="margin-top:20px">⇠ Выталкивание Назад</div><table class="matrix" id="v_matrix_eject_back"></table>';
-    h+=`<div class="info"><span>Время задержки</span><b>${safe(c.params.ej_back_delay||'—')} с</b></div>`;
-    h+='<div class="pt" style="margin-top:20px">💨 Сдув (Пневматика)</div><div class="blow-grid">';
-    ['a','b','c','d'].forEach(letter => {
-        h+=`<div class="blow-box"><div class="pt">СДУВ ${letter.toUpperCase()}</div><div class="info" style="padding:2px 0;"><span>Время</span><b>${safe(c.params['blow_'+letter+'_time']||'—')}</b></div><div class="info" style="padding:2px 0;"><span>Позиция</span><b>${safe(c.params['blow_'+letter+'_pos']||'—')}</b></div><div class="info" style="padding:2px 0; border:none;"><span>Задержка</span><b>${safe(c.params['blow_'+letter+'_delay']||'—')}</b></div></div>`;
-    });
-    h+='</div>';
-
-    // Гидравлика
-    h+='<div class="pt" style="margin-top:20px">💧 Гидравлика (Знак А)</div>';
-    h+=`<div class="info"><span>Знак</span><b>${safe(c.params.hyd_a_mark||'—')}</b></div><div class="info"><span>Режим 1/2</span><b>${safe(c.params.hyd_a_mode1||'—')} / ${safe(c.params.hyd_a_mode2||'—')}</b></div><div class="info"><span>Давление Ввод/Вывод</span><b>${safe(c.params.hyd_a_press_in||'—')} / ${safe(c.params.hyd_a_press_out||'—')}</b></div><div class="info"><span>Скорость Ввод/Вывод</span><b>${safe(c.params.hyd_a_speed_in||'—')} / ${safe(c.params.hyd_a_speed_out||'—')}</b></div><div class="info"><span>Время Ввод/Вывод</span><b>${safe(c.params.hyd_a_time_in||'—')} / ${safe(c.params.hyd_a_time_out||'—')}</b></div>`;
-    h+='<div class="pt" style="margin-top:20px">💧 Гидравлика (Знак В)</div>';
-    h+=`<div class="info"><span>Знак</span><b>${safe(c.params.hyd_b_mark||'—')}</b></div><div class="info"><span>Режим 1/2</span><b>${safe(c.params.hyd_b_mode1||'—')} / ${safe(c.params.hyd_b_mode2||'—')}</b></div><div class="info"><span>Давление Ввод/Вывод</span><b>${safe(c.params.hyd_b_press_in||'—')} / ${safe(c.params.hyd_b_press_out||'—')}</b></div><div class="info"><span>Скорость Ввод/Вывод</span><b>${safe(c.params.hyd_b_speed_in||'—')} / ${safe(c.params.hyd_b_speed_out||'—')}</b></div><div class="info"><span>Время Ввод/Вывод</span><b>${safe(c.params.hyd_b_time_in||'—')} / ${safe(c.params.hyd_b_time_out||'—')}</b></div>`;
-
-    h+='<div style="margin-top:20px"><div class="pt">Прочие параметры</div>';
-    let otherKeys = ['systemPressure'];
-    for(let [k,v] of Object.entries(c.params||{})) { if(otherKeys.includes(k) && v !== "") h+=`<div class="info"><span>${safe(label(k))}</span><b>${safe(v)}</b></div>`; }
-    h+='</div></div>';
-
-    // История
-    h+='<div class="panel"><div class="pt">История версий</div>';
-    let hist=c.history||[];
-    h+=hist.length ? hist.slice().reverse().map((x,i)=>`<div class="history"><div><b>Версия ${hist.length-i}</b><p class="muted">${new Date(x.date).toLocaleString("ru-RU")} · ${safe(x.status)}</p></div><div style="display:flex; gap:5px; flex-direction:column;"><button class="btn gray" style="min-height:30px; padding:5px 10px; font-size:12px;" onclick="restore(${hist.length-1-i})">Восст.</button><button class="btn red" style="min-height:30px; padding:5px 10px; font-size:12px;" onclick="delHistory(${hist.length-1-i})">Удалить</button></div></div>`).join("") : '<p class="note">История появится после первого изменения карты.</p>';
-    h+='</div>';
-
-    $("vBody").innerHTML=h;
-    
-    // Рендерим матрицы
-    buildMatrix('v_matrix_clamp', 'cl', 5, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], false, true, c);
-    buildMatrix('v_matrix_open', 'op', 5, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], true, true, c);
-    buildMatrix('v_matrix_inject', 'inj', 3, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'}], true, true, c);
-    buildMatrix('v_matrix_hold', 'hold', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'}], true, true, c);
-    buildMatrix('v_matrix_plastic', 'pl', 5, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], false, true, c);
-    buildMatrix('v_matrix_eject_fwd', 'ejf', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], false, true, c);
-    buildMatrix('v_matrix_eject_back', 'ejb', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], true, true, c);
-
-    // Заполняем поля ввода (включая селекты)
-    Object.entries(c.params||{}).forEach(([k,v])=>{ if($(k)) $(k).value = v; });
-    if($("decomp_mode")) $("decomp_mode").value = c.params.decomp_mode || "После загрузки";
-
-    nav("view");
-}
-
-function label(k){let d={openStroke:"Ход раскрытия, мм",hold_time1:"Время выдержки 1, с",hold_time2:"Время выдержки 2, с",t_nozzle:"Температура сопла",systemPressure:"Системное давление",cool_delay:"Задержка охлаждения, с",coolTime:"Время охлаждения, с",decomp_mode:"Режим декомпрессии",decomp_press:"Давление декомпрессии",decomp_speed:"Скорость декомпрессии",decomp_dist:"Позиция декомпрессии, мм",load2_pos:"Позиция 2-й загрузки, мм",load2_time:"Время 2-й загрузки, с",ej_fwd_delay:"Задержка вперед, с",ej_back_delay:"Задержка назад, с"};return d[k]||k.replaceAll("_"," ")}
-
-function edit(){let c=db.find(x=>x.id===idNow);if(!c)return;clearForm();$("editTitle").textContent="Редактирование карты";let map={machine:"f_machine",mold:"f_mold",product:"f_product",material:"f_material",color:"f_color",dye:"f_dye",weight:"f_weight",cycle:"f_cycle",doser_pct:"f_doser_pct",doser_num:"f_doser_num",status:"f_status",note:"f_note"};Object.entries(map).forEach(([k,v])=>$(v).value=c[k]??"");Object.entries(c.params||{}).forEach(([k,v])=>{if($(k))$(k).value=v});if($("decomp_mode")) $("decomp_mode").value = c.params.decomp_mode || "После загрузки";nav("editor")}
-
-async function delHistory(i){ if(!confirm("Удалить эту версию из истории?")) return; let c = db.find(x=>x.id===idNow); if(c && c.history) { c.history.splice(i, 1); await dbFire.collection("cards").doc(idNow).set(c); openCard(idNow); } }
-async function restore(i){let c=db.find(x=>x.id===idNow),v=c.history[i];if(!v||!confirm("Восстановить эту версию?"))return;let restored={...v.snapshot,id:c.id,history:[...c.history,{date:c.updated,status:c.status,snapshot:{...c,history:[]}}],updated:new Date().toISOString()};await dbFire.collection("cards").doc(idNow).set(restored);openCard(idNow)}
-async function del(){if(confirm("Удалить карту?")){await dbFire.collection("cards").doc(idNow).delete();goHome()}}
-
-function backup(){let a=document.createElement("a"),u=URL.createObjectURL(new Blob([JSON.stringify({version:3,cards:db},null,2)],{type:"application/json"}));a.href=u;a.download="techno-base-backup.json";a.click();URL.revokeObjectURL(u)}
-function restoreFile(){let f=$("file").files[0];if(!f){alert("Выбери JSON-файл");return}let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.cards))throw 0;if(confirm("Текущая база будет заменена. Продолжить?")){ db=x.cards; goHome(); alert("База восстановлена локально. Нажмите 'Сохранить' на карте чтобы обновить в облаке.")}}catch(e){alert("Ошибка чтения резервной копии")}};r.readAsText(f)}
-function restore(){restoreFile()}
-
-// Инициализация
-options();build();render();
-</script></body></html>
+            db.collection("test").add({
+                text: val,
+                date: new Date()
+            })
+            .then(() => {
+                document.getElementById("log").innerText = "Статус: УСПЕШНО СОХРАНЕНО В ОБЛАКО!";
+                document.getElementById("testInput").value = "";
+            })
+            .catch((error) => {
+                document.getElementById("log").innerText = "Статус: ОШИБКА! " + error.message;
+                document.getElementById("log").style.color = "red";
+            });
+        }
+    </script>
+</body>
+</html>
