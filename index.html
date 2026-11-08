@@ -87,6 +87,20 @@
 .custom-option.selected { background: #244a78; color: white; font-weight: bold; }
 </style></head>
     <body>
+    <!-- ЭКРАН ВХОДА -->
+<div id="loginScreen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px;">
+    <h1 style="color:var(--a); margin-bottom:20px; text-align:center;">ТПА БАЗА</h1>
+    <div class="panel" style="width:100%; max-width:400px;">
+        <div class="pt">Вход в систему</div>
+        <div class="field">
+            <label>Введите пароль доступа</label>
+            <input type="password" id="loginPassword" placeholder="••••••" onkeypress="if(event.key === 'Enter') login()">
+        </div>
+        <button class="btn green" style="width:100%; margin-bottom:10px;" onclick="login()">ВОЙТИ КАК РЕДАКТОР</button>
+        <button class="btn gray" style="width:100%;" onclick="login('view')">ВОЙТИ КАК ЗРИТЕЛЬ</button>
+        <p class="muted" id="loginError" style="color:var(--r); text-align:center; margin-top:10px;"></p>
+    </div>
+</div>
       <header class="head">
         <div>
           <div class="logo">TECHNO <i>BASE</i>
@@ -149,6 +163,7 @@
           </div>
         </div>
         <button class="btn green" style="width:100%" onclick="newCard()">＋ Создать карту</button>
+        <button class="btn gray" style="width:100%; margin-top:10px;" onclick="logout()">Выйти из системы</button>
       </section>
       <section id="editor" class="hidden">
         <h2 id="editTitle">Новая карта</h2>
@@ -244,21 +259,18 @@
         <div id="s-clamp" class="screen">
           <div class="panel">
             <div class="field">
-            <label>Ход раскрытия, мм</label>
-            
-            <input id="openStroke" type="number" step="any">
-            <div class="dir close">
-              <b>⇢</b>
-              <span>ЗАКРЫТИЕ ФОРМЫ<small>Подвижная плита движется к неподвижной</small>
-            </span>
+              <label>Ход раскрытия, мм</label>
+              <input id="openStroke" type="number" step="any">
+              <div class="dir close">
+                <b>⇢</b>
+                <span>ЗАКРЫТИЕ ФОРМЫ<small>Подвижная плита движется к неподвижной</small>
+              </span>
+            </div>
+            <div class="field">
+            </div>
+            <table class="matrix" id="matrix_clamp">
+            </table>
           </div>
-          <div class="field">
-            
-          </div>
-          <table class="matrix" id="matrix_clamp">
-          </table>
-        </div>
-
           <div class="dir open">
             <b>⇠</b>
             <span>РАСКРЫТИЕ ФОРМЫ<small>Подвижная плита отходит от неподвижной</small>
@@ -1025,6 +1037,7 @@ h+='<div class="panel">';
  h+='</div>'
     // Смыкание
     h+='<div class="panel">';
+    h+='<div class="pt">⚙️ Смыкание</div>'
     h+='<div class="dir close"><b>⇢</b><span>ЗАКРЫТИЕ</span></div><table class="matrix" id="v_matrix_clamp"></table>';
        h+='<div class="dir open"><b>⇠</b><span>ОТКРЫТИЕ</span></div><table class="matrix" id="v_matrix_open"></table>';
    h+='</div>' 
@@ -1113,6 +1126,57 @@ function restoreFile(){let f=$("file").files[0];if(!f){alert("Выбери JSON-
 function restore(){restoreFile()}
 
 // Инициализация
+// --- СИСТЕМА ДОСТУПА ---
+let userRole = 'viewer'; 
+
+function login(role) {
+    let pass = document.getElementById('loginPassword').value;
+    let err = document.getElementById('loginError');
+    if(err) err.innerText = "";
+    
+    if (role === 'view') {
+        userRole = 'viewer';
+        document.getElementById('loginScreen').style.display = 'none';
+        applyRole();
+        return;
+    }
+
+    if (pass === "master") { // Ваш пароль
+        userRole = 'editor';
+        document.getElementById('loginScreen').style.display = 'none';
+        applyRole();
+    } else {
+        if(err) err.innerText = "Неверный пароль!";
+    }
+}
+
+function applyRole() {
+    localStorage.setItem('techno_role', userRole);
+    let editBtns = document.querySelectorAll('.btn-top-edit, button[onclick="edit()"], button[onclick="del()"], button[onclick="newCard()"]');
+    
+    editBtns.forEach(btn => {
+        if (userRole === 'viewer') {
+            btn.style.display = 'none';
+        } else {
+            btn.style.display = '';
+        }
+    });
+}
+
+function logout() {
+    localStorage.removeItem('techno_role');
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('loginPassword').value = '';
+}
+
+if (localStorage.getItem('techno_role')) {
+    userRole = localStorage.getItem('techno_role');
+    if(userRole === 'editor' || userRole === 'viewer') {
+        let loginScr = document.getElementById('loginScreen');
+        if(loginScr) loginScr.style.display = 'none';
+        applyRole();
+    }
+}
 options();build();render();
 </script>
                             </body>
