@@ -586,14 +586,13 @@ function render(){
   $("cards").innerHTML=a.length?a.map(c=>`<div class="card" onclick="openCard('${c.id}')"><div style="display:flex;justify-content:space-between;gap:8px"><b>${safe(c.mold)}</b><span class="badge ${c.status==='Утверждена'?'approved':c.status==='Проверена'?'checked':c.status==='Архивная'?'archived':''}">${safe(c.status)}</span></div><p class="muted">${mn(c.machine)} · ${safe(c.product)} · ${safe(c.material)}${c.material2?' + '+safe(c.material2):''} · ${safe(c.color)}</p></div>`).join(""):'<div class="empty">Карты не найдены</div>';
 }
 function filter(n){selectMachine(n,mn(n));$("cards").scrollIntoView({behavior:"smooth"});}
-function nav(n,b){
-  ["home","editor","view","data","service","repairs"].forEach(x=>$(x).classList.add("hidden"));
+function nav(n, b){
+  ["home","editor","view","data","repairs","repairEditor"].forEach(x=>$(x).classList.add("hidden"));
   $(n).classList.remove("hidden");
   document.querySelectorAll(".bottom button").forEach(x=>x.classList.remove("active"));
-  if(b)b.classList.add("active");
-  if(n==="home")render();
-  if(n==="repairs")renderRepairs();
-  if(n==="profiles")renderProfiles();
+  if(b) b.classList.add("active");
+  if(n==="home") render();
+  if(n==="repairs") renderRepairs();
   window.scrollTo(0,0);
 }
 function goHome(){nav("home",document.querySelector(".bottom button"));}
@@ -748,8 +747,9 @@ function backup(){
 function restore(){restoreFile();}
 
 /* ===== РЕМОНТ ===== */
-function openRepairs(){nav("repairs");}
-function newRepair(){
+function openRepairs(btn){
+  nav("repairs", btn);
+}function newRepair(){
   // Наладчик (viewer) тоже может создавать заявки
   repairIdNow = null;
   $("repairEditorTitle").textContent = "Новая запись";
@@ -930,10 +930,12 @@ function login(role){
     userRole = 'viewer';
     hideLogin(); applyRole(); return;
   }
-  if(role === 'mechanic'){
+    if(role === 'mechanic'){
     // Пароль слесарю не нужен — права те же, что были
     userRole = 'mechanic';
-    hideLogin(); applyRole(); return;
+    hideLogin(); applyRole();
+    nav("repairs"); // сразу в журнал ремонта
+    return;
   }
   if(role === 'editor'){
     if(pass === "master"){ userRole='editor'; hideLogin(); applyRole(); }
@@ -983,6 +985,9 @@ function logout(){
   let savedRole = localStorage.getItem('techno_role');
   if(savedRole==='editor'||savedRole==='mechanic'||savedRole==='viewer'){
     userRole=savedRole; hideLogin(); applyRole();
+    if(savedRole==='mechanic'){
+      nav("repairs");
+    }
   }
 })();
 
