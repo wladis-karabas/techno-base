@@ -103,21 +103,13 @@
         </div>
       </div>
       <header class="head">
-  <div>
-    <div class="logo">TECHNO <i>BASE</i></div>
-    <small class="muted">ТЕХНОЛОГИЧЕСКИЕ КАРТЫ ТПА</small>
-  </div>
-  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-    <small id="saveStatus">● Облако</small>
-    <select id="demoRole" onchange="setDemoRole(this.value)"
-            style="min-height:28px;padding:4px;font-size:11px;width:130px;background:var(--p2);border:1px solid var(--b);border-radius:6px;color:var(--t);">
-      <option value="viewer">Зритель</option>
-      <option value="operator">Оператор</option>
-      <option value="mechanic">Слесарь</option>
-      <option value="admin">Админ</option>
-    </select>
-  </div>
-</header>
+        <div>
+          <div class="logo">TECHNO <i>BASE</i>
+        </div>
+        <small class="muted">ТЕХНОЛОГИЧЕСКИЕ КАРТЫ ТПА</small>
+      </div>
+      <small id="saveStatus">● Облако</small>
+    </header>
     <main>
       <section id="home">
         <h2>Рабочая панель</h2>
@@ -854,90 +846,15 @@
                               <p class="note">Данные хранятся в браузере этого устройства. Очистка данных браузера может удалить базу — делай резервные копии. Карты являются справочником исходных режимов, не автоматическим разрешением на запуск станка.</p>
                             </div>
                           </section>
-                          <section id="faults" class="hidden">
-  <div class="header-action">
-    <h2 style="margin:0;font-size:18px;">Неисправности оборудования</h2>
-    <span class="muted" id="faultUserRole" style="font-size:11px;"></span>
-  </div>
-  <p class="muted">Журнал поломок и ремонтов. Объект — станок или пресс-форма.</p>
-
-  <div class="grid">
-    <div class="panel"><b id="cntOpen">0</b><div class="muted">Не устранено</div></div>
-    <div class="panel"><b id="cntWork">0</b><div class="muted">В работе</div></div>
-  </div>
-
-  <div class="panel">
-    <div class="pt">🔎 Фильтр</div>
-    <div class="field">
-      <label>Тип объекта</label>
-      <select id="faultTargetTypeFilter" onchange="renderFaults()">
-        <option value="">Все</option>
-        <option value="machine">Станок</option>
-        <option value="mold">Пресс-форма</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Статус</label>
-      <select id="faultStatusFilter" onchange="renderFaults()">
-        <option value="">Все</option>
-        <option value="open">Не устранено</option>
-        <option value="work">В работе</option>
-        <option value="done">Исправлено</option>
-      </select>
-    </div>
-  </div>
-
-  <button class="btn green" style="width:100%" data-role="operator" onclick="openFaultForm()">＋ Новая неисправность</button>
-
-  <div id="faultFormPanel" class="panel hidden" style="margin-top:14px;">
-    <div class="pt">Новая неисправность</div>
-    <div class="field">
-      <label>Объект</label>
-      <select id="fltTargetType" onchange="toggleFaultTarget()">
-        <option value="machine">Станок (ТПА)</option>
-        <option value="mold">Пресс-форма</option>
-      </select>
-    </div>
-    <div class="field" id="fltMachineWrap">
-      <label>Станок</label>
-      <select id="fltMachine"></select>
-    </div>
-    <div class="field hidden" id="fltMoldWrap">
-      <label>Пресс-форма (номер или название)</label>
-      <input id="fltMold" placeholder="Например: ПФ-128-А">
-    </div>
-    <div class="field">
-      <label>Кто сообщил</label>
-      <input id="fltReporter" placeholder="Фамилия или имя">
-    </div>
-    <div class="field">
-      <label>Что неисправно</label>
-      <input id="fltTitle" placeholder="Например: не работает выталкиватель">
-    </div>
-    <div class="field">
-      <label>Описание</label>
-      <textarea id="fltDesc" placeholder="Что произошло и при каких условиях"></textarea>
-    </div>
-    <div class="row">
-      <button class="btn gray" onclick="closeFaultForm()">Отмена</button>
-      <button class="btn green" onclick="saveFault()">Сохранить</button>
-    </div>
-  </div>
-
-  <div id="faultList"></div>
-
-  <div class="panel">
-    <div class="pt">История</div>
-    <div id="faultHistoryList"></div>
-  </div>
-</section>
                         </main>
                         <nav class="bottom">
-  <button class="active" onclick="nav('home',this)"><span>⌂</span>Главная</button>
-  <button onclick="newCard()"><span>＋</span>Новая карта</button>
-  <button onclick="nav('faults',this)"><span>🛠</span>Ремонт</button>
-  <button onclick="nav('data',this)"><span>▤</span>Данные</button>
-</nav>
+                          <button class="active" onclick="nav('home',this)">
+                            <span>⌂</span>Главная</button>
+                            <button onclick="newCard()">
+                              <span>＋</span>Новая карта</button>
+                              <button onclick="nav('data',this)">
+                                <span>▤</span>Данные</button>
+                              </nav>
                               <!-- FIREBASE SDK -->
                               <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
                               <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -997,17 +914,7 @@ function selectMachine(value, text) {
     document.querySelectorAll('#machineSelectOptions .custom-option').forEach(el => {
         el.classList.toggle('selected', el.dataset.value === String(value));
     });
-// ================= DEMO ROLE (временно, до Firebase Auth) =================
-// Роль хранится в localStorage, чтобы пережить перезагрузку страницы.
-// После подключения Auth эта переменная будет заполняться из claim токена.
-let userRole = localStorage.getItem("demo_role") || "admin";
 
-function setDemoRole(r) {
-  userRole = r;
-  localStorage.setItem("demo_role", r); // запомнить выбор
-  applyRole();                          // скрыть/показать кнопки
-  renderFaults();                       // перерисовать журнал (кнопки статусов зависят от роли)
-}
     // Обновляем данные для поиска
     // Создаем скрытый input, который будет хранить значение, так как мы убрали select
     let hiddenInput = document.getElementById('hiddenMachineFilter');
@@ -1018,47 +925,7 @@ function setDemoRole(r) {
         document.querySelector('.custom-select-wrapper').appendChild(hiddenInput);
     }
     hiddenInput.value = value;
-    function applyRole() {
-  // 1. Кнопки техкарт — только админ
-  document.querySelectorAll(
-    '.btn-top-edit, button[onclick="edit()"], button[onclick="del()"], button[onclick="newCard()"]'
-  ).forEach(btn => {
-    btn.style.display = (userRole === "admin") ? "" : "none";
-  });
-
-  // 2. Кнопки создания заявки — оператор, слесарь, админ
-  document.querySelectorAll('[data-role="operator"]').forEach(btn => {
-    btn.style.display =
-      (userRole === "operator" || userRole === "mechanic" || userRole === "admin") ? "" : "none";
-  });
-
-  // 3. Кнопки слесаря (если появятся в HTML с data-role="mechanic")
-  document.querySelectorAll('[data-role="mechanic"]').forEach(btn => {
-    btn.style.display =
-      (userRole === "mechanic" || userRole === "admin") ? "" : "none";
-  });
-
-  // 4. Кнопки только для админа
-  document.querySelectorAll('[data-role="admin"]').forEach(btn => {
-    btn.style.display = (userRole === "admin") ? "" : "none";
-  });
-
-  // 5. Бейдж роли в шапке секции «Ремонт»
-  const el = document.getElementById("faultUserRole");
-  if (el) {
-    const label = {
-      viewer: "Зритель",
-      operator: "Оператор",
-      mechanic: "Слесарь",
-      admin: "Админ"
-    }[userRole] || userRole;
-    el.textContent = "Роль: " + label;
-  }
-
-  // 6. Демо-селект держим в актуальном состоянии
-  const sel = document.getElementById("demoRole");
-  if (sel && sel.value !== userRole) sel.value = userRole;
-}
+    
     render(); // Перерисовываем карты
 }
 
@@ -1074,7 +941,7 @@ function render(){
     let s=$("filterStatus").value;
    $("count").textContent=db.length;let a=db.filter(c=>(!m||c.machine==m)&&(!s||c.status==s)&&(!q||[c.mold,c.product,c.material,c.color,c.dye].join(" ").toLowerCase().includes(q)));$("cards").innerHTML=a.length?a.map(c=>`<div class="card" onclick="openCard('${c.id}')"><div style="display:flex;justify-content:space-between;gap:8px"><b>${safe(c.mold)}</b><span class="badge ${c.status==='Утверждена'?'approved':c.status==='Проверена'?'checked':c.status==='Архивная'?'archived':''}">${safe(c.status)}</span></div><p class="muted">${mn(c.machine)} · ${safe(c.product)} · ${safe(c.material)} · ${safe(c.color)}</p></div>`).join(""):'<div class="empty">Карты не найдены</div>'}
 function filter(n){selectMachine(n,mn(n));$("cards").scrollIntoView({behavior:"smooth"})}
-function nav(n,b){["home","editor","view","data","faults"].forEach(x=>$(x).classList.add("hidden"));$(n).classList.remove("hidden");document.querySelectorAll(".bottom button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");if(n==="home")render();if(n==="faults")renderFaults();window.scrollTo(0,0);}
+function nav(n,b){["home","editor","view","data"].forEach(x=>$(x).classList.add("hidden"));$(n).classList.remove("hidden");document.querySelectorAll(".bottom button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");if(n==="home")render(); window.scrollTo(0,0);}
 function goHome(){nav("home",document.querySelector(".bottom button"))}
 function tab(n,b){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));$("s-"+n).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active"); window.scrollTo(0,0);}
 function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null) {
@@ -1311,190 +1178,7 @@ if (localStorage.getItem('techno_role')) {
         applyRole();
     }
 }
-// ================= FAULTS =================
-let faults = [];
-const FAULT_NAMES = { open: 'Не устранено', work: 'В работе', done: 'Исправлено' };
-
-// Подписка на коллекцию
-dbFire.collection("faults").onSnapshot(snap => {
-  faults = [];
-  snap.forEach(d => faults.push({ id: d.id, ...d.data() }));
-  renderFaults();
-}, err => {
-  console.error("faults:", err);
-  const el = document.getElementById("faultList");
-  if (el) el.innerHTML = '<div class="empty">Нет доступа к журналу ремонтов. Проверьте права.</div>';
-});
-
-function toggleFaultTarget() {
-  const t = document.getElementById("fltTargetType").value;
-  document.getElementById("fltMachineWrap").classList.toggle("hidden", t !== "machine");
-  document.getElementById("fltMoldWrap").classList.toggle("hidden", t !== "mold");
-}
-
-function openFaultForm() {
-  document.getElementById("fltMachine").innerHTML = ms.map(m =>
-    `<option value="${m[0]}">ТПА №${m[0]} · ${m[1]} ${m[2]}</option>`
-  ).join("");
-  document.getElementById("faultFormPanel").classList.remove("hidden");
-  document.getElementById("faultFormPanel").scrollIntoView({ behavior: "smooth" });
-}
-
-function closeFaultForm() {
-  document.getElementById("faultFormPanel").classList.add("hidden");
-  ["fltTitle", "fltDesc", "fltMold", "fltReporter"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = "";
-  });
-}
-
-async function saveFault() {
-  const type = document.getElementById("fltTargetType").value;
-  const title = document.getElementById("fltTitle").value.trim();
-  const desc = document.getElementById("fltDesc").value.trim();
-  const reporter = document.getElementById("fltReporter").value.trim();
-  if (!title) { alert("Укажите, что неисправно"); return; }
-
-  let targetId, targetLabel;
-  if (type === "machine") {
-    targetId = document.getElementById("fltMachine").value;
-    targetLabel = mn(targetId);
-  } else {
-    targetId = document.getElementById("fltMold").value.trim();
-    if (!targetId) { alert("Укажите номер или название пресс-формы"); return; }
-    targetLabel = "ПФ: " + targetId;
-  }
-
-  const uid = (firebase.auth && firebase.auth().currentUser)
-    ? firebase.auth().currentUser.uid
-    : "anonymous";
-  const now = new Date().toISOString();
-
-  try {
-    await dbFire.collection("faults").add({
-      targetType: type,
-      targetId,
-      targetLabel,
-      title,
-      description: desc,
-      status: "open",
-      reporter,
-      createdAt: now,
-      createdBy: uid,
-      mechanic: "",
-      repair: "",
-      fixedAt: null,
-      history: [{ at: now, by: uid, text: "Заявка зарегистрирована" }]
-    });
-    closeFaultForm();
-  } catch (e) {
-    console.error(e);
-    alert("Ошибка сохранения. Проверьте права доступа в Firebase.");
-  }
-}
-
-function renderFaults() {
-  const listEl = document.getElementById("faultList");
-  const histEl = document.getElementById("faultHistoryList");
-  if (!listEl) return;
-
-  const typeF = document.getElementById("faultTargetTypeFilter").value;
-  const statF = document.getElementById("faultStatusFilter").value;
-
-  const view = faults
-    .filter(f => (!typeF || f.targetType === typeF) && (!statF || f.status === statF))
-    .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
-
-  const cnt = s => faults.filter(f => f.status === s).length;
-  document.getElementById("cntOpen").textContent = cnt("open");
-  document.getElementById("cntWork").textContent = cnt("work");
-
-  const canEdit = userRole === "mechanic" || userRole === "admin";
-  const roleEl = document.getElementById("faultUserRole");
-  if (roleEl) roleEl.textContent = "Роль: " + (userRole || "зритель");
-
-  listEl.innerHTML = view.length ? view.map(f => {
-    const dt = new Date(f.createdAt).toLocaleString("ru-RU");
-    return `<div class="card">
-      <div style="display:flex;justify-content:space-between;gap:8px;">
-        <b>${safe(f.targetLabel)} — ${safe(f.title)}</b>
-        <span class="badge ${f.status==='done'?'approved':f.status==='work'?'checked':''}">${FAULT_NAMES[f.status]}</span>
-      </div>
-      <p class="muted">${dt} · Сообщил: ${safe(f.reporter || "—")}</p>
-      <p class="muted" style="white-space:pre-wrap;">${safe(f.description || "")}</p>
-      ${f.repair ? `<p class="muted">Ремонт: ${safe(f.repair)} · ${safe(f.mechanic || "")} · ${new Date(f.fixedAt).toLocaleString("ru-RU")}</p>` : ""}
-      <div class="row">
-        ${canEdit && f.status === "open" ? `<button class="btn gray" onclick="setFaultStatus('${f.id}','work')">В работу</button>` : ""}
-        ${canEdit && f.status !== "done" ? `<button class="btn green" onclick="openRepairModal('${f.id}')">Исправлено</button>` : ""}
-        <button class="btn gray" onclick="toggleFaultHistory('${f.id}')">История</button>
-      </div>
-      <div id="fh_${f.id}" class="hidden" style="margin-top:8px;">
-        ${(f.history || []).map(h => `<div class="history" style="margin:4px 0;">${new Date(h.at).toLocaleString("ru-RU")} — ${safe(h.text)}</div>`).join("")}
-      </div>
-    </div>`;
-  }).join("") : '<div class="empty">Записей нет</div>';
-
-  // общая история
-  const hist = faults.flatMap(f => (f.history || []).map(h => ({ ...h, label: f.targetLabel, title: f.title })))
-    .sort((a, b) => b.at.localeCompare(a.at));
-  histEl.innerHTML = hist.length
-    ? hist.map(h => `<div class="history" style="margin:4px 0;"><b>${safe(h.label)} — ${safe(h.title)}</b><br>${new Date(h.at).toLocaleString("ru-RU")} — ${safe(h.text)}</div>`).join("")
-    : '<div class="muted">История пуста.</div>';
-}
-
-function toggleFaultHistory(id) {
-  const el = document.getElementById("fh_" + id);
-  if (el) el.classList.toggle("hidden");
-}
-
-async function setFaultStatus(id, status) {
-  const f = faults.find(x => x.id === id);
-  if (!f) return;
-  const uid = (firebase.auth && firebase.auth().currentUser) ? firebase.auth().currentUser.uid : "anonymous";
-  const now = new Date().toISOString();
-  try {
-    await dbFire.collection("faults").doc(id).update({
-      status,
-      history: [...(f.history || []), { at: now, by: uid, text: "Статус → " + FAULT_NAMES[status] }]
-    });
-  } catch (e) {
-    console.error(e);
-    alert("Нет прав на изменение статуса.");
-  }
-}
-
-async function openRepairModal(id) {
-  const who = prompt("Фамилия слесаря:");
-  if (who === null) return;
-  const what = prompt("Что сделано для устранения?");
-  if (!what || !what.trim()) { alert("Укажите выполненные работы"); return; }
-
-  const f = faults.find(x => x.id === id);
-  if (!f) return;
-  const uid = (firebase.auth && firebase.auth().currentUser) ? firebase.auth().currentUser.uid : "anonymous";
-  const now = new Date().toISOString();
-
-  try {
-    await dbFire.collection("faults").doc(id).update({
-      status: "done",
-      mechanic: who.trim(),
-      repair: what.trim(),
-      fixedAt: now,
-      history: [...(f.history || []), { at: now, by: uid, text: `Исправлено: ${what.trim()} (${who.trim()})` }]
-    });
-  } catch (e) {
-    console.error(e);
-    alert("Нет прав на закрытие заявки.");
-  }
-}
-options();
-build();
-render();
-
-// Демо-роль: применить сохранённое значение и синхронизировать селект
-const roleSel = document.getElementById("demoRole");
-if (roleSel) roleSel.value = userRole;
-applyRole();
+options();build();render();
 </script>
                             </body>
   </html>
