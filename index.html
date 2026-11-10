@@ -627,10 +627,17 @@ function fillQueryHints(){
 }
 function filter(n){selectMachine(n,mn(n));$("cards").scrollIntoView({behavior:"smooth"});}
 function nav(n, b){
-  ["home","editor","view","data","repairs","repairEditor"].forEach(x=>$(x).classList.add("hidden"));
-  $(n).classList.remove("hidden");
+  ["home","editor","view","data","repairs","repairEditor"].forEach(x=>{
+    let el = $(x);
+    if (el) el.classList.add("hidden");
+  });
+  
+  let target = $(n);
+  if (target) target.classList.remove("hidden");
+  
   document.querySelectorAll(".bottom button").forEach(x=>x.classList.remove("active"));
   if(b) b.classList.add("active");
+  
   if(n==="home") render();
   if(n==="repairs") renderRepairs();
   window.scrollTo(0,0);
