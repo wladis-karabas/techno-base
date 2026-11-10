@@ -135,7 +135,12 @@
     </button>
   </div>
 </header>
-        <div class="grid">
+        <main>
+  <!-- ГЛАВНАЯ -->
+  <section id="home">
+    <h2>Рабочая панель</h2>
+    <p class="muted">Поиск и управление технологическими картами</p>
+    <div class="grid">
       <div class="panel"><b>16</b><div class="muted">Станков</div></div>
       <div class="panel"><b id="count">0</b><div class="muted">Техкарт</div></div>
     </div>
@@ -179,6 +184,7 @@
     <button class="btn gray" style="width:100%; margin-top:10px;" onclick="logout()">Выйти из системы</button>
   </section>
 
+  <!-- РЕДАКТОР КАРТЫ -->
   <section id="editor" class="hidden">
     <h2 id="editTitle">Новая карта</h2>
     <p class="muted">Отдельная карта для комбинации станок + форма + материал + цвет</p>
@@ -796,7 +802,8 @@ function restore(){restoreFile();}
 /* ===== РЕМОНТ ===== */
 function openRepairs(btn){
   nav("repairs", btn);
-}function newRepair(){
+}
+function newRepair(){
   // Наладчик (viewer) тоже может создавать заявки
   repairIdNow = null;
   $("repairEditorTitle").textContent = "Новая запись";
@@ -978,10 +985,9 @@ function login(role){
     hideLogin(); applyRole(); return;
   }
     if(role === 'mechanic'){
-    // Пароль слесарю не нужен — права те же, что были
     userRole = 'mechanic';
     hideLogin(); applyRole();
-    nav("repairs"); // сразу в журнал ремонта
+    openRepairs(); // СРАЗУ ОТКРЫВАЕМ РЕМОНТ
     return;
   }
   if(role === 'editor'){
