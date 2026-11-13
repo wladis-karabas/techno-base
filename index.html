@@ -137,9 +137,7 @@
   </div>
 </header>
         <main>
-  <!-- ГЛАВНАЯ -->
-  <section id="home">
-    <h2>Рабочая панель</h2>
+      <h2>Рабочая панель</h2>
     <p class="muted">Поиск и управление технологическими картами</p>
     <div class="grid">
       <div class="panel"><b>16</b><div class="muted">Станков</div></div>
@@ -147,10 +145,9 @@
     </div>
     
     <div class="field" style="margin-bottom: 0;">
-    <input id="query" oninput="render()" onkeypress="if(event.key === 'Enter') searchScroll()" placeholder="🔎 Поиск: форма, изделие..." style="font-size: 16px; height: 50px;">
-
-</div>
+        <input id="query" oninput="render()" onkeypress="if(event.key === 'Enter') searchScroll()" placeholder="🔎 Поиск: форма, изделие..." style="font-size: 16px; height: 50px;">
     </div>
+
     <div class="panel">
       <div class="pt">🏭 Станки</div>
       <div class="machinegrid" id="machines"></div>
@@ -197,6 +194,7 @@
           </div>
           <div class="field"><label>Цвет</label><input id="f_color"></div>
           <div class="field"><label>Марка красителя</label><input id="f_dye"></div>
+          <div class="field"><label>Гнездность (мест в форме)</label><input id="f_cavities" type="number" step="1" value="1" min="1"></div>
           <div class="field"><label>Вес, г</label><input id="f_weight" type="number" step="any"></div>
           <div class="field"><label>Цикл, с</label><input id="f_cycle" type="number" step="any"></div>
           <div class="field"><label>Дозатор (%)</label><input id="f_doser_pct" type="number" step="any"></div>
@@ -545,17 +543,16 @@ const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"
 const mn=id=>{let m=ms.find(x=>x[0]==id);return m?`ТПА №${id} · ${m[1]} ${m[2]}`:"—"};
 
 dbFire.collection("cards").onSnapshot((snapshot)=>{
-  db=[];snapshot.forEach(doc=>db.push({id:doc.id,...doc.data()}));
+  db=[];
+  snapshot.forEach(doc=>db.push({id:doc.id,...doc.data()}));
   $("saveStatus").textContent="● Облако · подключено";
   render();
-  dbFire.collection("cards").onSnapshot((snapshot)=>{
-  db=[];snapshot.forEach(doc=>db.push({id:doc.id,...doc.data()}));
-  $("saveStatus").textContent="● Облако · подключено";
+  if(typeof fillQueryHints === 'function') fillQueryHints();
+},(error)=>{
+  console.error(error);
+  $("saveStatus").textContent="● Нет связи с базой";
   render();
-  fillQueryHints();   // ← добавить
-},(error)=>{console.error(error);$("saveStatus").textContent="● Нет связи с базой";render();});
-},(error)=>{console.error(error);$("saveStatus").textContent="● Нет связи с базой";render();});
-
+});
 dbFire.collection("repairs").onSnapshot((snapshot)=>{
   repairs=[];snapshot.forEach(doc=>repairs.push({id:doc.id,...doc.data()}));
   renderRepairs();
@@ -688,7 +685,7 @@ async function save(){
   let old=db.find(x=>x.id===idNow),params={};
   inputs().forEach(x=>{if(!x.id.startsWith("f_"))params[x.id]=x.value;});
   let c={machine:$("f_machine").value,mold:$("f_mold").value.trim(),product:$("f_product").value,material:$("f_material").value,material2:$("f_material2").value,
-    ratio1:$("f_ratio1").value,ratio2:$("f_ratio2").value,color:$("f_color").value,dye:$("f_dye").value,weight:$("f_weight").value,cycle:$("f_cycle").value,doser_pct:$("f_doser_pct").value,doser_num:$("f_doser_num").value,status:$("f_status").value,note:$("f_note").value,params,updated:new Date().toISOString(),history:old?[...(old.history||[]),{date:old.updated,status:old.status,snapshot:{...old,history:[]}}]:[]};
+    ratio1:$("f_ratio1").value,ratio2:$("f_ratio2").value,color:$("f_color").value,dye:$("f_dye").value,weight:$("f_weight").value,cavities:$("f_cavities").value || 1, cycle:$("f_cycle").value,doser_pct:$("f_doser_pct").value,doser_num:$("f_doser_num").value,status:$("f_status").value,note:$("f_note").value,params,updated:new Date().toISOString(),history:old?[...(old.history||[]),{date:old.updated,status:old.status,snapshot:{...old,history:[]}}]:[]};
   let cardId = idNow || String(Date.now());
   try {
     await dbFire.collection("cards").doc(cardId).set(c);
