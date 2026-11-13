@@ -409,18 +409,20 @@
   </section>
 
   <section id="view" class="hidden">
-    <div class="header-action">
-      <button class="btn-back-view" onclick="goHome()">←</button>
-      <h2 id="vTitle" style="margin:0; font-size:18px;">...</h2>
-      <button class="btn-top-edit" onclick="edit()">✎ РЕД.</button>
-    </div>
+            <div class="header-action">
+            <button class="btn-back-view" onclick="goHome()">←</button>
+            <h2 id="vTitle" style="margin:0; font-size:16px; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">...</h2>
+            <button class="btn-top-edit" onclick="duplicateCard()" style="padding: 6px 10px; font-size: 11px;">КОПИЯ</button>
+            <button class="btn-top-edit" onclick="edit()" style="padding: 6px 10px; font-size: 11px; margin-left: 5px;">РЕД.</button>
+        </div>
     <p class="muted" id="vSub"></p>
     <div id="vBody"></div>
-    <div class="row" style="margin-top:20px;">
-      <button class="btn gray" onclick="goHome()">Назад</button>
-      <button class="btn" onclick="edit()">РЕДАКТИРОВАТЬ</button>
-      <button class="btn red" onclick="del()">Удалить</button>
-    </div>
+            <div class="row" style="margin-top:20px; gap: 4px;">
+            <button class="btn gray" style="font-size: 12px; padding: 8px;" onclick="goHome()">Назад</button>
+            <button class="btn green" style="font-size: 12px; padding: 8px;" onclick="duplicateCard()">ДУБЛИРОВАТЬ</button>
+            <button class="btn" style="font-size: 12px; padding: 8px;" onclick="edit()">РЕД.</button>
+            <button class="btn red" style="font-size: 12px; padding: 8px;" onclick="del()">Удалить</button>
+        </div>
   </section>
 
   <section id="data" class="hidden">
@@ -774,6 +776,42 @@ function openCard(id){
 }
 
 function label(k){let d={openStroke:"Ход раскрытия, мм",hold_time1:"Время выдержки 1, с",hold_time2:"Время выдержки 2, с",t_nozzle:"Температура сопла",systemPressure:"Системное давление",cool_delay:"Задержка охлаждения, с",coolTime:"Время охлаждения, с",decomp_mode:"Режим декомпрессии",decomp_press:"Давление декомпрессии",decomp_speed:"Скорость декомпрессии",decomp_dist:"Позиция декомпрессии, мм",load2_pos:"Позиция 2-й загрузки, мм",load2_time:"Время 2-й загрузки, с",ej_fwd_delay:"Задержка вперед, с",ej_back_delay:"Задержка назад, с"};return d[k]||k.replaceAll("_"," ");}
+function duplicateCard() {
+    let c = db.find(x => x.id === idNow);
+    if(!c) return;
+
+    // Очищаем форму
+    clearForm();
+    
+    // Меняем заголовок
+    $("editTitle").textContent = "Дублирование карты";
+    
+    // Заполняем форму данными из текущей карты
+    let map = {
+        machine:"f_machine", mold:"f_mold", product:"f_product", 
+        material:"f_material", material2:"f_material2", ratio1:"f_ratio1", ratio2:"f_ratio2", 
+        color:"f_color", dye:"f_dye", weight:"f_weight", cycle:"f_cycle", 
+        doser_pct:"f_doser_pct", doser_num:"f_doser_num", status:"f_status", note:"f_note"
+    };
+
+    // Заполняем основные поля
+    Object.entries(map).forEach(([k,v]) => {
+        if($(v)) $(v).value = c[k] ?? "";
+    });
+
+    // Заполняем параметры (вкладки)
+    Object.entries(c.params || {}).forEach(([k,v]) => {
+        if($(k)) $(k).value = v;
+    });
+
+    if($("decomp_mode")) $("decomp_mode").value = c.params.decomp_mode || "После загрузки";
+
+    // Сбрасываем ID, чтобы при сохранении создалась НОВАЯ карта, а не перезаписалась старая
+    idNow = null; 
+    
+    // Переходим в редактор
+    nav("editor");
+}
 
 function edit(){
   if(userRole!=='editor'){alert("Нет прав на редактирование");return;}
