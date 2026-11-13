@@ -581,9 +581,7 @@ function selectMachine(value,text){
   hiddenInput.value = value;
   render();
 }
-document.addEventListener('click', function(e){
-  if (!e.target.closest('.custom-select-wrapper')) $("machineSelectOptions").classList.remove("open");
-});
+
 
 function render(){
     let q = $("query").value.toLowerCase().trim();
