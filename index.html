@@ -581,7 +581,13 @@ function selectMachine(value,text){
   hiddenInput.value = value;
   render();
 }
-
+function searchScroll() {
+    // Плавно прокручиваем страницу к блоку с картами
+    let cardsBlock = document.getElementById('cards');
+    if (cardsBlock) {
+        cardsBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
 
 function render(){
     let q = $("query").value.toLowerCase().trim();
