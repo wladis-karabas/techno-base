@@ -145,10 +145,10 @@
       <div class="panel"><b>16</b><div class="muted">Станков</div></div>
       <div class="panel"><b id="count">0</b><div class="muted">Техкарт</div></div>
     </div>
-    <div class="panel hide-for-mechanic">
+    
     <div class="field" style="margin-bottom: 0;">
-        <input id="query" oninput="render()" placeholder="🔎 Поиск: форма, изделие, материал или цвет..." style="font-size: 16px; height: 50px;">
-    </div>
+    <input id="query" oninput="render()" onkeypress="if(event.key === 'Enter') searchScroll()" placeholder="🔎 Поиск: форма, изделие..." style="font-size: 16px; height: 50px;">
+
 </div>
     </div>
     <div class="panel">
