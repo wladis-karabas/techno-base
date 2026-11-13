@@ -23,6 +23,9 @@
   .logout-text{display:none;}
   .btn-logout{padding:7px 9px;}
 }main{max-width:760px;margin:auto;padding:14px}h2{font-size:21px;margin:8px 0}.muted,.note{color:var(--m);font-size:12px}.panel,.card{background:var(--p);border:1px solid var(--b);border-radius:14px;padding:14px;margin:12px 0}.pt{font-weight:800;margin-bottom:12px}label{display:block;color:var(--m);font-size:12px;margin:0 0 5px}input,select,textarea{width:100%;background:var(--p2);border:1px solid var(--b);border-radius:9px;color:var(--t);padding:11px;min-height:43px;font:inherit}textarea{min-height:75px}.field{margin:0 0 11px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.btn{border:0;border-radius:10px;padding:12px;background:var(--a);color:white;font-weight:800;min-height:43px}.green{background:var(--g);color:#06251c}.red{background:#71313c}.gray{background:var(--p2);border:1px solid var(--b)}.row{display:flex;gap:8px;margin-top:12px}.row>*{flex:1}.machinegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.machine{background:var(--p);border:1px solid var(--b);color:var(--t);padding:11px;border-radius:11px;text-align:left}.machine small{display:block;color:var(--m)}.tabs{display:flex;gap:6px;overflow:auto;padding:5px 0 12px}.tab{white-space:nowrap;background:var(--p);border:1px solid var(--b);color:var(--m);padding:9px 11px;border-radius:9px}.tab.active{background:#244a78;color:white}.screen{display:none}.screen.active{display:block}.dir{display:flex;align-items:center;gap:13px;padding:13px;border-radius:11px;font-weight:900;margin:10px 0}.dir b{font-size:30px}.dir small{display:block;font-size:11px;font-weight:500}.close{background:#173d34;border:1px solid #26765f}.open{background:#382b1b;border:1px solid #8b632b}.badge{font-size:11px;border-radius:7px;padding:5px 8px;background:#55401f;color:#ffd58b}.approved{background:#174c3c;color:#8ef0c8}.checked{background:#3b3c65;color:#c4c5ff}.archived{background:#343b46;color:#b9c1cc}.info{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--b);font-size:13px}.info b{text-align:right;overflow-wrap:anywhere}.history{border-left:3px solid var(--a);background:var(--p2);padding:9px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#111d30;border-top:1px solid var(--b);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:6}.bottom button{background:none;border:0;color:var(--m);font-size:11px}.bottom span{display:block;font-size:20px}.bottom .active{color:#77b5ff}.hidden{display:none!important}.empty{text-align:center;padding:20px;color:var(--m);font-size:13px}
+/* Модальное окно карты */
+#view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 5000; overflow-y: auto; padding: 14px; box-sizing: border-box; }
+#view.hidden { display: none; }
 
 .matrix{width:100%;border-collapse:collapse;margin-bottom:15px}
 .matrix th{font-size:11px;color:var(--m);font-weight:normal;padding:5px;text-align:center;border-bottom:1px solid var(--b)}
@@ -145,7 +148,7 @@
     </div>
     
     <div class="field" style="margin-bottom: 0;">
-        <input id="query" oninput="render()" onkeypress="if(event.key === 'Enter') searchScroll()" placeholder="🔎 Поиск: форма, изделие..." style="font-size: 16px; height: 50px;">
+        <input id="query" oninput="selectedMachineFilter=''; render()" onkeypress="if(event.key === 'Enter') searchScroll()" placeholder="🔎 Поиск: форма, изделие..." style="font-size: 16px; height: 50px;">
     </div>
 
     <div class="panel">
@@ -590,9 +593,10 @@ function render(){
     let q = $("query").value.toLowerCase().trim();
     $("count").textContent = db.length;
     
-    // Ищем совпадения по всем текстовым полям карты
+    // Фильтруем: сначала по выбранному станку, потом по тексту
     let a = db.filter(c => {
-        if (!q) return true; // Если пусто - показываем всё
+        if (selectedMachineFilter && c.machine != selectedMachineFilter) return false;
+        if (!q) return true;
         let searchString = [c.mold, c.product, c.material, c.material2, c.color, c.dye, c.note].join(" ").toLowerCase();
         return searchString.includes(q);
     });
@@ -605,7 +609,7 @@ function render(){
             </div>
             <p class="muted">${mn(c.machine)} · ${safe(c.product)} · ${safe(c.material)} · ${safe(c.color)}</p>
         </div>
-    `).join("") : '<div class="empty">Ничего не найдено</div>';
+    `).join("") : '<div class="empty">Для этого станка карт нет</div>';
 }
 function fillQueryHints(){
   let dl = $("queryHints");
@@ -623,12 +627,19 @@ function fillQueryHints(){
   values.sort((a,b)=>a.localeCompare(b,"ru"));
   dl.innerHTML = values.map(v=>`<option value="${safe(v)}"></option>`).join("");
 }
+let selectedMachineFilter = ""; // Глобальная переменная для фильтра
+
 function filter(n){
-    $("query").value = mn(n); // Подставляем название станка в строку поиска
-    render(); // Запускаем поиск
+    selectedMachineFilter = String(n); // Запоминаем выбранный станок
+    $("query").value = ""; // Сбрасываем текстовый поиск, чтобы не мешал
+    render();
     $("cards").scrollIntoView({behavior:"smooth"});
 }
 function nav(n, b){
+  // ПРИНУДИТЕЛЬНО скрываем модальное окно карты при любом переходе
+  let viewEl = document.getElementById("view");
+  if(viewEl) viewEl.classList.add("hidden");
+
   ["home","editor","view","data","repairs","repairEditor"].forEach(x=>{
     let el = $(x);
     if (el) el.classList.add("hidden");
@@ -644,7 +655,12 @@ function nav(n, b){
   if(n==="repairs") renderRepairs();
   window.scrollTo(0,0);
 }
-function goHome(){nav("home",document.querySelector(".bottom button"));}
+function goHome(){
+    // Принудительно скрываем модальное окно карты
+    $("view").classList.add("hidden");
+    // Переходим на главную
+    nav("home", document.querySelector(".bottom button"));
+}
 function tab(n,b){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));$("s-"+n).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active"); window.scrollTo(0,0);}
 
 function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null){
