@@ -145,33 +145,11 @@
       <div class="panel"><b>16</b><div class="muted">Станков</div></div>
       <div class="panel"><b id="count">0</b><div class="muted">Техкарт</div></div>
     </div>
-    <div class="panel">
-      <div class="pt">🔎 Поиск карты</div>
-      <div class="field">
-        <label>Станок</label>
-        <div class="custom-select-wrapper">
-          <div class="custom-select-trigger" id="machineSelectTrigger" onclick="toggleMachineList()">
-            <span id="machineSelectText">Все станки</span>
-            <span class="arrow">▼</span>
-          </div>
-          <div class="custom-options" id="machineSelectOptions"></div>
-        </div>
-      </div>
-      <div class="field">
-        <label>Изделие (автоподсказки)</label>
-        <input id="query" list="queryHints" oninput="render()" placeholder="Начните вводить изделие">
-        <datalist id="queryHints"></datalist>
-      </div>
-      <div class="field">
-        <label>Статус</label>
-        <select id="filterStatus" onchange="render()">
-          <option value="">Все статусы</option>
-          <option>Черновик</option>
-          <option>Проверена</option>
-          <option>Утверждена</option>
-          <option>Архивная</option>
-        </select>
-      </div>
+    <div class="panel hide-for-mechanic">
+    <div class="field" style="margin-bottom: 0;">
+        <input id="query" oninput="render()" placeholder="🔎 Поиск: форма, изделие, материал или цвет..." style="font-size: 16px; height: 50px;">
+    </div>
+</div>
     </div>
     <div class="panel">
       <div class="pt">🏭 Станки</div>
@@ -611,12 +589,25 @@ document.addEventListener('click', function(e){
 });
 
 function render(){
-  let q=$("query").value.toLowerCase();
-  let m = document.getElementById('hiddenMachineFilter') ? document.getElementById('hiddenMachineFilter').value : "";
-  let s=$("filterStatus").value;
-  $("count").textContent=db.length;
-  let a=db.filter(c=>(!m||c.machine==m)&&(!s||c.status==s)&&(!q||[c.mold,c.product,c.material,c.material2,c.color,c.dye].join(" ").toLowerCase().includes(q)));
-  $("cards").innerHTML=a.length?a.map(c=>`<div class="card" onclick="openCard('${c.id}')"><div style="display:flex;justify-content:space-between;gap:8px"><b>${safe(c.mold)}</b><span class="badge ${c.status==='Утверждена'?'approved':c.status==='Проверена'?'checked':c.status==='Архивная'?'archived':''}">${safe(c.status)}</span></div><p class="muted">${mn(c.machine)} · ${safe(c.product)} · ${safe(c.material)}${c.material2?' + '+safe(c.material2):''} · ${safe(c.color)}</p></div>`).join(""):'<div class="empty">Карты не найдены</div>';
+    let q = $("query").value.toLowerCase().trim();
+    $("count").textContent = db.length;
+    
+    // Ищем совпадения по всем текстовым полям карты
+    let a = db.filter(c => {
+        if (!q) return true; // Если пусто - показываем всё
+        let searchString = [c.mold, c.product, c.material, c.material2, c.color, c.dye, c.note].join(" ").toLowerCase();
+        return searchString.includes(q);
+    });
+
+    $("cards").innerHTML = a.length ? a.map(c => `
+        <div class="card" onclick="openCard('${c.id}')">
+            <div style="display:flex;justify-content:space-between;gap:8px">
+                <b>${safe(c.mold)}</b>
+                <span class="badge ${c.status==='Утверждена'?'approved':c.status==='Проверена'?'checked':c.status==='Архивная'?'archived':''}">${safe(c.status)}</span>
+            </div>
+            <p class="muted">${mn(c.machine)} · ${safe(c.product)} · ${safe(c.material)} · ${safe(c.color)}</p>
+        </div>
+    `).join("") : '<div class="empty">Ничего не найдено</div>';
 }
 function fillQueryHints(){
   let dl = $("queryHints");
