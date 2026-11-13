@@ -563,14 +563,11 @@ dbFire.collection("repairs").onSnapshot((snapshot)=>{
 
 
 function options(){
-  let o = ms.map(m=>`<option value="${m[0]}">${mn(m[0])}</option>`).join("");
-  $("f_machine").innerHTML = o;
-  $("r_machine").innerHTML = o;
-  $("repairFilterMachine").innerHTML = `<option value="">Все станки</option>`+ms.map(m=>`<option value="${m[0]}">${mn(m[0])}</option>`).join("");
-  let customList = `<div class="custom-option" data-value="">Все станки</div>`;
-  customList += ms.map(m => `<div class="custom-option" data-value="${m[0]}" onclick="selectMachine(${m[0]}, '${mn(m[0])}')">${mn(m[0])}</div>`).join("");
-  $("machineSelectOptions").innerHTML = customList;
-  $("machines").innerHTML = ms.map(m=>`<button class="machine" onclick="filter(${m[0]})"><b>ТПА №${m[0]}</b><small>${m[1]} · ${m[2]}</small></button>`).join("");
+    let o = ms.map(m=>`<option value="${m[0]}">${mn(m[0])}</option>`).join("");
+    $("f_machine").innerHTML = o; 
+
+    // Рисуем плитки станков
+    $("machines").innerHTML = ms.map(m=>`<button class="machine" onclick="filter(${m[0]})"><b>ТПА №${m[0]}</b><small>${m[1]} · ${m[2]}</small></button>`).join("");
 }
 function toggleMachineList(){ $("machineSelectOptions").classList.toggle("open"); }
 function selectMachine(value,text){
@@ -625,7 +622,11 @@ function fillQueryHints(){
   values.sort((a,b)=>a.localeCompare(b,"ru"));
   dl.innerHTML = values.map(v=>`<option value="${safe(v)}"></option>`).join("");
 }
-function filter(n){selectMachine(n,mn(n));$("cards").scrollIntoView({behavior:"smooth"});}
+function filter(n){
+    $("query").value = mn(n); // Подставляем название станка в строку поиска
+    render(); // Запускаем поиск
+    $("cards").scrollIntoView({behavior:"smooth"});
+}
 function nav(n, b){
   ["home","editor","view","data","repairs","repairEditor"].forEach(x=>{
     let el = $(x);
