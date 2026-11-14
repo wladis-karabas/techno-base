@@ -624,14 +624,23 @@ function nav(pageId, btn) {
 }
 
 function openModal(modalId) {
-  let target = document.getElementById(modalId);
-  if (target) target.classList.add("active");
-  if (target) target.scrollTop = 0;
+    let target = document.getElementById(modalId);
+    if (target) {
+        target.classList.add("active");
+        target.scrollTop = 0;
+        // ДОБАВЛЯЕМ ЗАПИСЬ В ИСТОРИЮ БРАУЗЕРА
+        history.pushState({ modal: modalId }, '', '');
+    }
 }
 
-function closeModal(modalId) {
-  let target = document.getElementById(modalId);
-  if (target) target.classList.remove("active");
+function closeModal(modalId, skipHistory = false) {
+    let target = document.getElementById(modalId);
+    if (target) target.classList.remove("active");
+    
+    // Если мы закрываем окно кнопкой на экране, то нужно «отмотать» историю назад
+    if (!skipHistory) {
+        history.back();
+    }
 }
 
 function tab(n, b) {
@@ -1087,7 +1096,19 @@ function logout(){
   $("loginPassword").value='';
   userRole='viewer';
 }
-
+// Обработка нажатия системной кнопки "Назад" на телефоне
+window.addEventListener('popstate', function(event) {
+    // Закрываем все модальные окна
+    document.querySelectorAll('.modal.active').forEach(modal => {
+        closeModal(modal.id, true); // true = не вызывать history.back() снова
+    });
+    
+    // Если мы были на какой-то странице (Ремонт или Данные), возвращаемся на Главную
+    let activePage = document.querySelector('.page.active');
+    if (activePage && activePage.id !== 'page-home') {
+        nav('page-home', document.querySelector('.bottom button:first-child'));
+    }
+});
 
 // --- ВОТ ЗДЕСЬ МЫ ЗАКРЫВАЕМ ВСЕ ФУНКЦИИ ---
 options();
