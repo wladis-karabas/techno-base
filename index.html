@@ -651,32 +651,7 @@ function render() {
   `).join("") : '<div class="empty">Ничего не найдено</div>';
 }
 
-// --- РЕДАКТОР КАРТЫ ---
-function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null) {
-    let container = document.getElementById(containerId);
-    if(!container) return;
-    
-    container.innerHTML = ""; // Очищаем перед отрисовкой
-    
-    // Если это просмотр (isViewOnly), рисуем старую таблицу (она компактная и удобна для чтения)
-    if (isViewOnly) {
-        let table = document.createElement('table');
-        table.className = 'matrix';
-        let html = '<thead><tr><th></th>';
-        if (isReverse) { for(let i=cols; i>=1; i--) html += `<th>Ст${i}</th>`; }
-        else { for(let i=1; i<=cols; i++) html += `<th>Ст${i}</th>`; }
-        html += '</tr></thead><tbody>';
-        params.forEach(p => {
-            html += `<tr><td class="label-cell"><span class="param-icon">${p.icon}</span>${p.name}</td>`;
-            if (isReverse) { for(let i=cols; i>=1; i--) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
-            else { for(let i=1; i<=cols; i++) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
-            html += '</tr>';
-        });
-        html += '</tbody>';
-        table.innerHTML = html;
-        container.appendChild(table);
-        return;
-    }
+
 
     function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null) {
     let container = document.getElementById(containerId);
@@ -1060,21 +1035,22 @@ function applyRole() {
   document.querySelectorAll('button[onclick="saveRepair()"]').forEach(b=>{ b.style.display = ''; });
   let status = $("saveStatus"); if(status) status.title = "Роль: "+userRole;
 }
-
-function logout(){
-  localStorage.removeItem('techno_role');
-  $("loginScreen").style.display='flex';
-  $("loginPassword").value='';
-  userRole='viewer';
-}
 function searchScroll() {
     // Плавно прокручиваем страницу к блоку с картами
     let cardsBlock = document.getElementById('cards');
     if (cardsBlock) {
         cardsBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    }
+function logout(){
+  localStorage.removeItem('techno_role');
+  $("loginScreen").style.display='flex';
+  $("loginPassword").value='';
+  userRole='viewer';
 }
 
+
+// --- ВОТ ЗДЕСЬ МЫ ЗАКРЫВАЕМ ВСЕ ФУНКЦИИ ---
 options();
 build();
 render();
