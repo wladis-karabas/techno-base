@@ -6,41 +6,57 @@
 <title>ТПА БАЗА</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23141f32'/><text x='50' y='50' font-size='50' text-anchor='middle' dominant-baseline='central' fill='%234c9aff' font-family='Arial' font-weight='bold'>Т</text></svg>">
 <style>
-/* СТИЛИ ДЛЯ КАРТОЧЕК СТУПЕНЕЙ (ВЕРТИКАЛЬНЫЙ СПИСОК) */
-.stage-card {
+/* СТИЛИ ДЛЯ ВКЛАДОК СТУПЕНЕЙ */
+.stage-tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--b);
+}
+.stage-tab {
+    flex: 1;
+    white-space: nowrap;
     background: var(--p2);
     border: 1px solid var(--b);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 15px;
-}
-.stage-header {
-    font-weight: 900;
-    color: var(--a);
-    font-size: 16px;
-    margin-bottom: 12px;
+    color: var(--m);
+    padding: 10px 15px;
+    border-radius: 9px;
+    font-weight: bold;
+    cursor: pointer;
     text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    user-select: none;
 }
-.stage-param {
+.stage-tab.active {
+    background: var(--a);
+    color: white;
+    border-color: var(--a);
+}
+.stage-content {
+    display: none;
+}
+.stage-content.active {
+    display: block;
+}
+.param-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 8px;
-    background: var(--p);
+    background: var(--p2);
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid var(--b);
 }
-.stage-param label {
+.param-row label {
     font-size: 13px;
     color: var(--t);
     margin: 0;
     font-weight: 600;
 }
-.stage-param input {
-    width: 120px; /* Фиксированная ширина для полей ввода */
+.param-row input {
+    width: 120px;
     text-align: right;
     font-weight: bold;
     font-size: 18px;
@@ -48,6 +64,8 @@
     padding: 6px 10px;
     margin: 0;
     background: var(--bg);
+    border: 1px solid var(--b);
+    border-radius: 6px;
 }
 @media(max-width:380px){
     .stage-grid { grid-template-columns: 1fr; }
@@ -656,21 +674,23 @@ function render() {
     function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null) {
     let container = document.getElementById(containerId);
     if(!container) return;
-    
     container.innerHTML = ""; // Очищаем перед отрисовкой
     
-    // РЕЖИМ ПРОСМОТРА (ТАБЛИЦА)
+    // --- РЕЖИМ ПРОСМОТРА (ТАБЛИЦА) ---
     if (isViewOnly) {
         let table = document.createElement('table');
         table.className = 'matrix';
         let html = '<thead><tr><th></th>';
-        if (isReverse) { for(let i=cols; i>=1; i--) html += `<th>Ст${i}</th>`; }
-        else { for(let i=1; i<=cols; i++) html += `<th>Ст${i}</th>`; }
+        // Заголовки колонок
+        if (isReverse) { for(let i=cols; i>=1; i--) html += `<th>${(prefix==='cl' && i===4)?'НД':(prefix==='cl' && i===5)?'ВД':'Ст'+i}</th>`; }
+        else { for(let i=1; i<=cols; i++) html += `<th>${(prefix==='cl' && i===4)?'НД':(prefix==='cl' && i===5)?'ВД':'Ст'+i}</th>`; }
         html += '</tr></thead><tbody>';
+        
+        // Строки параметров
         params.forEach(p => {
             html += `<tr><td class="label-cell"><span class="param-icon">${p.icon}</span>${p.name}</td>`;
-            if (isReverse) { for(let i=cols; i>=1; i--) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
-            else { for(let i=1; i<=cols; i++) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
+            if (isReverse) { for(let i=cols; i>=1; i--) { let val = (cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input type="number" disabled value="${val}"></td>`; } }
+            else { for(let i=1; i<=cols; i++) { let val = (cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input type="number" disabled value="${val}"></td>`; } }
             html += '</tr>';
         });
         html += '</tbody>';
@@ -679,46 +699,64 @@ function render() {
         return;
     }
 
-    // РЕЖИМ РЕДАКТОРА (КАРТОЧКИ)
+    // --- РЕЖИМ РЕДАКТОРА (ВКЛАДКИ) ---
+    // 1. Создаем панель с кнопками вкладок
+    let tabsDiv = document.createElement('div');
+    tabsDiv.className = 'stage-tabs';
+    
+    // 2. Создаем контейнер для содержимого
+    let contentDiv = document.createElement('div');
+
     let stages = [];
     if (isReverse) { for(let i=cols; i>=1; i--) stages.push(i); }
     else { for(let i=1; i<=cols; i++) stages.push(i); }
 
-    stages.forEach(i => {
-        let card = document.createElement('div');
-        card.className = 'stage-card';
-        
-        let header = document.createElement('div');
-        header.className = 'stage-header';
-        
-        let stageName = `Ступень ${i}`;
+    stages.forEach((i, index) => {
+        // Имя вкладки
+        let tabName = `Ст${i}`;
         if (prefix === 'cl') {
-            if (i === 4) stageName = 'НД (Низкое давление)';
-            if (i === 5) stageName = 'ВД (Высокое давление)';
+            if (i === 4) tabName = 'НД';
+            if (i === 5) tabName = 'ВД';
         }
-        header.innerText = stageName;
-        card.appendChild(header);
+
+        // Кнопка вкладки
+        let btn = document.createElement('div');
+        btn.className = `stage-tab ${index === 0 ? 'active' : ''}`;
+        btn.innerText = tabName;
+        btn.onclick = () => {
+            // Переключение вкладок
+            tabsDiv.querySelectorAll('.stage-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            contentDiv.querySelectorAll('.stage-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`${prefix}_cont_${i}`).classList.add('active');
+        };
+        tabsDiv.appendChild(btn);
+
+        // Блок с параметрами для этой ступени
+        let stageContent = document.createElement('div');
+        stageContent.className = `stage-content ${index === 0 ? 'active' : ''}`;
+        stageContent.id = `${prefix}_cont_${i}`;
 
         params.forEach(p => {
             let row = document.createElement('div');
-            row.className = 'stage-param';
-
+            row.className = 'param-row';
             let label = document.createElement('label');
             label.innerHTML = `<span class="param-icon">${p.icon}</span> ${p.name}`;
-            
             let input = document.createElement('input');
             input.type = 'number';
             input.step = 'any';
-            input.id = `${prefix}_${p.code}${i}`;
+            input.id = `${prefix}_${p.code}${i}`; // Сохраняем ID для базы
             input.placeholder = '0';
-
             row.appendChild(label);
             row.appendChild(input);
-            card.appendChild(row);
+            stageContent.appendChild(row);
         });
 
-        container.appendChild(card);
+        contentDiv.appendChild(stageContent);
     });
+
+    container.appendChild(tabsDiv);
+    container.appendChild(contentDiv);
 }
 
 function build() {
