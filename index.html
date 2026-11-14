@@ -6,7 +6,52 @@
 <title>ТПА БАЗА</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23141f32'/><text x='50' y='50' font-size='50' text-anchor='middle' dominant-baseline='central' fill='%234c9aff' font-family='Arial' font-weight='bold'>Т</text></svg>">
 <style>
-:root{--bg:#0b1220;--p:#141f32;--p2:#1b2940;--b:#293950;--t:#edf3fc;--m:#91a2bb;--a:#4c9aff;--g:#24bd88;--r:#f16b72;--o:#f0ad4e}
+/* СТИЛИ ДЛЯ КАРТОЧЕК СТУПЕНЕЙ (ВЕРТИКАЛЬНЫЙ СПИСОК) */
+.stage-card {
+    background: var(--p2);
+    border: 1px solid var(--b);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 15px;
+}
+.stage-header {
+    font-weight: 900;
+    color: var(--a);
+    font-size: 16px;
+    margin-bottom: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.stage-param {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    background: var(--p);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--b);
+}
+.stage-param label {
+    font-size: 13px;
+    color: var(--t);
+    margin: 0;
+    font-weight: 600;
+}
+.stage-param input {
+    width: 120px; /* Фиксированная ширина для полей ввода */
+    text-align: right;
+    font-weight: bold;
+    font-size: 18px;
+    color: #d84315;
+    padding: 6px 10px;
+    margin: 0;
+    background: var(--bg);
+}
+@media(max-width:380px){
+    .stage-grid { grid-template-columns: 1fr; }
+}:root{--bg:#0b1220;--p:#141f32;--p2:#1b2940;--b:#293950;--t:#edf3fc;--m:#91a2bb;--a:#4c9aff;--g:#24bd88;--r:#f16b72;--o:#f0ad4e}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--t);font:15px system-ui,Arial;padding-bottom:80px}
 .head{position:sticky;top:0;background:#101b2df5;padding:14px 16px;border-bottom:1px solid var(--b);z-index:100;display:flex;justify-content:space-between}
@@ -608,20 +653,97 @@ function render() {
 
 // --- РЕДАКТОР КАРТЫ ---
 function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null) {
-  let table = document.getElementById(containerId);
-  if(!table) return;
-  let html = '<thead><tr><th></th>';
-  if (isReverse) { for(let i=cols; i>=1; i--) html += `<th>Ст${i}</th>`; }
-  else { for(let i=1; i<=cols; i++) html += `<th>Ст${i}</th>`; }
-  html += '</tr></thead><tbody>';
-  params.forEach(p => {
-    html += `<tr><td class="label-cell"><span class="param-icon">${p.icon}</span>${p.name}</td>`;
-    if (isReverse) { for(let i=cols; i>=1; i--) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
-    else { for(let i=1; i<=cols; i++) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
-    html += '</tr>';
-  });
-  html += '</tbody>';
-  table.innerHTML = html;
+    let container = document.getElementById(containerId);
+    if(!container) return;
+    
+    container.innerHTML = ""; // Очищаем перед отрисовкой
+    
+    // Если это просмотр (isViewOnly), рисуем старую таблицу (она компактная и удобна для чтения)
+    if (isViewOnly) {
+        let table = document.createElement('table');
+        table.className = 'matrix';
+        let html = '<thead><tr><th></th>';
+        if (isReverse) { for(let i=cols; i>=1; i--) html += `<th>Ст${i}</th>`; }
+        else { for(let i=1; i<=cols; i++) html += `<th>Ст${i}</th>`; }
+        html += '</tr></thead><tbody>';
+        params.forEach(p => {
+            html += `<tr><td class="label-cell"><span class="param-icon">${p.icon}</span>${p.name}</td>`;
+            if (isReverse) { for(let i=cols; i>=1; i--) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
+            else { for(let i=1; i<=cols; i++) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
+            html += '</tr>';
+        });
+        html += '</tbody>';
+        table.innerHTML = html;
+        container.appendChild(table);
+        return;
+    }
+
+    function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null) {
+    let container = document.getElementById(containerId);
+    if(!container) return;
+    
+    container.innerHTML = ""; // Очищаем перед отрисовкой
+    
+    // РЕЖИМ ПРОСМОТРА (ТАБЛИЦА)
+    if (isViewOnly) {
+        let table = document.createElement('table');
+        table.className = 'matrix';
+        let html = '<thead><tr><th></th>';
+        if (isReverse) { for(let i=cols; i>=1; i--) html += `<th>Ст${i}</th>`; }
+        else { for(let i=1; i<=cols; i++) html += `<th>Ст${i}</th>`; }
+        html += '</tr></thead><tbody>';
+        params.forEach(p => {
+            html += `<tr><td class="label-cell"><span class="param-icon">${p.icon}</span>${p.name}</td>`;
+            if (isReverse) { for(let i=cols; i>=1; i--) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
+            else { for(let i=1; i<=cols; i++) { let disabled = isViewOnly ? 'disabled' : ''; let val = (isViewOnly && cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input id="${prefix}_${p.code}${i}" type="number" step="any" value="${val}" ${disabled}></td>`; } }
+            html += '</tr>';
+        });
+        html += '</tbody>';
+        table.innerHTML = html;
+        container.appendChild(table);
+        return;
+    }
+
+    // РЕЖИМ РЕДАКТОРА (КАРТОЧКИ)
+    let stages = [];
+    if (isReverse) { for(let i=cols; i>=1; i--) stages.push(i); }
+    else { for(let i=1; i<=cols; i++) stages.push(i); }
+
+    stages.forEach(i => {
+        let card = document.createElement('div');
+        card.className = 'stage-card';
+        
+        let header = document.createElement('div');
+        header.className = 'stage-header';
+        
+        let stageName = `Ступень ${i}`;
+        if (prefix === 'cl') {
+            if (i === 4) stageName = 'НД (Низкое давление)';
+            if (i === 5) stageName = 'ВД (Высокое давление)';
+        }
+        header.innerText = stageName;
+        card.appendChild(header);
+
+        params.forEach(p => {
+            let row = document.createElement('div');
+            row.className = 'stage-param';
+
+            let label = document.createElement('label');
+            label.innerHTML = `<span class="param-icon">${p.icon}</span> ${p.name}`;
+            
+            let input = document.createElement('input');
+            input.type = 'number';
+            input.step = 'any';
+            input.id = `${prefix}_${p.code}${i}`;
+            input.placeholder = '0';
+
+            row.appendChild(label);
+            row.appendChild(input);
+            card.appendChild(row);
+        });
+
+        container.appendChild(card);
+    });
 }
 
 function build() {
@@ -634,7 +756,11 @@ function build() {
   buildMatrix('matrix_eject_back', 'ejb', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], true);
 }
 
-function inputs(){return [...document.querySelectorAll("#modal-editor input,#modal-editor select,#modal-editor textarea")];}
+function inputs() {
+    // (ищем поля внутри окна редактора, у которого ID = modal-editor)
+    return [...document.querySelectorAll("#modal-editor input, #modal-editor select, #modal-editor textarea")];
+}
+
 function clearForm(){inputs().forEach(x=>x.value="");$("f_machine").value="1";$("f_status").value="Черновик";$("decomp_mode").value="После загрузки";document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".tab-content").forEach(x=>x.classList.remove("active"));document.querySelector(".tab").classList.add("active");$("s-general").classList.add("active");}
 
 function newCard() {
@@ -646,20 +772,52 @@ function newCard() {
 }
 
 async function save() {
-  if(userRole!=='editor'){alert("Нет прав");return;}
-  if(!$("f_mold").value.trim()){alert("Укажи пресс-форму");return;}
-  let old=db.find(x=>x.id===idNow),params={};
-  inputs().forEach(x=>{if(!x.id.startsWith("f_"))params[x.id]=x.value;});
-  let c={machine:$("f_machine").value,mold:$("f_mold").value.trim(),product:$("f_product").value,material:$("f_material").value,material2:$("f_material2").value,
-    ratio1:$("f_ratio1").value,ratio2:$("f_ratio2").value,color:$("f_color").value,dye:$("f_dye").value,weight:$("f_weight").value,cavities:$("f_cavities").value || 1, cycle:$("f_cycle").value,doser_pct:$("f_doser_pct").value,doser_num:$("f_doser_num").value,status:$("f_status").value,note:$("f_note").value,params,updated:new Date().toISOString(),history:old?[...(old.history||[]),{date:old.updated,status:old.status,snapshot:{...old,history:[]}}]:[]};
-  let cardId = idNow || String(Date.now());
-  try {
-    await dbFire.collection("cards").doc(cardId).set(c);
-    idNow = cardId;
-    alert('Карта сохранена в облако!');
-    closeModal("modal-editor");
-    openCard(cardId);
-  } catch(e) { console.error(e); alert("Ошибка сохранения!"); }
+    if(userRole!=='editor'){alert("Нет прав");return;}
+    if(!$("f_mold").value.trim()){alert("Укажи пресс-форму");return;}
+
+    let old = db.find(x=>x.id===idNow);
+    let params = {};
+
+    // (Собираем все поля, у которых ID не начинается с "f_", в объект params)
+    inputs().forEach(x => {
+        if(x.id && !x.id.startsWith("f_")) {
+            params[x.id] = x.value;
+        }
+    });
+
+    let c = {
+        machine: $("f_machine").value,
+        mold: $("f_mold").value.trim(),
+        product: $("f_product").value,
+        material: $("f_material").value,
+        material2: $("f_material2").value,
+        ratio1: $("f_ratio1").value,
+        ratio2: $("f_ratio2").value,
+        color: $("f_color").value,
+        dye: $("f_dye").value,
+        cavities: $("f_cavities").value || 1,
+        weight: $("f_weight").value,
+        cycle: $("f_cycle").value,
+        doser_pct: $("f_doser_pct").value,
+        doser_num: $("f_doser_num").value,
+        status: $("f_status").value,
+        note: $("f_note").value,
+        params: params,
+        updated: new Date().toISOString(),
+        history: old ? [...(old.history||[]), {date:old.updated, status:old.status, snapshot:{...old, history:[]}}] : []
+    };
+
+    let cardId = idNow || String(Date.now());
+    try {
+        await dbFire.collection("cards").doc(cardId).set(c);
+        idNow = cardId;
+        alert('Карта сохранена в облако!');
+        closeModal("modal-editor");
+        openCard(cardId);
+    } catch(e) {
+        console.error(e);
+        alert("Ошибка сохранения! Проверьте правила Firebase.");
+    }
 }
 
 function openCard(id) {
@@ -745,26 +903,56 @@ function duplicateCard() {
   if(!c) return;
   clearForm();
   $("editTitle").textContent = "Дублирование карты";
-  let map = {machine:"f_machine", mold:"f_mold", product:"f_product", material:"f_material", material2:"f_material2", ratio1:"f_ratio1", ratio2:"f_ratio2", color:"f_color", dye:"f_dye", cavities:"f_cavities", weight:"f_weight", cycle:"f_cycle", doser_pct:"f_doser_pct", doser_num:"f_doser_num", status:"f_status", note:"f_note"};
+  let map = {
+    machine:"f_machine", mold:"f_mold", product:"f_product", 
+    material:"f_material", material2:"f_material2", ratio1:"f_ratio1", ratio2:"f_ratio2", 
+    color:"f_color", dye:"f_dye", cavities:"f_cavities", weight:"f_weight", cycle:"f_cycle", 
+    doser_pct:"f_doser_pct", doser_num:"f_doser_num", status:"f_status", note:"f_note"
+};
   Object.entries(map).forEach(([k,v]) => { if($(v)) $(v).value = c[k] ?? ""; });
-  Object.entries(c.params || {}).forEach(([k,v]) => { if($(k)) $(k).value = v; });
-  if($("decomp_mode")) $("decomp_mode").value = c.params.decomp_mode || "После загрузки";
+Object.entries(c.params || {}).forEach(([k,v]) => {
+    if($(k)) $(k).value = v;
+});  if($("decomp_mode")) $("decomp_mode").value = c.params.decomp_mode || "После загрузки";
   idNow = null; 
   closeModal("modal-view");
   openModal("modal-editor");
 }
 
 function edit() {
-  if(userRole!=='editor'){alert("Нет прав");return;}
-  let c=db.find(x=>x.id===idNow);if(!c)return;
-  clearForm();
-  $("editTitle").textContent="Редактирование карты";
-  let map={machine:"f_machine",mold:"f_mold",product:"f_product",material:"f_material",material2:"f_material2",ratio1:"f_ratio1",ratio2:"f_ratio2",color:"f_color",dye:"f_dye",cavities:"f_cavities",weight:"f_weight",cycle:"f_cycle",doser_pct:"f_doser_pct",doser_num:"f_doser_num",status:"f_status",note:"f_note"};
-  Object.entries(map).forEach(([k,v])=>$(v).value=c[k]??"");
-  Object.entries(c.params||{}).forEach(([k,v])=>{if($(k))$(k).value=v;});
-  if($("decomp_mode")) $("decomp_mode").value = c.params.decomp_mode || "После загрузки";
-  closeModal("modal-view");
-  openModal("modal-editor");
+    if(userRole!=='editor'){alert("Нет прав");return;}
+    let c = db.find(x=>x.id===idNow);
+    if(!c) return;
+
+    clearForm();
+    $("editTitle").textContent = "Редактирование карты";
+
+    // 1. Заполняем ПАСПОРТ (поля, которые начинаются на f_)
+    let map = {
+        machine:"f_machine", mold:"f_mold", product:"f_product", 
+        material:"f_material", material2:"f_material2", 
+        ratio1:"f_ratio1", ratio2:"f_ratio2", 
+        color:"f_color", dye:"f_dye", cavities:"f_cavities", 
+        weight:"f_weight", cycle:"f_cycle", 
+        doser_pct:"f_doser_pct", doser_num:"f_doser_num", 
+        status:"f_status", note:"f_note"
+    };
+    Object.entries(map).forEach(([k,v]) => {
+        if($(v)) $(v).value = c[k] ?? "";
+    });
+
+    // 2. Заполняем ПАРАМЕТРЫ (вкладки: смыкание, впрыск и т.д.)
+    if (c.params) {
+        Object.entries(c.params).forEach(([k,v]) => {
+            let field = document.getElementById(k);
+            if(field) field.value = v;
+        });
+    }
+
+    // 3. Заполняем выпадающие списки
+    if($("decomp_mode")) $("decomp_mode").value = c.params?.decomp_mode || "После загрузки";
+
+    closeModal("modal-view");
+    openModal("modal-editor");
 }
 
 async function delHistory(i){ if(userRole!=='editor'){alert("Нет прав");return;} if(!confirm("Удалить эту версию из истории?")) return; let c = db.find(x=>x.id===idNow); if(c && c.history) { c.history.splice(i, 1); await dbFire.collection("cards").doc(idNow).set(c); openCard(idNow); } }
