@@ -7,26 +7,52 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23141f32'/><text x='50' y='50' font-size='50' text-anchor='middle' dominant-baseline='central' fill='%234c9aff' font-family='Arial' font-weight='bold'>Т</text></svg>">
 <style>
 :root{--bg:#0b1220;--p:#141f32;--p2:#1b2940;--b:#293950;--t:#edf3fc;--m:#91a2bb;--a:#4c9aff;--g:#24bd88;--r:#f16b72;--o:#f0ad4e}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px system-ui,Arial;padding-bottom:80px}.head{position:sticky;top:0;background:#101b2df5;padding:14px 16px;border-bottom:1px solid var(--b);z-index:5;display:flex;justify-content:space-between}.logo{font-weight:900;font-size:19px}.logo i{color:var(--a);font-style:normal}.head-right{display:flex; align-items:center; gap:10px;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--t);font:15px system-ui,Arial;padding-bottom:80px}
+.head{position:sticky;top:0;background:#101b2df5;padding:14px 16px;border-bottom:1px solid var(--b);z-index:100;display:flex;justify-content:space-between}
+.logo{font-weight:900;font-size:19px}.logo i{color:var(--a);font-style:normal}
+.head-right{display:flex; align-items:center; gap:10px;}
 #saveStatus{white-space:nowrap;}
-.btn-logout{
-  display:flex; align-items:center; gap:6px;
-  background:var(--p2); border:1px solid var(--b);
-  color:var(--m); font:inherit; font-size:12px; font-weight:600;
-  padding:7px 11px; border-radius:9px; cursor:pointer;
-  transition:all .15s ease; min-height:34px;
-}
+.btn-logout{display:flex; align-items:center; gap:6px; background:var(--p2); border:1px solid var(--b); color:var(--m); font:inherit; font-size:12px; font-weight:600; padding:7px 11px; border-radius:9px; cursor:pointer; transition:all .15s ease; min-height:34px;}
 .btn-logout:hover{border-color:var(--r); color:var(--r); background:#2a1a1e;}
 .btn-logout:active{transform:scale(.97);}
 .logout-icon{font-size:15px; line-height:1;}
-@media(max-width:380px){
-  .logout-text{display:none;}
-  .btn-logout{padding:7px 9px;}
-}main{max-width:760px;margin:auto;padding:14px}h2{font-size:21px;margin:8px 0}.muted,.note{color:var(--m);font-size:12px}.panel,.card{background:var(--p);border:1px solid var(--b);border-radius:14px;padding:14px;margin:12px 0}.pt{font-weight:800;margin-bottom:12px}label{display:block;color:var(--m);font-size:12px;margin:0 0 5px}input,select,textarea{width:100%;background:var(--p2);border:1px solid var(--b);border-radius:9px;color:var(--t);padding:11px;min-height:43px;font:inherit}textarea{min-height:75px}.field{margin:0 0 11px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.btn{border:0;border-radius:10px;padding:12px;background:var(--a);color:white;font-weight:800;min-height:43px}.green{background:var(--g);color:#06251c}.red{background:#71313c}.gray{background:var(--p2);border:1px solid var(--b)}.row{display:flex;gap:8px;margin-top:12px}.row>*{flex:1}.machinegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.machine{background:var(--p);border:1px solid var(--b);color:var(--t);padding:11px;border-radius:11px;text-align:left}.machine small{display:block;color:var(--m)}.tabs{display:flex;gap:6px;overflow:auto;padding:5px 0 12px}.tab{white-space:nowrap;background:var(--p);border:1px solid var(--b);color:var(--m);padding:9px 11px;border-radius:9px}.tab.active{background:#244a78;color:white}.screen{display:none}.screen.active{display:block}.dir{display:flex;align-items:center;gap:13px;padding:13px;border-radius:11px;font-weight:900;margin:10px 0}.dir b{font-size:30px}.dir small{display:block;font-size:11px;font-weight:500}.close{background:#173d34;border:1px solid #26765f}.open{background:#382b1b;border:1px solid #8b632b}.badge{font-size:11px;border-radius:7px;padding:5px 8px;background:#55401f;color:#ffd58b}.approved{background:#174c3c;color:#8ef0c8}.checked{background:#3b3c65;color:#c4c5ff}.archived{background:#343b46;color:#b9c1cc}.info{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--b);font-size:13px}.info b{text-align:right;overflow-wrap:anywhere}.history{border-left:3px solid var(--a);background:var(--p2);padding:9px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#111d30;border-top:1px solid var(--b);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:6}.bottom button{background:none;border:0;color:var(--m);font-size:11px}.bottom span{display:block;font-size:20px}.bottom .active{color:#77b5ff}.hidden{display:none!important}.empty{text-align:center;padding:20px;color:var(--m);font-size:13px}
-/* Модальное окно карты */
-#view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 5000; overflow-y: auto; padding: 14px; box-sizing: border-box; }
-#view.hidden { display: none; }
+@media(max-width:380px){ .logout-text{display:none;} .btn-logout{padding:7px 9px;} }
 
+main{max-width:760px;margin:auto;padding:14px}
+h2{font-size:21px;margin:8px 0}.muted,.note{color:var(--m);font-size:12px}
+.panel,.card{background:var(--p);border:1px solid var(--b);border-radius:14px;padding:14px;margin:12px 0}
+.pt{font-weight:800;margin-bottom:12px}
+label{display:block;color:var(--m);font-size:12px;margin:0 0 5px}
+input,select,textarea{width:100%;background:var(--p2);border:1px solid var(--b);border-radius:9px;color:var(--t);padding:11px;min-height:43px;font:inherit}
+textarea{min-height:75px}
+.field{margin:0 0 11px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.btn{border:0;border-radius:10px;padding:12px;background:var(--a);color:white;font-weight:800;min-height:43px;cursor:pointer}
+.green{background:var(--g);color:#06251c}.red{background:#71313c}.gray{background:var(--p2);border:1px solid var(--b)}.orange{background:var(--o);color:#000}
+.row{display:flex;gap:8px;margin-top:12px}.row>*{flex:1}
+.machinegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.machine{background:var(--p);border:1px solid var(--b);color:var(--t);padding:11px;border-radius:11px;text-align:left;cursor:pointer}
+.machine small{display:block;color:var(--m)}
+.tabs{display:flex;gap:6px;overflow:auto;padding:5px 0 12px}
+.tab{white-space:nowrap;background:var(--p);border:1px solid var(--b);color:var(--m);padding:9px 11px;border-radius:9px;cursor:pointer}
+.tab.active{background:#244a78;color:white}
+.dir{display:flex;align-items:center;gap:13px;padding:13px;border-radius:11px;font-weight:900;margin:10px 0}
+.dir b{font-size:30px}.dir small{display:block;font-size:11px;font-weight:500}
+.close{background:#173d34;border:1px solid #26765f}.open{background:#382b1b;border:1px solid #8b632b}
+.badge{font-size:11px;border-radius:7px;padding:5px 8px;background:#55401f;color:#ffd58b}
+.approved{background:#174c3c;color:#8ef0c8}.checked{background:#3b3c65;color:#c4c5ff}.archived{background:#343b46;color:#b9c1cc}
+.info{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--b);font-size:13px}
+.info b{text-align:right;overflow-wrap:anywhere}
+.history{border-left:3px solid var(--a);background:var(--p2);padding:9px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+/* НИЖНЕЕ МЕНЮ */
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#111d30;border-top:1px solid var(--b);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:100}
+.bottom button{background:none;border:0;color:var(--m);font-size:11px;cursor:pointer}
+.bottom span{display:block;font-size:20px}.bottom .active{color:#77b5ff}
+.hidden{display:none!important}.empty{text-align:center;padding:20px;color:var(--m);font-size:13px}
+
+/* МАТРИЦЫ */
 .matrix{width:100%;border-collapse:collapse;margin-bottom:15px}
 .matrix th{font-size:11px;color:var(--m);font-weight:normal;padding:5px;text-align:center;border-bottom:1px solid var(--b)}
 .matrix td{padding:3px;border-bottom:1px solid var(--b);text-align:center}
@@ -39,6 +65,7 @@
 .btn-back-view{background:var(--p2); border:1px solid var(--b); color:var(--t); padding:6px 12px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer;}
 .btn-top-edit{background:var(--p2); border:1px solid var(--a); color:var(--a); padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; margin-left:auto;}
 
+/* ШНЕК И КОНТРОЛЛЕР */
 .blow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .blow-box { background: var(--p2); border: 1px solid var(--b); border-radius: 8px; padding: 8px; }
 .blow-box .pt { margin-bottom: 8px; font-size: 12px; color: var(--a); text-align: center; }
@@ -65,50 +92,39 @@
 .hyd-table .label-cell { font-size: 12px; font-weight: bold; color: var(--t); text-align: left; width: 40%; }
 .hyd-table input, .hyd-table select { text-align: center; }
 
+/* РЕМОНТ */
+.repair-status{font-size:11px;border-radius:7px;padding:5px 8px;font-weight:bold}
+.rs-open{background:#55401f;color:#ffd58b}.rs-work{background:#3b3c65;color:#c4c5ff}.rs-done{background:#174c3c;color:#8ef0c8}
+
+/* УНИВЕРСАЛЬНЫЕ СТРАНИЦЫ (Главная, Данные, Ремонт) */
+.page { display: none; }
+.page.active { display: block; }
+
+/* УНИВЕРСАЛЬНЫЕ МОДАЛЬНЫЕ ОКНА (Карта, Редактор) */
+.modal { 
+    position: fixed; 
+    top: 0; left: 0; width: 100%; height: 100%; 
+    background: var(--bg); 
+    z-index: 5000; 
+    overflow-y: auto; 
+    padding: 14px; 
+    box-sizing: border-box; 
+    display: none;
+}
+.modal.active { display: block; }
+
+/* ВКЛАДКИ ВНУТРИ КАРТЫ */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
 @media(max-width:380px){
     .grid{grid-template-columns:1fr}.matrix td.label-cell{font-size:10px;width:70px}.blow-grid{grid-template-columns:1fr}.screw-container, .ctrl-container { gap: 2px; } .zone input { font-size: 12px; padding: 2px; } .zone label { font-size: 8px; } .zone-name { font-size: 8px; }
     .hyd-title-row { flex-direction: column; align-items: flex-start; gap: 5px; } .hyd-title-row select { width: 100%; } .hyd-header { grid-template-columns: 1fr; } .hyd-table .label-cell { font-size: 10px; } .hyd-table input, .hyd-table select { font-size: 12px; padding: 4px; min-height: 30px;}
 }
-/* КАСТОМНЫЙ ВЫПАДАЮЩИЙ СПИСОК */
-.custom-select-wrapper { position: relative; user-select: none; width: 100%; }
-.custom-select-trigger {
-    position: relative; display: flex; align-items: center; justify-content: space-between;
-    padding: 11px; font-size: 15px; color: var(--t);
-    background: var(--p2); border: 1px solid var(--b); border-radius: 9px; cursor: pointer;
-    min-height: 43px;
-}
-.custom-select-trigger .arrow { font-size: 10px; color: var(--m); }
-.custom-options {
-    position: absolute; display: none; top: 100%; left: 0; right: 0;
-    background: var(--p); border: 1px solid var(--a); border-radius: 9px;
-    margin-top: 5px; z-index: 100; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
-.custom-options.open { display: block; }
-.custom-option {
-    padding: 12px 11px; cursor: pointer; border-bottom: 1px solid var(--b);
-    font-size: 14px; color: var(--t); transition: background 0.2s;
-}
-.custom-option:last-child { border-bottom: none; }
-.custom-option:hover { background: var(--p2); }
-.custom-option.selected { background: #244a78; color: white; font-weight: bold; }
-
-/* Новые стили для сервиса */
-.service-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.service-card{background:var(--p);border:1px solid var(--b);border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:border-color .2s}
-.service-card:hover{border-color:var(--a)}
-.service-card b{font-size:38px;display:block;margin-bottom:8px}
-.service-card span{font-weight:800;font-size:16px;display:block}
-.service-card small{color:var(--m);font-size:11px;display:block;margin-top:4px}
-.repair-status{font-size:11px;border-radius:7px;padding:5px 8px;font-weight:bold}
-.rs-open{background:#55401f;color:#ffd58b}
-.rs-work{background:#3b3c65;color:#c4c5ff}
-.rs-done{background:#174c3c;color:#8ef0c8}
-.rs-to{background:#2a3d5c;color:#9bc4ff}
-.rs-fault{background:#71313c;color:#ffb6b9}
-@media(max-width:380px){.service-grid{grid-template-columns:1fr}}
-</style></head>
+</style>
+</head>
 <body>
+
 <!-- ЭКРАН ВХОДА -->
 <div id="loginScreen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px;">
   <h1 style="color:var(--a); margin-bottom:20px; text-align:center;">ТПА БАЗА</h1>
@@ -126,6 +142,7 @@
     <p class="muted" id="loginError" style="color:var(--r); text-align:center; margin-top:10px;"></p>
   </div>
 </div>
+
 <header class="head">
   <div>
     <div class="logo">TECHNO <i>BASE</i></div>
@@ -139,8 +156,11 @@
     </button>
   </div>
 </header>
-        <main>
-      <h2>Рабочая панель</h2>
+
+<main>
+  <!-- СТРАНИЦА: ГЛАВНАЯ -->
+  <section id="page-home" class="page active">
+    <h2>Рабочая панель</h2>
     <p class="muted">Поиск и управление технологическими картами</p>
     <div class="grid">
       <div class="panel"><b>16</b><div class="muted">Станков</div></div>
@@ -160,11 +180,77 @@
       <div id="cards"></div>
     </div>
     <button class="btn green" style="width:100%" onclick="newCard()">＋ Создать карту</button>
-    <button class="btn gray" style="width:100%; margin-top:10px;" onclick="logout()">Выйти из системы</button>
   </section>
 
-  <!-- РЕДАКТОР КАРТЫ -->
-  <section id="editor" class="hidden">
+  <!-- СТРАНИЦА: ДАННЫЕ -->
+  <section id="page-data" class="page">
+    <h2>Резервная копия</h2>
+    <div class="panel">
+      <p class="note">Экспортируй JSON и сохрани его в Google Диск и Mail Облако.</p>
+      <button class="btn green" style="width:100%" onclick="backup()">Скачать резервную копию</button>
+      <br><br>
+      <label>Восстановить из JSON</label>
+      <input type="file" id="file" accept=".json">
+      <br><br>
+      <button class="btn" style="width:100%" onclick="restore()">Восстановить</button>
+    </div>
+    <div class="panel">
+      <p class="note">Данные хранятся в браузере этого устройства. Очистка данных браузера может удалить базу — делай резервные копии.</p>
+    </div>
+  </section>
+
+  <!-- СТРАНИЦА: РЕМОНТ -->
+  <section id="page-repairs" class="page">
+    <div class="header-action">
+      <h2 style="margin:0; font-size:18px;">🔧 Журнал ремонта</h2>
+    </div>
+    <div id="repairEditorBtns" class="row" style="margin-bottom:12px;">
+      <button class="btn green" onclick="newRepair()">＋ Добавить запись</button>
+    </div>
+    <div class="panel">
+      <div class="grid">
+        <div class="field">
+          <label>Фильтр по станку</label>
+          <select id="repairFilterMachine" onchange="renderRepairs()"></select>
+        </div>
+        <div class="field">
+          <label>Фильтр по статусу</label>
+          <select id="repairFilterStatus" onchange="renderRepairs()">
+            <option value="">Все</option>
+            <option>Открыт</option>
+            <option>В работе</option>
+            <option>Выполнен</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Поиск (форма, описание, исполнитель)</label>
+        <input id="repairQuery" oninput="renderRepairs()" placeholder="Начните вводить">
+      </div>
+    </div>
+    <div id="repairList"></div>
+  </section>
+
+  <!-- МОДАЛЬНОЕ ОКНО: ПРОСМОТР КАРТЫ -->
+  <section id="modal-view" class="modal">
+    <div class="header-action">
+      <button class="btn-back-view" onclick="closeModal('modal-view')">←</button>
+      <h2 id="vTitle" style="margin:0; font-size:16px; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">...</h2>
+      <button class="btn-top-edit" onclick="duplicateCard()" style="padding: 6px 10px; font-size: 11px;">КОПИЯ</button>
+      <button class="btn-top-edit" onclick="edit()" style="padding: 6px 10px; font-size: 11px; margin-left: 5px;">РЕД.</button>
+    </div>
+    <p class="muted" id="vSub"></p>
+    <div id="vBody"></div>
+    <div class="row" style="margin-top:20px; gap: 4px;">
+      <button class="btn gray" style="font-size: 12px; padding: 8px;" onclick="closeModal('modal-view')">Назад</button>
+      <button class="btn green" style="font-size: 12px; padding: 8px;" onclick="duplicateCard()">ДУБЛИРОВАТЬ</button>
+      <button class="btn" style="font-size: 12px; padding: 8px;" onclick="edit()">РЕД.</button>
+      <button class="btn red" style="font-size: 12px; padding: 8px;" onclick="del()">Удалить</button>
+    </div>
+  </section>
+
+  <!-- МОДАЛЬНОЕ ОКНО: РЕДАКТОР КАРТЫ -->
+  <section id="modal-editor" class="modal">
     <h2 id="editTitle">Новая карта</h2>
     <p class="muted">Отдельная карта для комбинации станок + форма + материал + цвет</p>
     <div class="tabs">
@@ -177,10 +263,9 @@
       <button class="tab" onclick="tab('temp',this)">Температура</button>
       <button class="tab" onclick="tab('other',this)">Прочее</button>
     </div>
-    <div id="s-general" class="screen active">
+    
+    <div id="s-general" class="tab-content active">
       <div class="panel">
-                  <p class="muted" style="margin-top:5px;">Затирает все параметры карты значениями профиля.</p>
-        </div>
         <div class="grid">
           <div class="field"><label>Станок</label><select id="f_machine"></select></div>
           <div class="field"><label>Пресс-форма</label><input id="f_mold"></div>
@@ -214,154 +299,136 @@
         </div>
         <div class="field">
           <label>Комментарий / условия</label>
-          <textarea id="f_note" placeholder="Партия сырья, особенности формы, периферия..."></textarea>
+          <textarea id="f_note"></textarea>
         </div>
       </div>
     </div>
-    <div id="s-clamp" class="screen">
+
+    <div id="s-clamp" class="tab-content">
       <div class="panel">
         <div class="field"><label>Ход раскрытия, мм</label><input id="openStroke" type="number" step="any"></div>
-        <div class="dir close"><b>⇢</b><span>ЗАКРЫТИЕ ФОРМЫ<small>Подвижная плита движется к неподвижной</small></span></div>
+        <div class="dir close"><b>⇢</b><span>ЗАКРЫТИЕ ФОРМЫ</span></div>
         <table class="matrix" id="matrix_clamp"></table>
-        <div class="dir open"><b>⇠</b><span>РАСКРЫТИЕ ФОРМЫ<small>Подвижная плита отходит от неподвижной</small></span></div>
+        <div class="dir open"><b>⇠</b><span>РАСКРЫТИЕ ФОРМЫ</span></div>
         <table class="matrix" id="matrix_open"></table>
-        <p class="note">Стрелки условно показывают направления движения.</p>
       </div>
     </div>
-    <div id="s-inject" class="screen">
+
+    <div id="s-inject" class="tab-content">
       <div class="panel">
-        <div class="pt">💉 Впрыск по ступеням</div>
+        <div class="pt">💉 Впрыск</div>
         <table class="matrix" id="matrix_inject"></table>
         <div class="grid" style="margin-top:10px;">
-          <div class="field"><label><span class="param-icon">⌖</span>Позиция впрыска 1 (мм)</label><input id="inj_pos1" type="number" step="any"></div>
-          <div class="field"><label><span class="param-icon">⌖</span>Позиция впрыска 2 (мм)</label><input id="inj_pos2" type="number" step="any"></div>
+          <div class="field"><label>Позиция 1</label><input id="inj_pos1" type="number"></div>
+          <div class="field"><label>Позиция 2</label><input id="inj_pos2" type="number"></div>
         </div>
-        <div class="field"><label><span class="param-icon">⏱</span>Время впрыска (с)</label><input id="inj_time" type="number" step="any"></div>
+        <div class="field"><label>Время впрыска</label><input id="inj_time" type="number"></div>
       </div>
       <div class="panel">
-        <div class="pt">⏳ Выдержка под давлением</div>
+        <div class="pt">⏳ Выдержка</div>
         <table class="matrix" id="matrix_hold"></table>
         <div class="grid" style="margin-top:10px;">
-          <div class="field"><label><span class="param-icon">⏱</span>Время выдержки 1 (с)</label><input id="hold_time1" type="number" step="any"></div>
-          <div class="field"><label><span class="param-icon">⏱</span>Время выдержки 2 (с)</label><input id="hold_time2" type="number" step="any"></div>
+          <div class="field"><label>Время выд. 1</label><input id="hold_time1" type="number"></div>
+          <div class="field"><label>Время выд. 2</label><input id="hold_time2" type="number"></div>
         </div>
       </div>
     </div>
-    <div id="s-plastic" class="screen">
+
+    <div id="s-plastic" class="tab-content">
       <div class="panel">
-        <div class="pt">⚙️ Набор дозы (Пластикация)</div>
+        <div class="pt">⚙️ Набор дозы</div>
         <table class="matrix" id="matrix_plastic"></table>
       </div>
       <div class="panel">
         <div class="pt">💨 Декомпрессия</div>
-        <div class="field">
-          <label>Режим декомпрессии</label>
-          <select id="decomp_mode">
-            <option value="После загрузки">После загрузки</option>
-            <option value="До загрузки">До загрузки</option>
-          </select>
-        </div>
-        <div class="field"><label><span class="param-icon">◉</span>Давление (Бар)</label><input id="decomp_press" type="number" step="any"></div>
-        <div class="field"><label><span class="param-icon">↗</span>Скорость (%)</label><input id="decomp_speed" type="number" step="any"></div>
-        <div class="field" style="margin-bottom:0;"><label><span class="param-icon">⌖</span>Позиция (мм)</label><input id="decomp_dist" type="number" step="any"></div>
+        <div class="field"><label>Режим</label><select id="decomp_mode"><option value="После загрузки">После загрузки</option><option value="До загрузки">До загрузки</option></select></div>
+        <div class="field"><label>Давление</label><input id="decomp_press" type="number"></div>
+        <div class="field"><label>Скорость</label><input id="decomp_speed" type="number"></div>
+        <div class="field"><label>Позиция</label><input id="decomp_dist" type="number"></div>
       </div>
       <div class="panel">
         <div class="pt">Вторая загрузка</div>
         <div class="grid">
-          <div class="field"><label><span class="param-icon">⌖</span>Позиция (мм)</label><input id="load2_pos" type="number" step="any"></div>
-          <div class="field"><label><span class="param-icon">⏱</span>Время (с)</label><input id="load2_time" type="number" step="any"></div>
+          <div class="field"><label>Позиция</label><input id="load2_pos" type="number"></div>
+          <div class="field"><label>Время</label><input id="load2_time" type="number"></div>
         </div>
       </div>
       <div class="panel">
         <div class="pt">❄️ Охлаждение</div>
         <div class="grid">
-          <div class="field"><label><span class="param-icon">⏱</span>Задержка (с)</label><input id="cool_delay" type="number" step="any"></div>
-          <div class="field"><label><span class="param-icon">⏱</span>Время (с)</label><input id="coolTime" type="number" step="any"></div>
+          <div class="field"><label>Задержка</label><input id="cool_delay" type="number"></div>
+          <div class="field"><label>Время</label><input id="coolTime" type="number"></div>
         </div>
       </div>
     </div>
-    <div id="s-eject" class="screen">
+
+    <div id="s-eject" class="tab-content">
       <div class="panel">
-        <div class="dir open"><b>⇢</b><span>ВЫТАЛКИВАНИЕ ВПЕРЕД<small>Движение плиты вперед</small></span></div>
+        <div class="dir open"><b>⇢</b><span>ВЫТАЛКИВАНИЕ ВПЕРЕД</span></div>
         <table class="matrix" id="matrix_eject_fwd"></table>
-        <div class="field"><label><span class="param-icon">⏱</span>Время задержки (с)</label><input id="ej_fwd_delay" type="number" step="any"></div>
+        <div class="field"><label>Задержка</label><input id="ej_fwd_delay" type="number"></div>
       </div>
       <div class="panel">
-        <div class="dir close"><b>⇠</b><span>ВЫТАЛКИВАНИЕ НАЗАД<small>Возврат плиты</small></span></div>
+        <div class="dir close"><b>⇠</b><span>ВЫТАЛКИВАНИЕ НАЗАД</span></div>
         <table class="matrix" id="matrix_eject_back"></table>
-        <div class="field"><label><span class="param-icon">⏱</span>Время задержки (с)</label><input id="ej_back_delay" type="number" step="any"></div>
+        <div class="field"><label>Задержка</label><input id="ej_back_delay" type="number"></div>
       </div>
       <div class="panel">
-        <div class="pt">💨 Сдув (Пневматика)</div>
+        <div class="pt">💨 Сдув</div>
         <div class="blow-grid">
-          <div class="blow-box"><div class="pt">СДУВ А</div><div class="field"><label>Время действия (с)</label><input id="blow_a_time" type="number" step="any"></div><div class="field"><label>Позиция старта (мм)</label><input id="blow_a_pos" type="number" step="any"></div><div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_a_delay" type="number" step="any"></div></div>
-          <div class="blow-box"><div class="pt">СДУВ В</div><div class="field"><label>Время действия (с)</label><input id="blow_b_time" type="number" step="any"></div><div class="field"><label>Позиция старта (мм)</label><input id="blow_b_pos" type="number" step="any"></div><div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_b_delay" type="number" step="any"></div></div>
-          <div class="blow-box"><div class="pt">СДУВ С</div><div class="field"><label>Время действия (с)</label><input id="blow_c_time" type="number" step="any"></div><div class="field"><label>Позиция старта (мм)</label><input id="blow_c_pos" type="number" step="any"></div><div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_c_delay" type="number" step="any"></div></div>
-          <div class="blow-box"><div class="pt">СДУВ D</div><div class="field"><label>Время действия (с)</label><input id="blow_d_time" type="number" step="any"></div><div class="field"><label>Позиция старта (мм)</label><input id="blow_d_pos" type="number" step="any"></div><div class="field" style="margin-bottom:0;"><label>Время задержки (с)</label><input id="blow_d_delay" type="number" step="any"></div></div>
+          <div class="blow-box"><div class="pt">СДУВ А</div><div class="field"><label>Время</label><input id="blow_a_time" type="number"></div><div class="field"><label>Позиция</label><input id="blow_a_pos" type="number"></div><div class="field"><label>Задержка</label><input id="blow_a_delay" type="number"></div></div>
+          
+          <div class="blow-box"><div class="pt">СДУВ С</div><div class="field"><label>Время</label><input id="blow_c_time" type="number"></div><div class="field"><label>Позиция</label><input id="blow_c_pos" type="number"></div><div class="field"><label>Задержка</label><input id="blow_c_delay" type="number"></div></div>
+          <div class="blow-box"><div class="pt">СДУВ В</div><div class="field"><label>Время</label><input id="blow_b_time" type="number"></div><div class="field"><label>Позиция</label><input id="blow_b_pos" type="number"></div><div class="field"><label>Задержка</label><input id="blow_b_delay" type="number"></div></div>
+          <div class="blow-box"><div class="pt">СДУВ D</div><div class="field"><label>Время</label><input id="blow_d_time" type="number"></div><div class="field"><label>Позиция</label><input id="blow_d_pos" type="number"></div><div class="field"><label>Задержка</label><input id="blow_d_delay" type="number"></div></div>
         </div>
       </div>
     </div>
-    <div id="s-hydraulic" class="screen">
+
+    <div id="s-hydraulic" class="tab-content">
       <div class="panel">
-        <div class="pt">💧 Гидравлический съём (Гидросъем)</div>
-        <div class="hyd-block">
-          <div class="hyd-title-row"><div class="pt">Знак А</div><select id="hyd_a_mark"><option>Не использовать</option><option>Знак</option><option>Винт</option></select></div>
-          <div class="hyd-header">
-            <div><label>Режим 1</label><select id="hyd_a_mode1"><option>Ход</option><option>Время</option></select></div>
-            <div><label>Режим 2</label><select id="hyd_a_mode2"><option>Ход</option><option>Время</option></select></div>
-          </div>
-          <table class="hyd-table">
-            <thead><tr><th></th><th>Знак Ввод</th><th>Знак Вывод</th></tr></thead>
-            <tbody>
-              <tr><td class="label-cell">Давление (Бар)</td><td><input id="hyd_a_press_in" type="number"></td><td><input id="hyd_a_press_out" type="number"></td></tr>
-              <tr><td class="label-cell">Скорость (%)</td><td><input id="hyd_a_speed_in" type="number"></td><td><input id="hyd_a_speed_out" type="number"></td></tr>
-              <tr><td class="label-cell">Время действ. (с)</td><td><input id="hyd_a_time_in" type="number"></td><td><input id="hyd_a_time_out" type="number"></td></tr>
-              <tr><td class="label-cell">Кол-во оборотов</td><td><input id="hyd_a_rev1_in" type="number"></td><td><input id="hyd_a_rev1_out" type="number"></td></tr>
-              <tr><td class="label-cell">Кол-во оборотов 2</td><td></td><td><input id="hyd_a_rev2_out" type="number"></td></tr>
-              <tr><td class="label-cell">Активация</td><td><select id="hyd_a_act_in"><option>НЗак</option><option>Сред</option><option>КЗак</option></select></td><td><select id="hyd_a_act_out"><option>НОткр</option><option>Сред</option><option>КОтк</option></select></td></tr>
-              <tr><td class="label-cell">Позиция актив.</td><td><input id="hyd_a_pos_in" type="number"></td><td><input id="hyd_a_pos_out" type="number"></td></tr>
-              <tr><td class="label-cell">Удержание</td><td></td><td><select id="hyd_a_hold"><option>Удер.</option><option>Отмена</option></select></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="hyd-block">
-          <div class="hyd-title-row"><div class="pt">Знак В</div><select id="hyd_b_mark"><option>Не использовать</option><option>Знак</option><option>Винт</option></select></div>
-          <div class="hyd-header">
-            <div><label>Режим 1</label><select id="hyd_b_mode1"><option>Ход</option><option>Время</option></select></div>
-            <div><label>Режим 2</label><select id="hyd_b_mode2"><option>Ход</option><option>Время</option></select></div>
-          </div>
-          <table class="hyd-table">
-            <thead><tr><th></th><th>Знак Ввод</th><th>Знак Вывод</th></tr></thead>
-            <tbody>
-              <tr><td class="label-cell">Давление (Бар)</td><td><input id="hyd_b_press_in" type="number"></td><td><input id="hyd_b_press_out" type="number"></td></tr>
-              <tr><td class="label-cell">Скорость (%)</td><td><input id="hyd_b_speed_in" type="number"></td><td><input id="hyd_b_speed_out" type="number"></td></tr>
-              <tr><td class="label-cell">Время действ. (с)</td><td><input id="hyd_b_time_in" type="number"></td><td><input id="hyd_b_time_out" type="number"></td></tr>
-              <tr><td class="label-cell">Кол-во оборотов</td><td><input id="hyd_b_rev1_in" type="number"></td><td><input id="hyd_b_rev1_out" type="number"></td></tr>
-              <tr><td class="label-cell">Кол-во оборотов 2</td><td></td><td><input id="hyd_b_rev2_out" type="number"></td></tr>
-              <tr><td class="label-cell">Активация</td><td><select id="hyd_b_act_in"><option>НЗак</option><option>Сред</option><option>КЗак</option></select></td><td><select id="hyd_b_act_out"><option>НОткр</option><option>Сред</option><option>КОтк</option></select></td></tr>
-              <tr><td class="label-cell">Позиция актив.</td><td><input id="hyd_b_pos_in" type="number"></td><td><input id="hyd_b_pos_out" type="number"></td></tr>
-              <tr><td class="label-cell">Удержание</td><td></td><td><select id="hyd_b_hold"><option>Удер.</option><option>Отмена</option></select></td></tr>
-            </tbody>
-          </table>
-        </div>
+        <div class="pt">💧 Гидравлика (Знак А)</div>
+        <div class="hyd-title-row"><div class="pt">Знак А</div><select id="hyd_a_mark"><option>Не использовать</option><option>Знак</option><option>Винт</option></select></div>
+        <div class="hyd-header"><div><label>Режим 1</label><select id="hyd_a_mode1"><option>Ход</option><option>Время</option></select></div><div><label>Режим 2</label><select id="hyd_a_mode2"><option>Ход</option><option>Время</option></select></div></div>
+        <table class="hyd-table"><thead><tr><th></th><th>Ввод</th><th>Вывод</th></tr></thead><tbody>
+          <tr><td class="label-cell">Давление</td><td><input id="hyd_a_press_in" type="number"></td><td><input id="hyd_a_press_out" type="number"></td></tr>
+          <tr><td class="label-cell">Скорость</td><td><input id="hyd_a_speed_in" type="number"></td><td><input id="hyd_a_speed_out" type="number"></td></tr>
+          <tr><td class="label-cell">Время</td><td><input id="hyd_a_time_in" type="number"></td><td><input id="hyd_a_time_out" type="number"></td></tr>
+          <tr><td class="label-cell">Обороты</td><td><input id="hyd_a_rev1_in" type="number"></td><td><input id="hyd_a_rev1_out" type="number"></td></tr>
+          <tr><td class="label-cell">Активация</td><td><select id="hyd_a_act_in"><option>НЗак</option><option>Сред</option><option>КЗак</option></select></td><td><select id="hyd_a_act_out"><option>НОткр</option><option>Сред</option><option>КОтк</option></select></td></tr>
+          <tr><td class="label-cell">Позиция</td><td><input id="hyd_a_pos_in" type="number"></td><td><input id="hyd_a_pos_out" type="number"></td></tr>
+        </tbody></table>
+      </div>
+      <div class="panel">
+        <div class="pt">💧 Гидравлика (Знак В)</div>
+        <div class="hyd-title-row"><div class="pt">Знак В</div><select id="hyd_b_mark"><option>Не использовать</option><option>Знак</option><option>Винт</option></select></div>
+        <div class="hyd-header"><div><label>Режим 1</label><select id="hyd_b_mode1"><option>Ход</option><option>Время</option></select></div><div><label>Режим 2</label><select id="hyd_b_mode2"><option>Ход</option><option>Время</option></select></div></div>
+        <table class="hyd-table"><thead><tr><th></th><th>Ввод</th><th>Вывод</th></tr></thead><tbody>
+          <tr><td class="label-cell">Давление</td><td><input id="hyd_b_press_in" type="number"></td><td><input id="hyd_b_press_out" type="number"></td></tr>
+          <tr><td class="label-cell">Скорость</td><td><input id="hyd_b_speed_in" type="number"></td><td><input id="hyd_b_speed_out" type="number"></td></tr>
+          <tr><td class="label-cell">Время</td><td><input id="hyd_b_time_in" type="number"></td><td><input id="hyd_b_time_out" type="number"></td></tr>
+          <tr><td class="label-cell">Обороты</td><td><input id="hyd_b_rev1_in" type="number"></td><td><input id="hyd_b_rev1_out" type="number"></td></tr>
+          <tr><td class="label-cell">Активация</td><td><select id="hyd_b_act_in"><option>НЗак</option><option>Сред</option><option>КЗак</option></select></td><td><select id="hyd_b_act_out"><option>НОткр</option><option>Сред</option><option>КОтк</option></select></td></tr>
+          <tr><td class="label-cell">Позиция</td><td><input id="hyd_b_pos_in" type="number"></td><td><input id="hyd_b_pos_out" type="number"></td></tr>
+        </tbody></table>
       </div>
     </div>
-    <div id="s-temp" class="screen">
+
+    <div id="s-temp" class="tab-content">
       <div class="panel">
-        <div class="pt">🌡️ Температуры по зонам (°C)</div>
+        <div class="pt">🌡️ Температуры (шнек)</div>
         <div class="screw-container">
           <div class="nozzle"></div>
-          <div class="zone"><label>Зона 1</label><input id="t_z1" type="number" step="any"><div class="zone-name">Сопло</div></div>
-          <div class="zone"><label>Зона 2</label><input id="t_z2" type="number" step="any"><div class="zone-name">2</div></div>
-          <div class="zone"><label>Зона 3</label><input id="t_z3" type="number" step="any"><div class="zone-name">3</div></div>
-          <div class="zone"><label>Зона 4</label><input id="t_z4" type="number" step="any"><div class="zone-name">4</div></div>
-          <div class="zone"><label>Зона 5</label><input id="t_z5" type="number" step="any"><div class="zone-name">5</div></div>
-          <div class="zone"><label>Зона 6</label><input id="t_z6" type="number" step="any"><div class="zone-name">Загрузка</div></div>
+          <div class="zone"><label>Зона 1</label><input id="t_z1" type="number"><div class="zone-name">Сопло</div></div>
+          <div class="zone"><label>Зона 2</label><input id="t_z2" type="number"><div class="zone-name">2</div></div>
+          <div class="zone"><label>Зона 3</label><input id="t_z3" type="number"><div class="zone-name">3</div></div>
+          <div class="zone"><label>Зона 4</label><input id="t_z4" type="number"><div class="zone-name">4</div></div>
+          <div class="zone"><label>Зона 5</label><input id="t_z5" type="number"><div class="zone-name">5</div></div>
+          <div class="zone"><label>Зона 6</label><input id="t_z6" type="number"><div class="zone-name">Загрузка</div></div>
         </div>
-        <p class="note">Цилиндр нагрева. Слева — сопло, справа — зона загрузки.</p>
       </div>
       <div class="panel">
-        <div class="pt">🔥 Контроллер (Температуры формы)</div>
+        <div class="pt">🔥 Контроллер (формы)</div>
         <div class="ctrl-container">
           <div class="zone"><label>1</label><input id="ctrl_z1" type="number"></div>
           <div class="zone"><label>2</label><input id="ctrl_z2" type="number"></div>
@@ -372,97 +439,23 @@
         </div>
       </div>
     </div>
-    <div id="s-other" class="screen">
+
+    <div id="s-other" class="tab-content">
       <div class="panel">
-        <div class="pt">Дополнительные параметры</div>
-        <div class="grid">
-          <div class="field"><label>Системное давление</label><input id="systemPressure" type="number"></div>
-        </div>
-        <div class="field"><label>Другие параметры</label><textarea id="extraNote"></textarea></div>
+        <div class="pt">Дополнительно</div>
+        <div class="field"><label>Системное давление</label><input id="systemPressure" type="number"></div>
+        <div class="field"><label>Другое</label><textarea id="extraNote"></textarea></div>
       </div>
     </div>
+
     <div class="row">
-      <button class="btn gray" onclick="goHome()">Отмена</button>
+      <button class="btn gray" onclick="closeModal('modal-editor')">Отмена</button>
       <button class="btn green" onclick="save()">Сохранить</button>
     </div>
   </section>
 
-  <section id="view" class="hidden">
-            <div class="header-action">
-            <button class="btn-back-view" onclick="goHome()">←</button>
-            <h2 id="vTitle" style="margin:0; font-size:16px; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">...</h2>
-            <button class="btn-top-edit" onclick="duplicateCard()" style="padding: 6px 10px; font-size: 11px;">КОПИЯ</button>
-            <button class="btn-top-edit" onclick="edit()" style="padding: 6px 10px; font-size: 11px; margin-left: 5px;">РЕД.</button>
-        </div>
-    <p class="muted" id="vSub"></p>
-    <div id="vBody"></div>
-            <div class="row" style="margin-top:20px; gap: 4px;">
-            <button class="btn gray" style="font-size: 12px; padding: 8px;" onclick="goHome()">Назад</button>
-            <button class="btn green" style="font-size: 12px; padding: 8px;" onclick="duplicateCard()">ДУБЛИРОВАТЬ</button>
-            <button class="btn" style="font-size: 12px; padding: 8px;" onclick="edit()">РЕД.</button>
-            <button class="btn red" style="font-size: 12px; padding: 8px;" onclick="del()">Удалить</button>
-        </div>
-  </section>
-
-  <section id="data" class="hidden">
-    <h2>Резервная копия</h2>
-    <div class="panel">
-      <p class="note">Экспортируй JSON и сохрани его в Google Диск и Mail Облако.</p>
-      <button class="btn green" style="width:100%" onclick="backup()">Скачать резервную копию</button>
-      <br><br>
-      <label>Восстановить из JSON</label>
-      <input type="file" id="file" accept=".json">
-      <br><br>
-      <button class="btn" style="width:100%" onclick="restore()">Восстановить</button>
-    </div>
-    <div class="panel">
-      <p class="note">Данные хранятся в браузере этого устройства. Очистка данных браузера может удалить базу — делай резервные копии.</p>
-    </div>
-    <button class="btn gray" style="width:100%; margin-top:10px;" onclick="logout()">Выйти из системы</button>
-  </section>
-
-  <section id="service" class="hidden">
-    
-    <div class="service-grid">
-      <div class="service-card" onclick="openRepairs()">
-        <b>🔧</b><span>Ремонт</span><small>Журнал ремонтов и ТО</small>
-      </div>
-          </div>
-  </section>
-
-  <section id="repairs" class="hidden">
-    <div class="header-action">
-<button class="btn-back-view" onclick="goHome()">←</button>
-      <h2 style="margin:0; font-size:18px;">🔧 Журнал ремонта</h2>
-    </div>
-    <div id="repairEditorBtns" class="row" style="margin-bottom:12px;">
-      <button class="btn green" onclick="newRepair()">＋ Добавить запись</button>
-    </div>
-    <div class="panel">
-      <div class="grid">
-        <div class="field">
-          <label>Фильтр по станку</label>
-          <select id="repairFilterMachine" onchange="renderRepairs()"></select>
-        </div>
-        <div class="field">
-          <label>Фильтр по статусу</label>
-          <select id="repairFilterStatus" onchange="renderRepairs()">
-            <option value="">Все</option>
-            <option>Открыт</option>
-            <option>В работе</option>
-            <option>Выполнен</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label>Поиск (форма, описание, исполнитель)</label>
-        <input id="repairQuery" oninput="renderRepairs()" placeholder="Начните вводить">
-      </div>
-    </div>
-    <div id="repairList"></div>
-  </section>
-
-  <section id="repairEditor" class="hidden">
+  <!-- МОДАЛЬНОЕ ОКНО: РЕДАКТОР РЕМОНТА -->
+  <section id="modal-repair-editor" class="modal">
     <h2 id="repairEditorTitle">Новая запись</h2>
     <div class="panel">
       <div class="grid">
@@ -486,7 +479,7 @@
         </div>
         <div class="field"><label>Исполнитель</label><input id="r_executor" placeholder="ФИО"></div>
       </div>
-      <div class="field"><label>Описание работ</label><textarea id="r_desc" placeholder="Что сделано / что требуется"></textarea></div>
+      <div class="field"><label>Описание работ</label><textarea id="r_desc"></textarea></div>
       <div class="grid">
         <div class="field"><label>Запчасти</label><input id="r_parts"></div>
         <div class="field"><label>Стоимость, ₽</label><input id="r_cost" type="number" step="any"></div>
@@ -494,34 +487,18 @@
       <div class="field"><label>Комментарий</label><textarea id="r_note"></textarea></div>
     </div>
     <div class="row">
-      <button class="btn gray" onclick="openRepairs()">Отмена</button>
+      <button class="btn gray" onclick="closeModal('modal-repair-editor')">Отмена</button>
       <button class="btn green" onclick="saveRepair()">Сохранить</button>
     </div>
   </section>
 
-  <section id="profiles" class="hidden">
-       
-  </section>
-
-  <section id="profileEditor" class="hidden">
-    <h2 id="profileEditorTitle">Новый профиль</h2>
-    <div class="panel">
-      <div class="field"><label>Название профиля</label><input id="p_name" placeholder="Например: ПП тонкостенное"></div>
-      <div class="field"><label>Описание</label><textarea id="p_desc" placeholder="Для какого материала / изделия"></textarea></div>
-      <p class="note">Профиль сохранит текущие параметры карты. Сначала открой карту, из которой хочешь взять настройки, или создай профиль вручную из редактора карты.</p>
-    </div>
-    <div class="row">
-      <button class="btn gray" onclick="openProfiles()">Отмена</button>
-      <button class="btn green" onclick="saveProfileFromCard()">Сохранить из текущей карты</button>
-    </div>
-  </section>
 </main>
 
 <nav class="bottom">
-  <button class="active" onclick="nav('home',this)"><span>⌂</span>Главная</button>
+  <button class="active" onclick="nav('page-home',this)"><span>⌂</span>Главная</button>
   <button onclick="newCard()"><span>＋</span>Новая карта</button>
-<button onclick="openRepairs(this)"><span>🔧</span>Ремонт</button>
-  <button onclick="nav('data',this)"><span>▤</span>Данные</button>
+  <button onclick="nav('page-repairs',this)"><span>🔧</span>Ремонт</button>
+  <button onclick="nav('page-data',this)"><span>▤</span>Данные</button>
 </nav>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -539,131 +516,98 @@ firebase.initializeApp(firebaseConfig);
 const dbFire = firebase.firestore();
 
 const ms=[[1,"SOUD","500"],[2,"SOUD","380"],[3,"SOUD","400"],[4,"SOUD","400"],[5,"SOUD","400"],[6,"HAITIAN","3900"],[7,"HAITIAN","3900"],[8,"SOUD","280"],[9,"HAITIAN","3300"],[10,"HAITIAN","3300"],[11,"HAITIAN","3300"],[12,"HAIXING","128"],[13,"SOUD","330"],[14,"SOUD","160"],[15,"HAITIAN","3900"],[16,"HAITIAN","3900"]];
-let db=[], repairs=[], profiles=[], idNow=null, repairIdNow=null, profileIdNow=null, profileSourceCardId=null;
+let db=[], repairs=[], idNow=null, repairIdNow=null;
 let userRole='viewer';
+let selectedMachineFilter = "";
 const $=id=>document.getElementById(id);
 const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const mn=id=>{let m=ms.find(x=>x[0]==id);return m?`ТПА №${id} · ${m[1]} ${m[2]}`:"—"};
 
+// --- ОБЛАКО ---
 dbFire.collection("cards").onSnapshot((snapshot)=>{
   db=[];
   snapshot.forEach(doc=>db.push({id:doc.id,...doc.data()}));
-  $("saveStatus").textContent="● Облако · подключено";
-  render();
-  if(typeof fillQueryHints === 'function') fillQueryHints();
-},(error)=>{
-  console.error(error);
-  $("saveStatus").textContent="● Нет связи с базой";
+  $("saveStatus").textContent="● Облако";
   render();
 });
 dbFire.collection("repairs").onSnapshot((snapshot)=>{
-  repairs=[];snapshot.forEach(doc=>repairs.push({id:doc.id,...doc.data()}));
+  repairs=[];
+  snapshot.forEach(doc=>repairs.push({id:doc.id,...doc.data()}));
   renderRepairs();
-},(error)=>console.error("repairs error",error));
+});
 
-
-function options(){
-    let o = ms.map(m=>`<option value="${m[0]}">${mn(m[0])}</option>`).join("");
-    $("f_machine").innerHTML = o; 
-
-    // Рисуем плитки станков
-    $("machines").innerHTML = ms.map(m=>`<button class="machine" onclick="filter(${m[0]})"><b>ТПА №${m[0]}</b><small>${m[1]} · ${m[2]}</small></button>`).join("");
+// --- НАВИГАЦИЯ ---
+function nav(pageId, btn) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  let target = document.getElementById(pageId);
+  if (target) target.classList.add("active");
+  
+  document.querySelectorAll(".bottom button").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  
+  if (pageId === "page-home") render();
 }
-function toggleMachineList(){ $("machineSelectOptions").classList.toggle("open"); }
-function selectMachine(value,text){
-  $("machineSelectText").innerText = text;
-  $("machineSelectOptions").classList.remove("open");
-  document.querySelectorAll('#machineSelectOptions .custom-option').forEach(el => {
-    el.classList.toggle('selected', el.dataset.value === String(value));
-  });
-  let hiddenInput = document.getElementById('hiddenMachineFilter');
-  if(!hiddenInput){hiddenInput=document.createElement('input');hiddenInput.type='hidden';hiddenInput.id='hiddenMachineFilter';document.querySelector('.custom-select-wrapper').appendChild(hiddenInput);}
-  hiddenInput.value = value;
+
+function openModal(modalId) {
+  let target = document.getElementById(modalId);
+  if (target) target.classList.add("active");
+  if (target) target.scrollTop = 0;
+}
+
+function closeModal(modalId) {
+  let target = document.getElementById(modalId);
+  if (target) target.classList.remove("active");
+}
+
+function tab(n, b) {
+  document.querySelectorAll(".tab-content").forEach(x => x.classList.remove("active"));
+  $("s-" + n).classList.add("active");
+  document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
+  window.scrollTo(0, 0);
+}
+
+// --- ГЛАВНАЯ ---
+function options() {
+  let o = ms.map(m=>`<option value="${m[0]}">${mn(m[0])}</option>`).join("");
+  $("f_machine").innerHTML = o; 
+  $("r_machine").innerHTML = o; 
+  $("repairFilterMachine").innerHTML = '<option value="">Все станки</option>' + o;
+
+  $("machines").innerHTML = ms.map(m=>`<button class="machine" onclick="filter(${m[0]})"><b>ТПА №${m[0]}</b><small>${m[1]} · ${m[2]}</small></button>`).join("");
+}
+
+function filter(n) {
+  selectedMachineFilter = String(n);
+  $("query").value = "";
   render();
-}
-function searchScroll() {
-    // Плавно прокручиваем страницу к блоку с картами
-    let cardsBlock = document.getElementById('cards');
-    if (cardsBlock) {
-        cardsBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  $("cards").scrollIntoView({behavior:"smooth"});
 }
 
-function render(){
-    let q = $("query").value.toLowerCase().trim();
-    $("count").textContent = db.length;
-    
-    // Фильтруем: сначала по выбранному станку, потом по тексту
-    let a = db.filter(c => {
-        if (selectedMachineFilter && c.machine != selectedMachineFilter) return false;
-        if (!q) return true;
-        let searchString = [c.mold, c.product, c.material, c.material2, c.color, c.dye, c.note].join(" ").toLowerCase();
-        return searchString.includes(q);
-    });
-
-    $("cards").innerHTML = a.length ? a.map(c => `
-        <div class="card" onclick="openCard('${c.id}')">
-            <div style="display:flex;justify-content:space-between;gap:8px">
-                <b>${safe(c.mold)}</b>
-                <span class="badge ${c.status==='Утверждена'?'approved':c.status==='Проверена'?'checked':c.status==='Архивная'?'archived':''}">${safe(c.status)}</span>
-            </div>
-            <p class="muted">${mn(c.machine)} · ${safe(c.product)} · ${safe(c.material)} · ${safe(c.color)}</p>
-        </div>
-    `).join("") : '<div class="empty">Для этого станка карт нет</div>';
-}
-function fillQueryHints(){
-  let dl = $("queryHints");
-  if(!dl) return;
-  let seen = new Set();
-  let values = [];
-
-  db.forEach(c=>{
-    let s = String(c.product||"").trim();
-    if(!s) return;
-    let key = s.toLowerCase();
-    if(!seen.has(key)){ seen.add(key); values.push(s); }
+function render() {
+  let q = $("query").value.toLowerCase().trim();
+  $("count").textContent = db.length;
+  
+  let a = db.filter(c => {
+    if (selectedMachineFilter && c.machine != selectedMachineFilter) return false;
+    if (!q) return true;
+    let searchString = [c.mold, c.product, c.material, c.material2, c.color, c.dye, c.note].join(" ").toLowerCase();
+    return searchString.includes(q);
   });
 
-  values.sort((a,b)=>a.localeCompare(b,"ru"));
-  dl.innerHTML = values.map(v=>`<option value="${safe(v)}"></option>`).join("");
+  $("cards").innerHTML = a.length ? a.map(c => `
+    <div class="card" onclick="openCard('${c.id}')">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <b>${safe(c.mold)}</b>
+        <span class="badge ${c.status==='Утверждена'?'approved':c.status==='Проверена'?'checked':c.status==='Архивная'?'archived':''}">${safe(c.status)}</span>
+      </div>
+      <p class="muted">${mn(c.machine)} · ${safe(c.product)} · ${safe(c.material)} · ${safe(c.color)}</p>
+    </div>
+  `).join("") : '<div class="empty">Ничего не найдено</div>';
 }
-let selectedMachineFilter = ""; // Глобальная переменная для фильтра
 
-function filter(n){
-    selectedMachineFilter = String(n); // Запоминаем выбранный станок
-    $("query").value = ""; // Сбрасываем текстовый поиск, чтобы не мешал
-    render();
-    $("cards").scrollIntoView({behavior:"smooth"});
-}
-function nav(n, b){
-  // ПРИНУДИТЕЛЬНО скрываем модальное окно карты при любом переходе
-  let viewEl = document.getElementById("view");
-  if(viewEl) viewEl.classList.add("hidden");
-
-  ["home","editor","view","data","repairs","repairEditor"].forEach(x=>{
-    let el = $(x);
-    if (el) el.classList.add("hidden");
-  });
-  
-  let target = $(n);
-  if (target) target.classList.remove("hidden");
-  
-  document.querySelectorAll(".bottom button").forEach(x=>x.classList.remove("active"));
-  if(b) b.classList.add("active");
-  
-  if(n==="home") render();
-  if(n==="repairs") renderRepairs();
-  window.scrollTo(0,0);
-}
-function goHome(){
-    // Принудительно скрываем модальное окно карты
-    $("view").classList.add("hidden");
-    // Переходим на главную
-    nav("home", document.querySelector(".bottom button"));
-}
-function tab(n,b){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));$("s-"+n).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active"); window.scrollTo(0,0);}
-
-function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null){
+// --- РЕДАКТОР КАРТЫ ---
+function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null) {
   let table = document.getElementById(containerId);
   if(!table) return;
   let html = '<thead><tr><th></th>';
@@ -679,7 +623,8 @@ function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewO
   html += '</tbody>';
   table.innerHTML = html;
 }
-function build(){
+
+function build() {
   buildMatrix('matrix_clamp', 'cl', 5, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], false);
   buildMatrix('matrix_open', 'op', 5, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], true);
   buildMatrix('matrix_inject', 'inj', 3, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'}], true);
@@ -688,15 +633,20 @@ function build(){
   buildMatrix('matrix_eject_fwd', 'ejf', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], false);
   buildMatrix('matrix_eject_back', 'ejb', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], true);
 }
-function inputs(){return [...document.querySelectorAll("#editor input,#editor select,#editor textarea")];}
-function clearForm(){inputs().forEach(x=>x.value="");$("f_machine").value="1";$("f_status").value="Черновик";$("decomp_mode").value="После загрузки";document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.querySelector(".tab").classList.add("active");$("s-general").classList.add("active"); window.scrollTo(0,0);}
-function newCard(){
-  if(userRole==='viewer'||userRole==='mechanic'){alert("Нет прав на создание карт");return;}
-  idNow=null;clearForm();$("editTitle").textContent="Новая карта";nav("editor");
+
+function inputs(){return [...document.querySelectorAll("#modal-editor input,#modal-editor select,#modal-editor textarea")];}
+function clearForm(){inputs().forEach(x=>x.value="");$("f_machine").value="1";$("f_status").value="Черновик";$("decomp_mode").value="После загрузки";document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".tab-content").forEach(x=>x.classList.remove("active"));document.querySelector(".tab").classList.add("active");$("s-general").classList.add("active");}
+
+function newCard() {
+  if(userRole!=='editor'){alert("Нет прав");return;}
+  idNow=null;
+  clearForm();
+  $("editTitle").textContent="Новая карта";
+  openModal("modal-editor");
 }
 
-async function save(){
-  if(userRole!=='editor'){alert("Нет прав на сохранение карты");return;}
+async function save() {
+  if(userRole!=='editor'){alert("Нет прав");return;}
   if(!$("f_mold").value.trim()){alert("Укажи пресс-форму");return;}
   let old=db.find(x=>x.id===idNow),params={};
   inputs().forEach(x=>{if(!x.id.startsWith("f_"))params[x.id]=x.value;});
@@ -707,24 +657,28 @@ async function save(){
     await dbFire.collection("cards").doc(cardId).set(c);
     idNow = cardId;
     alert('Карта сохранена в облако!');
+    closeModal("modal-editor");
     openCard(cardId);
-  } catch(e) { console.error(e); alert("Ошибка сохранения! Проверьте правила Firebase."); }
+  } catch(e) { console.error(e); alert("Ошибка сохранения!"); }
 }
 
-function openCard(id){
+function openCard(id) {
   let c=db.find(x=>x.id===id);
   if(!c)return;
   idNow=id;
   $("vTitle").textContent=c.mold;
   $("vSub").textContent=mn(c.machine)+" · "+(c.product||"Изделие не указано");
+  
   let h='<div class="panel"><div class="pt">Паспорт · '+safe(c.status)+'</div>';
   let matStr = safe(c.material || "");
   if(c.material2) matStr += " + " + safe(c.material2);
   let ratioStr = "";
   if(c.ratio1 || c.ratio2) ratioStr = (c.ratio1||'0') + " / " + (c.ratio2||'0');
-  for(let [k,v] of Object.entries({Изделие:c.product,Материал:matStr,"Пропорция":ratioStr,Цвет:c.color,"Марка красителя":c.dye,"Вес, г":c.weight,"Цикл, с":c.cycle,"Дозатор, %":c.doser_pct,"Номер дозатора":c.doser_num,Комментарий:c.note})) h+=`<div class="info"><span>${k}</span><b>${safe(v||"—")}</b></div>`;
+  
+  for(let [k,v] of Object.entries({Изделие:c.product,Материал:matStr,"Пропорция":ratioStr,"Гнездность":c.cavities,Цвет:c.color,"Марка красителя":c.dye,"Вес, г":c.weight,"Цикл, с":c.cycle,"Дозатор, %":c.doser_pct,"Номер дозатора":c.doser_num,Комментарий:c.note})) h+=`<div class="info"><span>${k}</span><b>${safe(v||"—")}</b></div>`;
+  h+='</div>';
 
-  h+='</div><div class="panel"><div class="pt">🌡️ Температуры (шнек)</div><div class="screw-container" style="margin-bottom:5px;"><div class="nozzle"></div>';
+  h+='<div class="panel"><div class="pt">🌡️ Температуры (шнек)</div><div class="screw-container" style="margin-bottom:5px;"><div class="nozzle"></div>';
   for(let i=1; i<=6; i++) { let name = (i===1) ? "Сопло" : (i===6) ? "Загрузка" : i; h+=`<div class="zone"><label>Зона ${i}</label><input type="number" disabled value="${safe(c.params['t_z'+i]||'')}"><div class="zone-name">${name}</div></div>`; }
   h+='</div></div>';
 
@@ -751,7 +705,7 @@ function openCard(id){
   h+='<div class="pt" style="margin-top:20px">⇠ Выталкивание Назад</div><table class="matrix" id="v_matrix_eject_back"></table>';
   h+=`<div class="info"><span>Время задержки</span><b>${safe(c.params.ej_back_delay||'—')} с</b></div>`;
   h+='<div class="pt" style="margin-top:20px">💨 Сдув (Пневматика)</div><div class="blow-grid">';
-  ['a','b','c','d'].forEach(letter => {
+  ['a','c','b','d'].forEach(letter => {
     h+=`<div class="blow-box"><div class="pt">СДУВ ${letter.toUpperCase()}</div><div class="info" style="padding:2px 0;"><span>Время</span><b>${safe(c.params['blow_'+letter+'_time']||'—')}</b></div><div class="info" style="padding:2px 0;"><span>Позиция</span><b>${safe(c.params['blow_'+letter+'_pos']||'—')}</b></div><div class="info" style="padding:2px 0; border:none;"><span>Задержка</span><b>${safe(c.params['blow_'+letter+'_delay']||'—')}</b></div></div>`;
   });
   h+='</div></div>';
@@ -781,85 +735,53 @@ function openCard(id){
   buildMatrix('v_matrix_eject_fwd', 'ejf', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], false, true, c);
   buildMatrix('v_matrix_eject_back', 'ejb', 2, [{code: 'd', name: 'Давл', icon: '◉'},{code: 's', name: 'Скор', icon: '↗'},{code: 'p', name: 'Поз', icon: '⌖'}], true, true, c);
 
-  nav("view");
+  openModal("modal-view");
 }
 
 function label(k){let d={openStroke:"Ход раскрытия, мм",hold_time1:"Время выдержки 1, с",hold_time2:"Время выдержки 2, с",t_nozzle:"Температура сопла",systemPressure:"Системное давление",cool_delay:"Задержка охлаждения, с",coolTime:"Время охлаждения, с",decomp_mode:"Режим декомпрессии",decomp_press:"Давление декомпрессии",decomp_speed:"Скорость декомпрессии",decomp_dist:"Позиция декомпрессии, мм",load2_pos:"Позиция 2-й загрузки, мм",load2_time:"Время 2-й загрузки, с",ej_fwd_delay:"Задержка вперед, с",ej_back_delay:"Задержка назад, с"};return d[k]||k.replaceAll("_"," ");}
+
 function duplicateCard() {
-    let c = db.find(x => x.id === idNow);
-    if(!c) return;
-
-    // Очищаем форму
-    clearForm();
-    
-    // Меняем заголовок
-    $("editTitle").textContent = "Дублирование карты";
-    
-    // Заполняем форму данными из текущей карты
-    let map = {
-        machine:"f_machine", mold:"f_mold", product:"f_product", 
-        material:"f_material", material2:"f_material2", ratio1:"f_ratio1", ratio2:"f_ratio2", 
-        color:"f_color", dye:"f_dye", weight:"f_weight", cycle:"f_cycle", 
-        doser_pct:"f_doser_pct", doser_num:"f_doser_num", status:"f_status", note:"f_note"
-    };
-
-    // Заполняем основные поля
-    Object.entries(map).forEach(([k,v]) => {
-        if($(v)) $(v).value = c[k] ?? "";
-    });
-
-    // Заполняем параметры (вкладки)
-    Object.entries(c.params || {}).forEach(([k,v]) => {
-        if($(k)) $(k).value = v;
-    });
-
-    if($("decomp_mode")) $("decomp_mode").value = c.params.decomp_mode || "После загрузки";
-
-    // Сбрасываем ID, чтобы при сохранении создалась НОВАЯ карта, а не перезаписалась старая
-    idNow = null; 
-    
-    // Переходим в редактор
-    nav("editor");
+  let c = db.find(x => x.id === idNow);
+  if(!c) return;
+  clearForm();
+  $("editTitle").textContent = "Дублирование карты";
+  let map = {machine:"f_machine", mold:"f_mold", product:"f_product", material:"f_material", material2:"f_material2", ratio1:"f_ratio1", ratio2:"f_ratio2", color:"f_color", dye:"f_dye", cavities:"f_cavities", weight:"f_weight", cycle:"f_cycle", doser_pct:"f_doser_pct", doser_num:"f_doser_num", status:"f_status", note:"f_note"};
+  Object.entries(map).forEach(([k,v]) => { if($(v)) $(v).value = c[k] ?? ""; });
+  Object.entries(c.params || {}).forEach(([k,v]) => { if($(k)) $(k).value = v; });
+  if($("decomp_mode")) $("decomp_mode").value = c.params.decomp_mode || "После загрузки";
+  idNow = null; 
+  closeModal("modal-view");
+  openModal("modal-editor");
 }
 
-function edit(){
-  if(userRole!=='editor'){alert("Нет прав на редактирование");return;}
+function edit() {
+  if(userRole!=='editor'){alert("Нет прав");return;}
   let c=db.find(x=>x.id===idNow);if(!c)return;
-  clearForm();$("editTitle").textContent="Редактирование карты";
-  let map={machine:"f_machine",mold:"f_mold",product:"f_product",material:"f_material",material2:"f_material2",ratio1:"f_ratio1",ratio2:"f_ratio2",color:"f_color",dye:"f_dye",weight:"f_weight",cycle:"f_cycle",doser_pct:"f_doser_pct",doser_num:"f_doser_num",status:"f_status",note:"f_note"};
+  clearForm();
+  $("editTitle").textContent="Редактирование карты";
+  let map={machine:"f_machine",mold:"f_mold",product:"f_product",material:"f_material",material2:"f_material2",ratio1:"f_ratio1",ratio2:"f_ratio2",color:"f_color",dye:"f_dye",cavities:"f_cavities",weight:"f_weight",cycle:"f_cycle",doser_pct:"f_doser_pct",doser_num:"f_doser_num",status:"f_status",note:"f_note"};
   Object.entries(map).forEach(([k,v])=>$(v).value=c[k]??"");
   Object.entries(c.params||{}).forEach(([k,v])=>{if($(k))$(k).value=v;});
   if($("decomp_mode")) $("decomp_mode").value = c.params.decomp_mode || "После загрузки";
-  nav("editor");
+  closeModal("modal-view");
+  openModal("modal-editor");
 }
 
 async function delHistory(i){ if(userRole!=='editor'){alert("Нет прав");return;} if(!confirm("Удалить эту версию из истории?")) return; let c = db.find(x=>x.id===idNow); if(c && c.history) { c.history.splice(i, 1); await dbFire.collection("cards").doc(idNow).set(c); openCard(idNow); } }
 async function restore(i){if(userRole!=='editor'){alert("Нет прав");return;} let c=db.find(x=>x.id===idNow),v=c.history[i];if(!v||!confirm("Восстановить эту версию?"))return;let restored={...v.snapshot,id:c.id,history:[...c.history,{date:c.updated,status:c.status,snapshot:{...c,history:[]}}],updated:new Date().toISOString()};await dbFire.collection("cards").doc(idNow).set(restored);openCard(idNow);}
-async function del(){if(userRole!=='editor'){alert("Нет прав");return;} if(confirm("Удалить карту?")){await dbFire.collection("cards").doc(idNow).delete();goHome();}}
+async function del(){if(userRole!=='editor'){alert("Нет прав");return;} if(confirm("Удалить карту?")){await dbFire.collection("cards").doc(idNow).delete();closeModal("modal-view");}}
 
-function backup(){
-  let a=document.createElement("a"),
-  u=URL.createObjectURL(new Blob([JSON.stringify({version:3,cards:db,repairs},null,2)],{type:"application/json"}));
-  a.href=u;
-  a.download="techno-base-backup.json";
-  a.click();
-  URL.revokeObjectURL(u);
-}function restoreFile(){let f=$("file").files[0];if(!f){alert("Выбери JSON-файл");return;}let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.cards))throw 0;if(confirm("Текущая база будет заменена. Продолжить?")){ db=x.cards; goHome(); alert("База восстановлена локально. Нажмите 'Сохранить' на карте чтобы обновить в облаке.");}}catch(e){alert("Ошибка чтения резервной копии");}};r.readAsText(f);}
+function backup(){let a=document.createElement("a"),u=URL.createObjectURL(new Blob([JSON.stringify({version:3,cards:db,repairs},null,2)],{type:"application/json"}));a.href=u;a.download="techno-base-backup.json";a.click();URL.revokeObjectURL(u);}
+function restoreFile(){let f=$("file").files[0];if(!f){alert("Выбери JSON-файл");return;}let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.cards))throw 0;if(confirm("Текущая база будет заменена. Продолжить?")){ db=x.cards; nav('page-home', document.querySelector('.bottom button')); alert("База восстановлена локально.");}}catch(e){alert("Ошибка чтения резервной копии");}};r.readAsText(f);}
 function restore(){restoreFile();}
 
-/* ===== РЕМОНТ ===== */
-function openRepairs(btn){
-  nav("repairs", btn);
-}
-function newRepair(){
-  // Наладчик (viewer) тоже может создавать заявки
+// --- РЕМОНТ ---
+function newRepair() {
   repairIdNow = null;
   $("repairEditorTitle").textContent = "Новая запись";
   $("r_machine").value = "1";
   $("r_mold").value = "";
   $("r_date").value = new Date().toISOString().slice(0,10);
-
-  // Наладчик создаёт «Заявку», остальные — «Плановый ремонт»
   $("r_type").value = (userRole === 'viewer') ? 'Заявка' : 'Плановый ремонт';
   $("r_status").value = 'Открыт';
   $("r_executor").value = "";
@@ -867,10 +789,10 @@ function newRepair(){
   $("r_parts").value = "";
   $("r_cost").value = "";
   $("r_note").value = "";
-
-  nav("repairEditor");
+  openModal("modal-repair-editor");
 }
-function openRepair(id){
+
+function openRepair(id) {
   let r=repairs.find(x=>x.id===id); if(!r)return;
   repairIdNow=id;
   $("repairEditorTitle").textContent="Запись от "+(r.date||"");
@@ -884,55 +806,30 @@ function openRepair(id){
   $("r_parts").value=r.parts||"";
   $("r_cost").value=r.cost||"";
   $("r_note").value=r.note||"";
-  nav("repairEditor");
+  openModal("modal-repair-editor");
 }
-async function saveRepair(){
-  // Все три роли могут создавать заявки
+
+async function saveRepair() {
   if(!$("r_desc").value.trim()){alert("Опиши работы / заявку");return;}
-
-  // Наладчик может создавать только новые заявки, не редактировать чужие
   if(userRole==='viewer'){
-    if(repairIdNow){
-      let existing = repairs.find(x=>x.id===repairIdNow);
-      if(existing && existing.authorRole !== 'viewer'){
-        alert("Наладчик может редактировать только свои заявки");
-        return;
-      }
-    }
-    if($("r_type").value !== 'Заявка'){
-      alert("Наладчик может создавать только заявки");
-      return;
-    }
-    if($("r_status").value !== 'Открыт'){
-      $("r_status").value = 'Открыт';
-    }
+    if(repairIdNow){ let existing = repairs.find(x=>x.id===repairIdNow); if(existing && existing.authorRole !== 'viewer'){ alert("Наладчик может редактировать только свои заявки"); return; } }
+    if($("r_type").value !== 'Заявка'){ alert("Наладчик может создавать только заявки"); return; }
+    if($("r_status").value !== 'Открыт'){ $("r_status").value = 'Открыт'; }
   }
-
-  let r={
-    machine:$("r_machine").value,
-    mold:$("r_mold").value.trim(),
-    date:$("r_date").value,
-    type:$("r_type").value,
-    status:$("r_status").value,
-    executor:$("r_executor").value,
-    desc:$("r_desc").value,
-    parts:$("r_parts").value,
-    cost:$("r_cost").value,
-    note:$("r_note").value,
-    authorRole: userRole,
-    updated:new Date().toISOString()
-  };
+  let r={ machine:$("r_machine").value, mold:$("r_mold").value.trim(), date:$("r_date").value, type:$("r_type").value, status:$("r_status").value, executor:$("r_executor").value, desc:$("r_desc").value, parts:$("r_parts").value, cost:$("r_cost").value, note:$("r_note").value, authorRole: userRole, updated:new Date().toISOString() };
   if(!repairIdNow) r.created = new Date().toISOString();
   let id = repairIdNow || String(Date.now());
-  try{ await dbFire.collection("repairs").doc(id).set(r); repairIdNow=id; alert("Сохранено"); openRepairs(); }
+  try{ await dbFire.collection("repairs").doc(id).set(r); repairIdNow=id; alert("Сохранено"); closeModal("modal-repair-editor"); }
   catch(e){ console.error(e); alert("Ошибка сохранения"); }
 }
-async function delRepair(id){
+
+async function delRepair(id) {
   if(userRole!=='editor'){alert("Нет прав на удаление");return;}
   if(!confirm("Удалить запись?"))return;
   await dbFire.collection("repairs").doc(id).delete();
 }
-function renderRepairs(){
+
+function renderRepairs() {
   let listEl=$("repairList"); if(!listEl)return;
   let fm=$("repairFilterMachine").value;
   let fs=$("repairFilterStatus").value;
@@ -941,136 +838,39 @@ function renderRepairs(){
   a.sort((x,y)=>(y.date||"").localeCompare(x.date||""));
   if(!a.length){listEl.innerHTML='<div class="empty">Записей нет</div>';return;}
   listEl.innerHTML=a.map(r=>{
-  let cls = r.status==='Выполнен'?'rs-done':r.status==='В работе'?'rs-work':r.status==='Открыт'?'rs-open':'rs-to';
-  return `<div class="card" onclick="openRepair('${r.id}')">
-    <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">
-      <b>${safe(r.mold||"—")}</b>
-      <span class="repair-status ${cls}">${safe(r.status||"")}</span>
-    </div>
-    <p class="muted" style="margin:6px 0 0;">${mn(r.machine)} · ${safe(r.date||"")} · ${safe(r.type||"")}</p>
-    <p class="muted" style="margin:4px 0 0;">${safe((r.desc||"").slice(0,90))}${(r.desc||"").length>90?"…":""}</p>
-    ${r.executor?`<p class="muted" style="margin:4px 0 0;">👤 ${safe(r.executor)}</p>`:""}
-    ${userRole==='editor'?`<div class="row" style="margin-top:8px;"><button class="btn red" onclick="event.stopPropagation();delRepair('${r.id}')">Удалить</button></div>`:''}
-  </div>`;
-}).join("");
+    let cls = r.status==='Выполнен'?'rs-done':r.status==='В работе'?'rs-work':r.status==='Открыт'?'rs-open':'rs-to';
+    return `<div class="card" onclick="openRepair('${r.id}')">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">
+        <b>${safe(r.mold||"—")}</b>
+        <span class="repair-status ${cls}">${safe(r.status||"")}</span>
+      </div>
+      <p class="muted" style="margin:6px 0 0;">${mn(r.machine)} · ${safe(r.date||"")} · ${safe(r.type||"")}</p>
+      <p class="muted" style="margin:4px 0 0;">${safe((r.desc||"").slice(0,90))}${(r.desc||"").length>90?"…":""}</p>
+      ${r.executor?`<p class="muted" style="margin:4px 0 0;">👤 ${safe(r.executor)}</p>`:""}
+      ${userRole==='editor'?`<div class="row" style="margin-top:8px;"><button class="btn red" onclick="event.stopPropagation();delRepair('${r.id}')">Удалить</button></div>`:''}
+    </div>`;
+  }).join("");
 }
 
-/* ===== ПРОФИЛИ ===== */
-function openProfiles(){nav("profiles");}
-function newProfile(){
-  if(userRole==='viewer'){alert("Нет прав");return;}
-  profileIdNow=null;
-  profileSourceCardId = idNow;
-  $("profileEditorTitle").textContent="Новый профиль";
-  $("p_name").value="";
-  $("p_desc").value="";
-  if(!idNow){ alert("Сначала открой карту, из которой нужно взять настройки (или создай её)."); }
-  nav("profileEditor");
-}
-function openProfile(id){
-  let p=profiles.find(x=>x.id===id); if(!p)return;
-  profileIdNow=id;
-  $("profileEditorTitle").textContent="Профиль: "+(p.name||"");
-  $("p_name").value=p.name||"";
-  $("p_desc").value=p.desc||"";
-  nav("profileEditor");
-}
-async function saveProfileFromCard(){
-if(userRole==='viewer'){alert("Нет прав на создание профиля");return;}
-  let name=$("p_name").value.trim(); if(!name){alert("Укажи название");return;}
-  let src=db.find(x=>x.id===(profileIdNow?null:profileSourceCardId) || x.id===idNow);
-  let srcCard = db.find(x=>x.id===idNow);
-  if(!srcCard){alert("Нет открытой карты — нечего сохранять. Открой карту.");return;}
-  let p={ name, desc:$("p_desc").value, params:{...srcCard.params}, sourceMachine:srcCard.machine, sourceMold:srcCard.mold, updated:new Date().toISOString() };
-  let id=profileIdNow||String(Date.now());
-  try{ await dbFire.collection("profiles").doc(id).set(p); profileIdNow=id; alert("Профиль сохранён"); openProfiles(); }
-  catch(e){ console.error(e); alert("Ошибка сохранения профиля"); }
-}
-async function delProfile(id){
-  if(userRole!=='editor'){alert("Нет прав на удаление");return;}
-  if(!confirm("Удалить профиль?"))return;
-  await dbFire.collection("profiles").doc(id).delete();
-}
-function renderProfiles(){
-  let el=$("profileList"); if(!el)return;
-  if(!profiles.length){el.innerHTML='<div class="empty">Профилей пока нет</div>';return;}
-  el.innerHTML=profiles.map(p=>`<div class="card">
-  <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">
-    <b>${safe(p.name||"Без названия")}</b>
-    <span class="badge">${safe(p.sourceMold||"—")}</span>
-  </div>
-  <p class="muted" style="margin:6px 0 0;">${mn(p.sourceMachine)}</p>
-  ${p.desc?`<p class="muted" style="margin:4px 0 0;">${safe(p.desc)}</p>`:""}
-  <div class="row" style="margin-top:10px;">
-    <button class="btn gray" onclick="event.stopPropagation();openProfile('${p.id}')">Открыть</button>
-    ${userRole==='editor'?`<button class="btn red" onclick="event.stopPropagation();delProfile('${p.id}')">Удалить</button>`:''}
-  </div>
-</div>`).join("");
-}
-function fillProfileSelect(){
-  let sel=$("profileSelect"); if(!sel)return;
-  sel.innerHTML='<option value="">— выбрать профиль —</option>'+profiles.map(p=>`<option value="${p.id}">${safe(p.name||"Без названия")}</option>`).join("");
-}
-function applyProfileToEditor(){
-if(userRole!=='editor' && userRole!=='mechanic'){alert("Нет прав");return;}
-  let pid=$("profileSelect").value;
-  if(!pid){alert("Выбери профиль");return;}
-  let p=profiles.find(x=>x.id===pid); if(!p||!p.params){alert("В профиле нет параметров");return;}
-  if(!confirm("Заменить все параметры карты значениями профиля?"))return;
-  Object.entries(p.params).forEach(([k,v])=>{ if($(k)) $(k).value=v; });
-  if($("decomp_mode")) $("decomp_mode").value = p.params.decomp_mode || "После загрузки";
-  alert("Профиль применён. Не забудь сохранить карту.");
-}
-
-/* ===== РОЛИ / ВХОД ===== */
-function login(role){
+// --- РОЛИ / ВХОД ---
+function login(role) {
   let pass = ($("loginPassword").value || "").trim();
   let err = $("loginError");
   if(err) err.innerText = "";
 
-  if(role === 'viewer'){
-    userRole = 'viewer';
-    hideLogin(); applyRole(); return;
-  }
-    if(role === 'mechanic'){
-    userRole = 'mechanic';
-    hideLogin(); applyRole();
-    openRepairs(); // СРАЗУ ОТКРЫВАЕМ РЕМОНТ
-    return;
-  }
-  if(role === 'editor'){
-    if(pass === "master"){ userRole='editor'; hideLogin(); applyRole(); }
-    else if(err) err.innerText = "Неверный пароль";
-    return;
-  }
+  if(role === 'viewer'){ userRole = 'viewer'; hideLogin(); applyRole(); return; }
+  if(role === 'mechanic'){ userRole = 'mechanic'; hideLogin(); applyRole(); nav('page-repairs', document.querySelector('.bottom button:nth-child(3)')); return; }
+  if(role === 'editor'){ if(pass === "master"){ userRole='editor'; hideLogin(); applyRole(); } else if(err) err.innerText = "Неверный пароль"; return; }
 }
 
 function hideLogin(){ $("loginScreen").style.display='none'; }
 
-function applyRole(){
-
-  // Редактор карт: только редактор
-  document.querySelectorAll('.btn-top-edit, button[onclick="edit()"], button[onclick="del()"], button[onclick="newCard()"]').forEach(b=>{
-    b.style.display = userRole==='editor' ? '' : 'none';
-  });
-
-  // Сохранение карты — только редактор
-  document.querySelectorAll('button[onclick="save()"]').forEach(b=>{
-    b.style.display = userRole==='editor' ? '' : 'none';
-  });
-
-  // Создание ремонта — все роли (наладчик создаёт заявки)
-  document.querySelectorAll('#repairEditorBtns').forEach(b=>{
-    b.style.display = '';
-  });
-
-  // Сохранение ремонта — все
-  document.querySelectorAll('button[onclick="saveRepair()"]').forEach(b=>{
-    b.style.display = '';
-  });
-
-  let status = $("saveStatus");
-  if(status) status.title = "Роль: "+userRole;
+function applyRole() {
+  document.querySelectorAll('.btn-top-edit, button[onclick="edit()"], button[onclick="del()"], button[onclick="newCard()"]').forEach(b=>{ b.style.display = userRole==='editor' ? '' : 'none'; });
+  document.querySelectorAll('button[onclick="save()"]').forEach(b=>{ b.style.display = userRole==='editor' ? '' : 'none'; });
+  document.querySelectorAll('#repairEditorBtns').forEach(b=>{ b.style.display = ''; });
+  document.querySelectorAll('button[onclick="saveRepair()"]').forEach(b=>{ b.style.display = ''; });
+  let status = $("saveStatus"); if(status) status.title = "Роль: "+userRole;
 }
 
 function logout(){
@@ -1079,9 +879,18 @@ function logout(){
   $("loginPassword").value='';
   userRole='viewer';
 }
+function searchScroll() {
+    // Плавно прокручиваем страницу к блоку с картами
+    let cardsBlock = document.getElementById('cards');
+    if (cardsBlock) {
+        cardsBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
 
-
-
-options();build();render();renderRepairs();fillQueryHints();</script>
+options();
+build();
+render();
+renderRepairs();
+</script>
 </body>
 </html>
