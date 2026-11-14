@@ -6,67 +6,79 @@
 <title>ТПА БАЗА</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23141f32'/><text x='50' y='50' font-size='50' text-anchor='middle' dominant-baseline='central' fill='%234c9aff' font-family='Arial' font-weight='bold'>Т</text></svg>">
 <style>
-/* СТИЛИ ДЛЯ ВКЛАДОК СТУПЕНЕЙ */
-.stage-tabs {
-    display: flex;
+/* НОВАЯ МАТРИЦА С КРУПНЫМИ ЯЧЕЙКАМИ */
+.matrix-grid {
+    display: grid;
+    /* Первая колонка узкая (под иконки), остальные равные (под ступени) */
+    grid-template-columns: 40px repeat(var(--cols), 1fr);
     gap: 6px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid var(--b);
+    margin-top: 10px;
+    align-items: center;
 }
-.stage-tab {
-    flex: 1;
-    white-space: nowrap;
-    background: var(--p2);
-    border: 1px solid var(--b);
-    color: var(--m);
-    padding: 10px 15px;
-    border-radius: 9px;
-    font-weight: bold;
-    cursor: pointer;
+
+/* Заголовки столбцов (Ст1, Ст2...) */
+.mg-header {
     text-align: center;
-    user-select: none;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--m);
+    padding-bottom: 5px;
 }
-.stage-tab.active {
-    background: var(--a);
-    color: white;
-    border-color: var(--a);
-}
-.stage-content {
-    display: none;
-}
-.stage-content.active {
-    display: block;
-}
-.param-row {
+
+/* Ячейки с иконками и текстом */
+.mg-label {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    background: var(--p2);
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--b);
-}
-.param-row label {
-    font-size: 13px;
+    justify-content: flex-start;
+    gap: 5px;
+    font-size: 11px; /* Текст мелкий, чтобы не мешать полям */
     color: var(--t);
-    margin: 0;
-    font-weight: 600;
-}
-.param-row input {
-    width: 120px;
-    text-align: right;
     font-weight: bold;
-    font-size: 18px;
-    color: #d84315;
-    padding: 6px 10px;
-    margin: 0;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.mg-label span {
+    color: var(--a); /* Иконка синяя */
+    font-size: 16px;
+}
+
+/* Поля ввода */
+.mg-input {
+    width: 100%;
+    height: 55px; /* Большие поля */
     background: var(--bg);
     border: 1px solid var(--b);
-    border-radius: 6px;
+    border-radius: 8px;
+    color: #d84315;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
 }
+.mg-input:focus {
+    border-color: var(--a);
+    outline: none;
+    background: #121f33;
+}
+
+/* На узких экранах делаем поля чуть меньше, чтобы влезли */
+@media(max-width: 380px) {
+    .matrix-grid {
+        grid-template-columns: 30px repeat(var(--cols), 1fr);
+        gap: 4px;
+    }
+    .mg-input {
+        height: 45px;
+        font-size: 16px;
+        padding: 2px;
+    }
+    .mg-label { font-size: 16px; }
+    .mg-header { font-size: 10px; }
+}
+
 @media(max-width:380px){
     .stage-grid { grid-template-columns: 1fr; }
 }:root{--bg:#0b1220;--p:#141f32;--p2:#1b2940;--b:#293950;--t:#edf3fc;--m:#91a2bb;--a:#4c9aff;--g:#24bd88;--r:#f16b72;--o:#f0ad4e}
@@ -674,19 +686,16 @@ function render() {
     function buildMatrix(containerId, prefix, cols, params, isReverse=false, isViewOnly=false, cardData=null) {
     let container = document.getElementById(containerId);
     if(!container) return;
-    container.innerHTML = ""; // Очищаем перед отрисовкой
+    container.innerHTML = ""; 
     
     // --- РЕЖИМ ПРОСМОТРА (ТАБЛИЦА) ---
     if (isViewOnly) {
         let table = document.createElement('table');
         table.className = 'matrix';
         let html = '<thead><tr><th></th>';
-        // Заголовки колонок
         if (isReverse) { for(let i=cols; i>=1; i--) html += `<th>${(prefix==='cl' && i===4)?'НД':(prefix==='cl' && i===5)?'ВД':'Ст'+i}</th>`; }
         else { for(let i=1; i<=cols; i++) html += `<th>${(prefix==='cl' && i===4)?'НД':(prefix==='cl' && i===5)?'ВД':'Ст'+i}</th>`; }
         html += '</tr></thead><tbody>';
-        
-        // Строки параметров
         params.forEach(p => {
             html += `<tr><td class="label-cell"><span class="param-icon">${p.icon}</span>${p.name}</td>`;
             if (isReverse) { for(let i=cols; i>=1; i--) { let val = (cardData && cardData.params) ? (cardData.params[`${prefix}_${p.code}${i}`] || '') : ''; html += `<td><input type="number" disabled value="${val}"></td>`; } }
@@ -699,64 +708,56 @@ function render() {
         return;
     }
 
-    // --- РЕЖИМ РЕДАКТОРА (ВКЛАДКИ) ---
-    // 1. Создаем панель с кнопками вкладок
-    let tabsDiv = document.createElement('div');
-    tabsDiv.className = 'stage-tabs';
-    
-    // 2. Создаем контейнер для содержимого
-    let contentDiv = document.createElement('div');
+    // --- РЕЖИМ РЕДАКТОРА (КРУПНАЯ МАТРИЦА) ---
+    // Создаем контейнер и передаем ему количество колонок (ступеней) через CSS-переменную
+    let grid = document.createElement('div');
+    grid.className = 'matrix-grid';
+    grid.style.setProperty('--cols', cols);
 
+    // 1. Пустая ячейка в левом верхнем углу
+    let emptyTopLeft = document.createElement('div');
+    grid.appendChild(emptyTopLeft);
+
+    // 2. Заголовки столбцов (Ст1, Ст2...)
     let stages = [];
     if (isReverse) { for(let i=cols; i>=1; i--) stages.push(i); }
     else { for(let i=1; i<=cols; i++) stages.push(i); }
 
-    stages.forEach((i, index) => {
-        // Имя вкладки
-        let tabName = `Ст${i}`;
+    stages.forEach(i => {
+        let header = document.createElement('div');
+        header.className = 'mg-header';
+        let name = `Ст${i}`;
         if (prefix === 'cl') {
-            if (i === 4) tabName = 'НД';
-            if (i === 5) tabName = 'ВД';
+            if (i === 4) name = 'НД';
+            if (i === 5) name = 'ВД';
         }
+        header.innerText = name;
+        grid.appendChild(header);
+    });
 
-        // Кнопка вкладки
-        let btn = document.createElement('div');
-        btn.className = `stage-tab ${index === 0 ? 'active' : ''}`;
-        btn.innerText = tabName;
-        btn.onclick = () => {
-            // Переключение вкладок
-            tabsDiv.querySelectorAll('.stage-tab').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            contentDiv.querySelectorAll('.stage-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(`${prefix}_cont_${i}`).classList.add('active');
-        };
-        tabsDiv.appendChild(btn);
+    // 3. Строки параметров
+    params.forEach(p => {
+                // Ячейка с иконкой (Давление, Скорость...)
+                // Ячейка с иконкой и текстом (Давление, Скорость...)
+        let label = document.createElement('div');
+        label.className = 'mg-label';
+        label.innerHTML = `<span>${p.icon}</span>${p.name}`; // Иконка + текст
+        grid.appendChild(label);
 
-        // Блок с параметрами для этой ступени
-        let stageContent = document.createElement('div');
-        stageContent.className = `stage-content ${index === 0 ? 'active' : ''}`;
-        stageContent.id = `${prefix}_cont_${i}`;
-
-        params.forEach(p => {
-            let row = document.createElement('div');
-            row.className = 'param-row';
-            let label = document.createElement('label');
-            label.innerHTML = `<span class="param-icon">${p.icon}</span> ${p.name}`;
+        // Ячейки с полями ввода для каждой ступени
+        stages.forEach(i => {
             let input = document.createElement('input');
             input.type = 'number';
             input.step = 'any';
-            input.id = `${prefix}_${p.code}${i}`; // Сохраняем ID для базы
+            input.className = 'mg-input';
+            input.id = `${prefix}_${p.code}${i}`;
             input.placeholder = '0';
-            row.appendChild(label);
-            row.appendChild(input);
-            stageContent.appendChild(row);
+            input.onfocus = function() { this.select(); };
+            grid.appendChild(input);
         });
-
-        contentDiv.appendChild(stageContent);
     });
 
-    container.appendChild(tabsDiv);
-    container.appendChild(contentDiv);
+    container.appendChild(grid);
 }
 
 function build() {
